@@ -9,7 +9,7 @@ buildscript {
         okhttp_version = '4.9.1'
         swiperefresh_version = '0.23.1'
         insets_version = '0.24.3-alpha'
-        room_version = '2.2.6'
+        room_version = '2.4.2'
     }
 
     repositories {
