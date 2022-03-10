@@ -1,16 +1,5 @@
 buildscript {
-    ext {
-        compose_version = '1.1.1'
-        kotlin_version = '1.6.10'
-        hilt_version = '2.38.1'
-        accompanist_version = '0.24.3-alpha'
-        lifecycle_version = '2.4.1'
-        retrofit_version = '2.9.0'
-        okhttp_version = '4.9.1'
-        swiperefresh_version = '0.23.1'
-        insets_version = '0.24.3-alpha'
-        room_version = '2.4.2'
-    }
+    apply from: 'versions.gradle'
 
     repositories {
         google()
@@ -18,7 +7,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 

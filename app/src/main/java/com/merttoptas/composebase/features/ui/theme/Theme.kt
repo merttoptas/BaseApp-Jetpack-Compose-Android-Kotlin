@@ -1,4 +1,4 @@
-package com.merttoptas.composebase.ui.theme
+package com.merttoptas.composebase.features.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

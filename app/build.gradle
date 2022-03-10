@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk project.compileSdkVersion
 
     defaultConfig {
         applicationId "com.merttoptas.composebase"
-        minSdk 21
-        targetSdk 32
+        minSdk project.minSdkVersion
+        targetSdk project.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -84,8 +84,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     //DataStore
-    implementation "androidx.datastore:datastore:1.0.0"
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore:$datastore_version"
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
 
     //Accompanist
     implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
@@ -105,7 +105,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:1.4.0")
 
     //Json
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_version"
 
     //Testing
     testImplementation 'junit:junit:4.13.2'
