@@ -19,7 +19,7 @@ ext {
     hilt_version = '2.38.1'
     accompanist_version = '0.24.3-alpha'
     lifecycle_version = '2.4.1'
-
+    paging_version = '1.0.0-alpha14'
     swiperefresh_version = '0.23.1'
     insets_version = '0.24.3-alpha'
     room_version = '2.4.2'

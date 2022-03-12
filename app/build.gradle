@@ -104,6 +104,9 @@ dependencies {
     //Coil
     implementation("io.coil-kt:coil-compose:1.4.0")
 
+    //Paging 3.0
+    implementation "androidx.paging:paging-compose:$paging_version"
+
     //Json
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_version"
 
