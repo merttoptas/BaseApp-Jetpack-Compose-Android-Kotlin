@@ -23,10 +23,10 @@ interface CharacterService {
     @GET(Constants.GET_CHARACTER)
     suspend fun getCharacter(
         @Path("id") characterId: Int
-    ): CharacterInfoResponse
+    ): Response<CharacterInfoResponse>
 
     @GET(Constants.GET_CHARACTER)
     suspend fun getCharacter(
         @Url url: String
-    ): CharacterInfoResponse
+    ): Response<CharacterInfoResponse>
 }
