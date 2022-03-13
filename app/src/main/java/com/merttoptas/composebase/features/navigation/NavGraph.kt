@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.merttoptas.composebase.features.component.RickAndMortyBottomAppBar
 import com.merttoptas.composebase.features.component.RickAndMortyFloatingActionBar
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
+import com.merttoptas.composebase.features.screen.characters.CharactersScreen
 import com.merttoptas.composebase.features.screen.splash.SplashScreen
 
 /**
@@ -55,7 +56,12 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                     navController = navController,
                     hiltViewModel()
                 )
-
+            }
+            composable(NavScreen.Characters.route) {
+                CharactersScreen(
+                    navController = navController,
+                    hiltViewModel()
+                )
             }
         }
     }

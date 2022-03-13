@@ -26,13 +26,13 @@ fun SplashScreen(
     navController: NavController,
     viewModel: SplashViewModel
 ) {
-    Body()
+    Content()
     LaunchedEffect(viewModel.uiEvent) {
         launch {
             viewModel.uiEvent.collect {
                 when (it) {
                     is SplashViewEvent.DirectToDashBoard -> {
-                        navController.navigate(NavScreen.Dashboard.route) {
+                        navController.navigate(NavScreen.Characters.route) {
                             popUpTo(0)
                         }
                     }
@@ -43,7 +43,7 @@ fun SplashScreen(
 }
 
 @Composable
-private fun Body() {
+private fun Content() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,5 +63,5 @@ private fun Body() {
 @Preview
 @Composable
 fun BodyPreview() {
-    Body()
+    Content()
 }

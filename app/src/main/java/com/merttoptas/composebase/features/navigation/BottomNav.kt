@@ -33,7 +33,7 @@ enum class BottomNav(
         Constants.SCREEN_NAME_LOCATIONS
     ),
     SETTINGS(
-        NavScreen.Settings.route,
+        NavScreen.Settings .route,
         R.drawable.ic_baseline_settings,
         Constants.SCREEN_NAME_SETTINGS
     )

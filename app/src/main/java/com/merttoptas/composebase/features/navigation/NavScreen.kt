@@ -1,11 +1,5 @@
 package com.merttoptas.composebase.features.navigation
 
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.navigation
-
 /**
  * Created by merttoptas on 9.03.2022
  */
