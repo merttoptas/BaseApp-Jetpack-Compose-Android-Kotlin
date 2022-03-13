@@ -23,7 +23,7 @@ fun RickAndMortyTopBar(
             text = text,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colors.secondary,
             style = MaterialTheme.typography.subtitle1
         )
     },

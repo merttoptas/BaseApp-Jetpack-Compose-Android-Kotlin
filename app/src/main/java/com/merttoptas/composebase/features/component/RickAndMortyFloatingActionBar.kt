@@ -5,7 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -21,7 +21,7 @@ fun RickAndMortyFloatingActionBar(
     navController: NavController,
 ) {
     var isClick by remember { mutableStateOf(false) }
-    val rotationalState by animateFloatAsState(targetValue = if (isClick) 0f else 180f)
+    val rotationalState by animateFloatAsState(targetValue = if (isClick) 180f else 0f)
     val animatedColor by animateColorAsState(targetValue = if (isClick) Color.Green else Color.Red)
 
     FloatingActionButton(
@@ -30,7 +30,7 @@ fun RickAndMortyFloatingActionBar(
         backgroundColor = animatedColor
     ) {
         Icon(
-            Icons.Filled.Sync,
+            Icons.Filled.Favorite,
             contentDescription = null,
             tint = Color.White,
             modifier = Modifier.rotate(rotationalState)
