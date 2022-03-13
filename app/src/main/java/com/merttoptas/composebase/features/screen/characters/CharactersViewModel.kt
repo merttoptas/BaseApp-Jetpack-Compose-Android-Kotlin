@@ -23,20 +23,25 @@ class CharactersViewModel @Inject constructor(
 ) : BaseViewModel<CharactersViewState, CharactersViewEvent>() {
 
     init {
-        //TODO: check if user is logged in
+        getAllCharacters()
+    }
+
+    private fun getAllCharacters() {
         viewModelScope.launch {
-            delay(1000)
+            setState { currentState.copy(isLoading = true) }
+            delay(2000)
             characterRepository.getAllCharacters(1).collect {
                 when (it) {
                     is DataState.Success -> {
-                        Log.d("deneme", it.data.results.toString())
-                        setState { currentState.copy(data = it.data.results) }
+                        setState { currentState.copy(data = it.data.results, isLoading = false) }
                     }
                     is DataState.Error -> {
-                        //  setViewState(CharactersViewState(it.error))
+                        setState { currentState.copy(isLoading = false) }
+
                     }
                     is DataState.Loading -> {
-                        Log.d("deneme1", "loading")
+                        setState { currentState.copy(isLoading = true) }
+
                     }
                 }
             }

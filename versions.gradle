@@ -26,6 +26,8 @@ ext {
     kotlinx_version = '1.1.0'
     datastore_version = '1.0.0'
     coil_version = '1.4.0'
+    lottie_version = '4.0.0'
+    shimmer_version = '1.0.0'
 
     //Network
     retrofit_version = '2.9.0'

@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.IconButton
 import androidx.compose.material.rememberScaffoldState
@@ -15,9 +16,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.features.component.RickAndMortyCharacterShimmer
 import com.merttoptas.composebase.features.component.RickAndMortyCharactersCard
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
+import com.merttoptas.composebase.features.navigation.NavScreen
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -66,20 +69,25 @@ private fun Content(viewModel: CharactersViewModel, navController: NavController
             contentPadding = PaddingValues(vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-
-            itemsIndexed(items = viewState.data ?: listOf()) { index, item ->
-                RickAndMortyCharactersCard(
-                    modifier = Modifier,
-                    id = item.id.toLong(),
-                    name = item.name,
-                    status = item.status ?: Status.Unknown,
-                    type = item.species,
-                    imageUrl = item.image,
-                    isLiked = false,
-                    detailClick = {
-                    },
-                    likeClick = {}
-                )
+            if (viewState.isLoading) {
+                items(10) {
+                    RickAndMortyCharacterShimmer()
+                }
+            } else {
+                items(items = viewState.data ?: listOf()) { item ->
+                    RickAndMortyCharactersCard(
+                        id = item.id.toLong(),
+                        name = item.name,
+                        status = item.status ?: Status.Unknown,
+                        type = item.species,
+                        imageUrl = item.image,
+                        isLiked = false,
+                        detailClick = {
+                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.convertToJSON()}"))
+                        },
+                        likeClick = {}
+                    )
+                }
             }
         }
     }

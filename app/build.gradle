@@ -110,6 +110,9 @@ dependencies {
     //Json
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_version"
 
+    implementation "com.airbnb.android:lottie-compose:$lottie_version"
+    implementation "com.valentinilk.shimmer:compose-shimmer:$shimmer_version"
+
     //Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
