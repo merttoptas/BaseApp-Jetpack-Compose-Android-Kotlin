@@ -105,9 +105,7 @@ val AppTypography = Typography(
     ),
     overline = TextStyle(
         fontFamily = fonts,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp,
+        fontWeight = FontWeight.Thin,
+        fontSize = 10.sp,
     ),
 )
