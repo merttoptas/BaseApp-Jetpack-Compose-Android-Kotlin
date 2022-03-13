@@ -3,12 +3,10 @@ package com.merttoptas.composebase.data.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-/**
- * Created by merttoptas on 10.03.2022
- */
-
 @Parcelize
-data class CharacterResponse(
-    val info: InfoResponse,
-    val results: List<Result>
+data class InfoResponse(
+    val count: Int?,
+    val next: String?,
+    val pages: Int?,
+    val prev: String?
 ) : Parcelable
