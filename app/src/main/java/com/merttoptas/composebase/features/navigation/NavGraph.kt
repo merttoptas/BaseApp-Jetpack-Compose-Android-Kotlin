@@ -14,6 +14,7 @@ import com.merttoptas.composebase.features.component.RickAndMortyFloatingActionB
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.screen.characters.CharactersScreen
 import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailScreen
+import com.merttoptas.composebase.features.screen.episodes.EpisodesScreen
 import com.merttoptas.composebase.features.screen.splash.SplashScreen
 
 /**
@@ -25,6 +26,7 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
     RickAndMortyScaffold(
         bottomBar = {
             BottomNav.values().forEach { navItem ->
@@ -44,7 +46,6 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                     )
                 }
             }
-
         },
     ) { innerPadding ->
         NavHost(
@@ -64,12 +65,21 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                     hiltViewModel()
                 )
             }
-            composable(NavScreen.CharacterDetail.route.plus("?characterDetail={characterDetail}")) {
-                CharactersDetailScreen(
-                    navController = navController,
-                    hiltViewModel()
-                )
-            }
+            composable(NavScreen.CharacterDetail.route.plus("?characterDetail={characterDetail}"),
+                content = {
+                    CharactersDetailScreen(
+                        navController = navController,
+                        viewModel = hiltViewModel()
+                    )
+                })
+
+            composable(NavScreen.Episodes.route,
+                content = {
+                    EpisodesScreen(
+                        navController = navController,
+                        viewModel = hiltViewModel()
+                    )
+                })
         }
     }
 }
