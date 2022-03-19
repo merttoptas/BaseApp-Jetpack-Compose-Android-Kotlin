@@ -9,4 +9,10 @@ object Constants {
     const val GET_CHARACTER = "character/{id}"
     const val Location_LIST = "location"
     const val EPISODE_LIST = "episode"
+    const val GET_EPISODE = "episode/{id}"
+    const val MULTIPLE_EPISODE_LIST = "episode/{[0-9]}"
+
+    //Query Parameter
+    const val PARAM_PAGE = "page"
+    const val PARAM_ID = "id"
 }
