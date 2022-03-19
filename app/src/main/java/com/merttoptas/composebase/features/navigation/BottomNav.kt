@@ -9,7 +9,7 @@ import com.merttoptas.composebase.utils.Constants
 
 enum class BottomNav(
     val route: String,
-    val IconId: Int,
+    val iconId: Int,
     val screenName: String
 ) {
     CHARACTERS(

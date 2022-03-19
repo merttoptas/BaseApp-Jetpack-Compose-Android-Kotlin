@@ -1,25 +1,29 @@
 package com.merttoptas.composebase.features.screen.charactersdetail
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.rememberScaffoldState
+
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.merttoptas.composebase.R
+import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.domain.viewstate.charactersdetail.CharactersDetailViewState
+import com.merttoptas.composebase.features.component.RickAndMortyNetworkImage
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
+import com.merttoptas.composebase.features.component.RickAndMortyText
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
 
 /**
@@ -29,7 +33,7 @@ import com.merttoptas.composebase.features.component.RickAndMortyTopBar
 @Composable
 fun CharactersDetailScreen(
     navController: NavController,
-    viewModel: CharactersDetailViewModel
+    viewModel: CharactersDetailViewModel = viewModel()
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState by viewModel.uiState.collectAsState()
@@ -61,8 +65,7 @@ fun CharactersDetailScreen(
         },
         content = {
             Content(
-                viewModel,
-                navController
+                viewState
             )
         },
         scaffoldState = scaffoldState,
@@ -71,15 +74,111 @@ fun CharactersDetailScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Content(viewModel: CharactersDetailViewModel, navController: NavController) {
-    val viewState by viewModel.uiState.collectAsState()
-
+private fun Content(viewState: CharactersDetailViewState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = android.R.color.background_light))
             .padding(horizontal = 15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        CharacterImage(viewState)
+        CharacterInfoContainer(viewState)
+    }
+}
 
+@Composable
+private fun CharacterImage(viewState: CharactersDetailViewState) {
+    Card(
+        modifier = Modifier
+            .size(200.dp)
+            .padding(top = 20.dp),
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(
+            1.dp,
+            color = if (viewState.data?.status == Status.Alive) Color.Green else Color.Red
+        ),
+    ) {
+        RickAndMortyNetworkImage(
+            imageURL = viewState.data?.image,
+            modifier = Modifier
+                .fillMaxSize(),
+            placeholder = R.drawable.ic_place_holder,
+            contentScale = ContentScale.FillBounds,
+        )
+    }
+}
+
+@Composable
+private fun CharacterInfoContainer(viewState: CharactersDetailViewState) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 20.dp),
+        shape = RoundedCornerShape(8.dp),
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            CharacterInfoRow(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Name",
+                value = viewState.data?.name ?: ""
+            )
+            Divider(thickness = 0.5.dp)
+            CharacterInfoRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                text = "Species",
+                value = viewState.data?.species ?: ""
+            )
+            Divider(thickness = 0.5.dp)
+            CharacterInfoRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                text = "Gender",
+                value = viewState.data?.gender ?: ""
+            )
+            Divider(thickness = 0.5.dp)
+            CharacterInfoRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                text = "Last Know Location",
+                value = viewState.data?.origin?.name ?: ""
+            )
+            Divider(thickness = 0.5.dp)
+            CharacterInfoRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
+                text = "Location",
+                value = viewState.data?.location?.name ?: ""
+            )
+            Divider(thickness = 0.5.dp)
+        }
+    }
+}
+
+@Composable
+private fun CharacterInfoRow(modifier: Modifier, text: String, value: String) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        RickAndMortyText(
+            text = text,
+            style = MaterialTheme.typography.body2,
+            color = MaterialTheme.colors.onSurface
+        )
+
+        RickAndMortyText(
+            text = value,
+            style = MaterialTheme.typography.body2,
+            color = MaterialTheme.colors.primary
+        )
     }
 }

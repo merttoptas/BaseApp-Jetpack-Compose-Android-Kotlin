@@ -17,12 +17,12 @@ interface CharacterService {
 
     @GET(Constants.CHARACTER_LIST)
     suspend fun getAllCharacters(
-        @Query("page") page: Int
+        @Query(Constants.PARAM_PAGE) page: Int
     ): Response<CharacterResponse>
 
     @GET(Constants.GET_CHARACTER)
     suspend fun getCharacter(
-        @Path("id") characterId: Int
+        @Path(Constants.PARAM_ID) characterId: Int
     ): Response<CharacterInfoResponse>
 
     @GET(Constants.GET_CHARACTER)

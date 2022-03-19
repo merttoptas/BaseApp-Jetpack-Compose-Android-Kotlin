@@ -17,9 +17,8 @@ class CharactersDetailViewModel @Inject constructor(
 ) : BaseViewModel<CharactersDetailViewState, CharactersDetailViewEvent>() {
 
     init {
-        savedStateHandle.get<String>("charactersDetail")?.let {
+        savedStateHandle.get<String>("characterDetail")?.let {
             setState { currentState.copy(isLoading = false, data = Result.create(it)) }
-
         }
     }
 
