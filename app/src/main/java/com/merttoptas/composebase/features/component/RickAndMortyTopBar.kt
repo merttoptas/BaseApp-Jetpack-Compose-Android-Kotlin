@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun RickAndMortyTopBar(
+    modifier: Modifier = Modifier,
     text: String,
     title: @Composable () -> Unit = {
         RickAndMortyText(
@@ -27,7 +28,6 @@ fun RickAndMortyTopBar(
             style = MaterialTheme.typography.subtitle1
         )
     },
-    modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     backgroundColor: Color = Color.White,

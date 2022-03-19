@@ -45,7 +45,7 @@ fun RickAndMortyBottomAppBar(
                     unselectedContentColor = MaterialTheme.colors.secondary,
                     icon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(id = screen.IconId),
+                            imageVector = ImageVector.vectorResource(id = screen.iconId),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )

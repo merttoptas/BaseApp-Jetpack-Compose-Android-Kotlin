@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.TextUnit
 fun RickAndMortyText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.secondaryVariant,
+    color: Color = MaterialTheme.colors.primary,
     fontSize: TextUnit = TextUnit.Unspecified,
     letterSpacing: TextUnit = TextUnit.Unspecified,
     textAlign: TextAlign? = null,
