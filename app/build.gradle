@@ -113,6 +113,8 @@ dependencies {
     implementation "com.airbnb.android:lottie-compose:$lottie_version"
     implementation "com.valentinilk.shimmer:compose-shimmer:$shimmer_version"
 
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
+
     //Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

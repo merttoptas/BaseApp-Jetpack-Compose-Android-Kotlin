@@ -95,7 +95,7 @@ private fun CharacterImage(viewState: CharactersDetailViewState) {
             .padding(top = 20.dp),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(
-            1.dp,
+            2.dp,
             color = if (viewState.data?.status == Status.Alive) Color.Green else Color.Red
         ),
     ) {
