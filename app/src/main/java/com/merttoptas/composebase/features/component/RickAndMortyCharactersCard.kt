@@ -35,7 +35,8 @@ fun RickAndMortyCharactersCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable { detailClick() },
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        backgroundColor = Color.White
     ) {
         Row(
             modifier = Modifier

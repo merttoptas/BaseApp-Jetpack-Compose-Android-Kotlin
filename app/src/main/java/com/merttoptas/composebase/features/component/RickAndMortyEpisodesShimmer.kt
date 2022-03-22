@@ -14,10 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.valentinilk.shimmer.shimmer
 
 /**
- * Created by merttoptas on 13.03.2022
+ * Created by merttoptas on 19.03.2022
  */
+
 @Composable
-fun RickAndMortyCharacterShimmer(
+fun RickAndMortyEpisodesShimmer(
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -30,22 +31,12 @@ fun RickAndMortyCharacterShimmer(
         Row(
             modifier = Modifier
                 .shimmer()
-                .size(100.dp)
-                .padding(vertical = 10.dp)
+                .padding(vertical = 10.dp, horizontal = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Box(
-                Modifier
-                    .padding(start = 10.dp)
-                    .fillMaxHeight()
-                    .width(80.dp)
-                    .clip(shape = RoundedCornerShape(15))
-                    .background(color = Color.LightGray)
-            ) {
-            }
-
             Column(
                 modifier = Modifier
-                    .padding(start = 10.dp)
+                    .padding(start = 10.dp, end = 24.dp)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceAround
             ) {
@@ -54,7 +45,7 @@ fun RickAndMortyCharacterShimmer(
                         .fillMaxWidth()
                         .background(color = Color.LightGray),
                     text = "",
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.body2,
                     color = MaterialTheme.colors.secondaryVariant
                 )
                 RickAndMortyText(
@@ -65,23 +56,30 @@ fun RickAndMortyCharacterShimmer(
                     style = MaterialTheme.typography.body2,
                     color = MaterialTheme.colors.secondaryVariant,
                 )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Card(
-                        modifier = Modifier
-                            .size(12.dp),
-                        backgroundColor = Color.LightGray,
-                        shape = RoundedCornerShape(50)
-                    ) {}
 
-                    Spacer(modifier = Modifier.width(5.dp))
-                    RickAndMortyText(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(color = Color.LightGray),
-                        text = "",
-                        style = MaterialTheme.typography.body2,
-                        color = MaterialTheme.colors.secondaryVariant,
-                    )
+                RickAndMortyText(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = Color.LightGray),
+                    text = "",
+                    style = MaterialTheme.typography.body2,
+                    color = MaterialTheme.colors.secondaryVariant,
+                )
+            }
+
+            Box(
+                contentAlignment = Alignment.CenterEnd,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(24.dp)
+                    .background(color = Color.LightGray)
+            ) {
+                Box(
+                    Modifier
+                        .fillMaxHeight()
+                        .width(24.dp)
+                        .background(color = Color.LightGray)
+                ) {
                 }
             }
         }

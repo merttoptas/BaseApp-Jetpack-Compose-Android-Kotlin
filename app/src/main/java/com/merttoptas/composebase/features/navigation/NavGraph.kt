@@ -1,14 +1,17 @@
 package com.merttoptas.composebase.features.navigation
 
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.merttoptas.composebase.features.component.RickAndMortyBottomAppBar
 import com.merttoptas.composebase.features.component.RickAndMortyFloatingActionBar
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
@@ -21,9 +24,10 @@ import com.merttoptas.composebase.features.screen.splash.SplashScreen
  * Created by merttoptas on 9.03.2022
  */
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavGraph(startDestination: String = NavScreen.Splash.route) {
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -48,7 +52,7 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
             }
         },
     ) { innerPadding ->
-        NavHost(
+        AnimatedNavHost(
             navController = navController,
             startDestination = startDestination,
             Modifier.padding(innerPadding)
@@ -65,21 +69,34 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                     hiltViewModel()
                 )
             }
-            composable(NavScreen.CharacterDetail.route.plus("?characterDetail={characterDetail}"),
+            composable(
+                NavScreen.CharacterDetail.route.plus("?characterDetail={characterDetail}"),
                 content = {
                     CharactersDetailScreen(
                         navController = navController,
                         viewModel = hiltViewModel()
                     )
-                })
-
-            composable(NavScreen.Episodes.route,
-                content = {
-                    EpisodesScreen(
-                        navController = navController,
-                        viewModel = hiltViewModel()
+                },
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentScope.SlideDirection.Left,
+                        animationSpec = tween(700)
                     )
-                })
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentScope.SlideDirection.Right,
+                        animationSpec = tween(700)
+                    )
+                }
+            )
+
+            composable(NavScreen.Episodes.route) {
+                EpisodesScreen(
+                    navController = navController,
+                    hiltViewModel()
+                )
+            }
         }
     }
 }

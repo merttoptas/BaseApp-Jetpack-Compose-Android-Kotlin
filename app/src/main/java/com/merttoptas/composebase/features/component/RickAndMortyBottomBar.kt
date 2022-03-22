@@ -31,11 +31,12 @@ fun RickAndMortyBottomAppBar(
             .clip(RoundedCornerShape(30.dp, 30.dp, 0.dp, 0.dp)),
         cutoutShape = CircleShape,
         backgroundColor = MaterialTheme.colors.background,
+        elevation = 5.dp
     ) {
         BottomNavigation(
             modifier = Modifier
                 .fillMaxWidth(),
-            elevation = 0.dp,
+            elevation = 5.dp,
             backgroundColor = MaterialTheme.colors.background,
         ) {
             BottomNav.values().forEach { screen ->
@@ -60,6 +61,10 @@ fun RickAndMortyBottomAppBar(
                     },
                     selected = currentRoute == screen.route,
                     onClick = {
+                        if (currentRoute == screen.route) {
+                            return@BottomNavigationItem
+                        }
+
                         if (currentRoute != screen.route) {
                             navController.navigate(screen.route) {
                                 NavScreen.Characters.route.let { charactersRoute ->
