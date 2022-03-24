@@ -1,6 +1,7 @@
 package com.merttoptas.composebase
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import dagger.hilt.android.HiltAndroidApp
 
 /**
@@ -8,4 +9,11 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class RickAndMortyApp : Application()
+class RickAndMortyApp : Application() {
+
+    val isDark = mutableStateOf(false)
+
+    fun toggleTheme() {
+        isDark.value = !isDark.value
+    }
+}

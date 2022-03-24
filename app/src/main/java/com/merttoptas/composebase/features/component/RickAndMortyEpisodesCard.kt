@@ -36,7 +36,6 @@ fun RickAndMortyEpisodesCard(
             .fillMaxWidth()
             .clickable { detailClick() },
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color.White
     ) {
         ConstraintLayout(modifier = modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
             val (title, textDate, textEpisode, image) = createRefs()
