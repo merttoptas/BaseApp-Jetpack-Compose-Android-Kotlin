@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -52,6 +53,7 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                 }
             }
         },
+        backgroundColor = MaterialTheme.colors.background,
     ) { innerPadding ->
         AnimatedNavHost(
             navController = navController,

@@ -30,8 +30,8 @@ fun RickAndMortyTopBar(
     },
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    backgroundColor: Color = Color.White,
-    contentColor: Color = Color.White,
+    backgroundColor: Color = MaterialTheme.colors.background,
+    contentColor: Color = MaterialTheme.colors.background,
     elevation: Dp = 0.dp
 ) {
     TopAppBar(

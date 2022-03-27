@@ -87,7 +87,7 @@ private fun Content(viewModel: SettingsViewModel, viewState: SettingsViewState) 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     RickAndMortyText(
