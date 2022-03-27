@@ -1,5 +1,6 @@
 package com.merttoptas.composebase.data.di
 
+import com.merttoptas.composebase.data.local.dao.FavoriteDao
 import com.merttoptas.composebase.data.remote.api.CharacterService
 import com.merttoptas.composebase.data.remote.source.CharacterRemoteDataSource
 import com.merttoptas.composebase.data.remote.source.impl.CharacterRemoteDataSourceImpl
@@ -29,6 +30,7 @@ class CharacterModule {
     @Provides
     fun provideCharacterRepository(
         accountRemoteDataSource: CharacterRemoteDataSource,
+        dao: FavoriteDao
     ): CharacterRepository =
-        CharacterRepositoryImpl(accountRemoteDataSource)
+        CharacterRepositoryImpl(accountRemoteDataSource, dao)
 }

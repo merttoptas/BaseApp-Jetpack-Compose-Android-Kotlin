@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
  */
 
 interface CharacterRemoteDataSource {
-    suspend fun getAllCharacters(page: Int): Flow<DataState<CharacterResponse>>
+   suspend fun getAllCharacters(page: Int, options: Map<String, String>): CharacterResponse
     suspend fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>>
     suspend fun getCharacter(url: String): Flow<DataState<CharacterInfoResponse>>
 }

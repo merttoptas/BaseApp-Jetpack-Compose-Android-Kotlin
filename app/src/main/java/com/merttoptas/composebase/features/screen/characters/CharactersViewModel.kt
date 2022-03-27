@@ -2,8 +2,10 @@ package com.merttoptas.composebase.features.screen.characters
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.merttoptas.composebase.data.remote.utils.DataState
-import com.merttoptas.composebase.domain.repository.CharacterRepository
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.merttoptas.composebase.domain.usecase.GetCharactersUseCase
 import com.merttoptas.composebase.domain.viewstate.IViewEvent
 import com.merttoptas.composebase.domain.viewstate.characters.CharactersViewState
 import com.merttoptas.composebase.features.base.BaseViewModel
@@ -19,8 +21,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
-    private val characterRepository: CharacterRepository
+    private val getCharactersUseCase: GetCharactersUseCase,
 ) : BaseViewModel<CharactersViewState, CharactersViewEvent>() {
+
+    private val config = PagingConfig(pageSize = 20)
 
     init {
         getAllCharacters()
@@ -30,21 +34,12 @@ class CharactersViewModel @Inject constructor(
         viewModelScope.launch {
             setState { currentState.copy(isLoading = true) }
             delay(2000)
-            characterRepository.getAllCharacters(1).collect {
-                when (it) {
-                    is DataState.Success -> {
-                        setState { currentState.copy(data = it.data.results, isLoading = false) }
-                    }
-                    is DataState.Error -> {
-                        setState { currentState.copy(isLoading = false) }
+            val params = GetCharactersUseCase.Params(config, hashMapOf())
+            val pagedFlow = getCharactersUseCase(params).cachedIn(scope = viewModelScope)
 
-                    }
-                    is DataState.Loading -> {
-                        setState { currentState.copy(isLoading = true) }
-
-                    }
-                }
-            }
+            Log.d("deneme1", "pagedFlow: ${pagedFlow.toString()}")
+            setState { currentState.copy(pagedData = pagedFlow) }
+            setState { currentState.copy(isLoading = false) }
 
         }
     }

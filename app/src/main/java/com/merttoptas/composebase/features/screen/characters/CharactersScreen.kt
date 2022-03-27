@@ -15,12 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemsIndexed
 import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.features.component.RickAndMortyCharacterShimmer
 import com.merttoptas.composebase.features.component.RickAndMortyCharactersCard
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
 import com.merttoptas.composebase.features.navigation.NavScreen
+import com.merttoptas.composebase.utils.Utility.rememberFlowWithLifecycle
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -51,7 +56,7 @@ fun CharactersScreen(
             )
         },
         content = { Content(viewModel, navController) },
-        backgroundColor = MaterialTheme.colors.surface
+        backgroundColor = MaterialTheme.colors.background
     )
 }
 
@@ -59,6 +64,10 @@ fun CharactersScreen(
 @Composable
 private fun Content(viewModel: CharactersViewModel, navController: NavController) {
     val viewState by viewModel.uiState.collectAsState()
+    var pagingItems: LazyPagingItems<CharacterDto>? = null
+    viewState.pagedData?.let {
+        pagingItems = rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
+    }
 
     Column(
         modifier = Modifier
@@ -75,19 +84,21 @@ private fun Content(viewModel: CharactersViewModel, navController: NavController
                     RickAndMortyCharacterShimmer()
                 }
             } else {
-                items(items = viewState.data ?: listOf()) { item ->
-                    RickAndMortyCharactersCard(
-                        id = item.id.toLong(),
-                        name = item.name,
-                        status = item.status ?: Status.Unknown,
-                        type = item.species,
-                        imageUrl = item.image,
-                        isLiked = false,
-                        detailClick = {
-                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.convertToJSON()}"))
-                        },
-                        likeClick = {}
-                    )
+                pagingItems?.let {
+                    itemsIndexed(items = it) { index, item ->
+                        RickAndMortyCharactersCard(
+                            id = item?.id?.toLong() ?: 0,
+                            name = item?.name ?: "",
+                            status = item?.status ?: Status.Unknown,
+                            type = item?.species ?: "",
+                            imageUrl = item?.image,
+                            isLiked = false,
+                            detailClick = {
+                                //   navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.convertToJSON()}"))
+                            },
+                            likeClick = {}
+                        )
+                    }
                 }
             }
         }

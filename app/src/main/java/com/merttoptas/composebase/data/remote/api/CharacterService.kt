@@ -4,10 +4,7 @@ import com.merttoptas.composebase.data.model.CharacterInfoResponse
 import com.merttoptas.composebase.data.model.CharacterResponse
 import com.merttoptas.composebase.data.remote.utils.Constants
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 /**
  * Created by merttoptas on 10.03.2022
@@ -17,8 +14,9 @@ interface CharacterService {
 
     @GET(Constants.CHARACTER_LIST)
     suspend fun getAllCharacters(
-        @Query(Constants.PARAM_PAGE) page: Int
-    ): Response<CharacterResponse>
+        @Query(Constants.PARAM_PAGE) page: Int,
+        @QueryMap options: Map<String, String>? = null
+    ): CharacterResponse
 
     @GET(Constants.GET_CHARACTER)
     suspend fun getCharacter(

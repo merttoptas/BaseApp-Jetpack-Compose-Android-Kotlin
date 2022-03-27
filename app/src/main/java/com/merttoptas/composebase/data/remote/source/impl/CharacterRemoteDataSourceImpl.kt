@@ -14,8 +14,9 @@ import javax.inject.Inject
 class CharacterRemoteDataSourceImpl @Inject constructor(private val characterService: CharacterService) :
     BaseRemoteDataSource(), CharacterRemoteDataSource {
 
-    override suspend fun getAllCharacters(page: Int): Flow<DataState<CharacterResponse>> =
-        getResult { characterService.getAllCharacters(page = page) }
+    override suspend fun getAllCharacters(page: Int, options: Map<String, String>): CharacterResponse {
+        return characterService.getAllCharacters(page, options)
+    }
 
     override suspend fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>> =
         getResult { characterService.getCharacter(characterId = characterId) }

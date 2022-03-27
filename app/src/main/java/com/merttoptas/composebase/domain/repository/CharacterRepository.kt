@@ -2,6 +2,7 @@ package com.merttoptas.composebase.domain.repository
 
 import com.merttoptas.composebase.data.model.CharacterInfoResponse
 import com.merttoptas.composebase.data.model.CharacterResponse
+import com.merttoptas.composebase.data.model.FavoriteEntity
 import com.merttoptas.composebase.data.remote.utils.DataState
 import kotlinx.coroutines.flow.Flow
 
@@ -10,7 +11,13 @@ import kotlinx.coroutines.flow.Flow
  */
 
 interface CharacterRepository {
-    fun getAllCharacters(page: Int): Flow<DataState<CharacterResponse>>
+   suspend fun getAllCharacters(page: Int, options: Map<String, String>): CharacterResponse
     fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>>
     fun getCharacter(url: String): Flow<DataState<CharacterInfoResponse>>
+
+    suspend fun getFavoriteList(): List<FavoriteEntity>
+    suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = null
+    suspend fun deleteFavoriteById(favoriteId: Int) : Unit
+    suspend fun saveFavorite(entity: FavoriteEntity) : Unit
+    suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) : Unit
 }

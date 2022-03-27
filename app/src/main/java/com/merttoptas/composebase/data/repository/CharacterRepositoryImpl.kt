@@ -1,7 +1,9 @@
 package com.merttoptas.composebase.data.repository
 
+import com.merttoptas.composebase.data.local.dao.FavoriteDao
 import com.merttoptas.composebase.data.model.CharacterInfoResponse
 import com.merttoptas.composebase.data.model.CharacterResponse
+import com.merttoptas.composebase.data.model.FavoriteEntity
 import com.merttoptas.composebase.data.remote.source.CharacterRemoteDataSource
 import com.merttoptas.composebase.data.remote.utils.DataState
 import com.merttoptas.composebase.domain.repository.CharacterRepository
@@ -14,12 +16,17 @@ import javax.inject.Inject
  * Created by merttoptas on 12.03.2022
  */
 
-class CharacterRepositoryImpl @Inject constructor(private val characterRemoteDataSource: CharacterRemoteDataSource) :
+class CharacterRepositoryImpl @Inject constructor(
+    private val characterRemoteDataSource: CharacterRemoteDataSource,
+    private val dao: FavoriteDao
+) :
     CharacterRepository {
 
-    override fun getAllCharacters(page: Int): Flow<DataState<CharacterResponse>> = flow {
-        emitAll(characterRemoteDataSource.getAllCharacters(page = page))
-    }
+    override suspend fun getAllCharacters(
+        page: Int,
+        options: Map<String, String>
+    ): CharacterResponse =
+        characterRemoteDataSource.getAllCharacters(page = page, options = options)
 
     override fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>> = flow {
         emitAll(characterRemoteDataSource.getCharacter(characterId = characterId))
@@ -27,5 +34,21 @@ class CharacterRepositoryImpl @Inject constructor(private val characterRemoteDat
 
     override fun getCharacter(url: String): Flow<DataState<CharacterInfoResponse>> = flow {
         emitAll(characterRemoteDataSource.getCharacter(url = url))
+    }
+
+    override suspend fun getFavoriteList(): List<FavoriteEntity> {
+        return dao.getFavoriteList()
+    }
+
+    override suspend fun deleteFavoriteById(favoriteId: Int) {
+        return dao.deleteFavoriteById(favoriteId)
+    }
+
+    override suspend fun saveFavorite(entity: FavoriteEntity) {
+        return dao.insert(entity)
+    }
+
+    override suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) {
+        return dao.insert(entityList)
     }
 }
