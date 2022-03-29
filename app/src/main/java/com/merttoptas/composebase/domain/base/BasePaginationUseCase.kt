@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOn
  * Created by merttoptas on 27.03.2022
  */
 
-abstract class BaseUseCase<in Params, ReturnType> where ReturnType : Any {
+abstract class BasePaginationUseCase<in Params, ReturnType> where ReturnType : Any {
 
     protected abstract fun execute(params: Params): Flow<PagingData<ReturnType>>
 

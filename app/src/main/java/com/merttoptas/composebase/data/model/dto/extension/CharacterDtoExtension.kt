@@ -59,3 +59,24 @@ fun OriginResponse.toLocationDto() = LocationDto(
 )
 
 fun String.getIdFromUrl(): Int = substring(lastIndexOf("/") + 1).toIntOrNull() ?: 0
+
+fun LocationDto.toLocationDto() = LocationEntity(
+    locationId = url.getIdFromUrl() ?: 0,
+    name = name,
+    url = url
+)
+
+fun CharacterDto.toFavoriteEntity() = FavoriteEntity(
+    id = id ?: 0,
+    name = name.orEmpty(),
+    imageUrl = image.orEmpty(),
+    created = created.orEmpty(),
+    origin = origin?.toLocationDto(),
+    location = location?.toLocationDto(),
+    status = status ?: Status.Unknown,
+    species = species.orEmpty(),
+    gender = gender.orEmpty(),
+    type = type.orEmpty(),
+    url = url.orEmpty(),
+    episode = episode.orEmpty()
+)

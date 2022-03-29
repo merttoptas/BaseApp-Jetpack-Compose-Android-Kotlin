@@ -46,7 +46,7 @@ fun SettingsScreen(
             )
         },
         content = { Content(viewModel, viewState) },
-        backgroundColor = Color.Yellow
+        backgroundColor = MaterialTheme.colors.background
     )
 
 }
@@ -58,7 +58,6 @@ private fun Content(viewModel: SettingsViewModel, viewState: SettingsViewState) 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.background_light))
             .padding(horizontal = 15.dp),
     ) {
         Card(

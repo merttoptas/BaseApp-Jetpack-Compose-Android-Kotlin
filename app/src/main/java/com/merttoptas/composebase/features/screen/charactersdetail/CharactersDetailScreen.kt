@@ -69,6 +69,7 @@ fun CharactersDetailScreen(
             )
         },
         scaffoldState = scaffoldState,
+        backgroundColor = MaterialTheme.colors.background
     )
 }
 
@@ -78,7 +79,6 @@ private fun Content(viewState: CharactersDetailViewState) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = android.R.color.background_light))
             .padding(horizontal = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

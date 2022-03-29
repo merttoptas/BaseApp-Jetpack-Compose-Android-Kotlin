@@ -11,9 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.data.model.dto.CharacterDto
+import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -22,29 +26,30 @@ import com.merttoptas.composebase.data.model.Status
 @Composable
 fun RickAndMortyCharactersCard(
     modifier: Modifier = Modifier,
-    id: Long,
-    name: String,
     status: Status,
-    type: String,
-    imageUrl: String?,
-    isLiked: Boolean,
-    likeClick: (id: Long) -> Unit,
-    detailClick: () -> Unit
+    viewModel: CharactersViewModel,
+    dto: CharacterDto?,
+    detailClick: () -> Unit,
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .clickable { detailClick() },
         shape = RoundedCornerShape(8.dp),
+        elevation = 8.dp,
     ) {
         Row(
             modifier = Modifier
                 .size(100.dp)
-                .padding(vertical = 10.dp)
+                .padding(vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Box(Modifier.padding(start = 10.dp)) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = 10.dp),
+            ) {
                 RickAndMortyNetworkImage(
-                    imageURL = imageUrl,
+                    imageURL = dto?.image,
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(80.dp)
@@ -52,54 +57,64 @@ fun RickAndMortyCharactersCard(
                     placeholder = R.drawable.ic_place_holder,
                     contentScale = ContentScale.Crop,
                 )
-
-                /*
-                 IconFavorite(
-                    isLiked, Modifier
-                        .align(Alignment.BottomEnd)
-                        .offset(y = (-10).dp, x = (-10).dp)
-
-                ) {
-                    likeClick(petId)
-
-                }
-                 */
-
-
-            }
-
-            Column(
-                modifier = Modifier
-                    .padding(start = 10.dp)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceAround
-            ) {
-                RickAndMortyText(
-                    text = name,
-                    style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.secondaryVariant
-                )
-                RickAndMortyText(
-                    text = type,
-                    style = MaterialTheme.typography.body2,
-                    color = MaterialTheme.colors.secondaryVariant,
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Card(
-                        modifier = Modifier
-                            .size(12.dp),
-                        backgroundColor = if (status == Status.Alive) Color.Green else Color.Red,
-                        shape = RoundedCornerShape(50)
-                    ) {}
-
-                    Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(10.dp))
+                Column(modifier = Modifier.fillMaxHeight()) {
                     RickAndMortyText(
-                        text = status.name,
+                        text = dto?.name ?: "",
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.secondaryVariant
+                    )
+                    RickAndMortyText(
+                        text = dto?.species ?: "",
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.secondaryVariant,
                     )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Card(
+                            modifier = Modifier
+                                .size(12.dp),
+                            backgroundColor = if (status == Status.Alive) Color.Green else Color.Red,
+                            shape = RoundedCornerShape(50)
+                        ) {}
+                        Spacer(modifier = Modifier.width(5.dp))
+                        RickAndMortyText(
+                            text = status.name,
+                            style = MaterialTheme.typography.body2,
+                            color = MaterialTheme.colors.secondaryVariant,
+                        )
+                    }
+                }
+            }
+            Box(modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.CenterEnd) {
+                dto?.let {
+                    RickAndMortyFavoriteButton(viewModel, it)
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun BodyPreview() {
+    RickAndMortyCharactersCard(
+        status = Status.Alive,
+        detailClick = {},
+        viewModel = hiltViewModel(),
+        dto = CharacterDto(
+            id = 1,
+            name = "Rick Sanchez",
+            status = Status.Alive,
+            type = "Human",
+            created = "2017-11-04T18:48:46.250Z",
+            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            gender = "",
+            location = null,
+            origin = null,
+            species = "",
+            url = "",
+            isFavorite = true
+        ),
+    )
 }

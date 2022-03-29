@@ -1,10 +1,10 @@
-package com.merttoptas.composebase.domain.usecase
+package com.merttoptas.composebase.domain.usecase.characters
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.merttoptas.composebase.data.model.dto.CharacterDto
-import com.merttoptas.composebase.domain.base.BaseUseCase
+import com.merttoptas.composebase.domain.base.BasePaginationUseCase
 import com.merttoptas.composebase.domain.repository.CharacterRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 class GetCharactersUseCase(
     internal val repository: CharacterRepository
-) : BaseUseCase<GetCharactersUseCase.Params, CharacterDto>() {
+) : BasePaginationUseCase<GetCharactersUseCase.Params, CharacterDto>() {
 
     data class Params(
         val pagingConfig: PagingConfig,

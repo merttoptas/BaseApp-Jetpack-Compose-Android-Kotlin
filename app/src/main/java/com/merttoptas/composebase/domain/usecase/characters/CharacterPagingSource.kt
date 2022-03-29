@@ -1,4 +1,4 @@
-package com.merttoptas.composebase.domain.usecase
+package com.merttoptas.composebase.domain.usecase.characters
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

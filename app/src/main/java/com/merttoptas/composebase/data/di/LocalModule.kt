@@ -21,13 +21,10 @@ class LocalModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(
-        dbname: String,
+    fun provideRickAndMortyDatabase(
         @ApplicationContext context: Context
     ): RickAndMortyDatabase {
-        return Room.databaseBuilder(context, RickAndMortyDatabase::class.java, dbname)
-            .fallbackToDestructiveMigration()
-            .build()
+        return RickAndMortyDatabase.getDatabase(context)
     }
 
     @Provides

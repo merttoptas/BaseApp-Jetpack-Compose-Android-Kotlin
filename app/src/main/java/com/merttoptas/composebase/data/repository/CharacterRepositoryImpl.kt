@@ -19,8 +19,7 @@ import javax.inject.Inject
 class CharacterRepositoryImpl @Inject constructor(
     private val characterRemoteDataSource: CharacterRemoteDataSource,
     private val dao: FavoriteDao
-) :
-    CharacterRepository {
+) : CharacterRepository {
 
     override suspend fun getAllCharacters(
         page: Int,
@@ -34,6 +33,10 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override fun getCharacter(url: String): Flow<DataState<CharacterInfoResponse>> = flow {
         emitAll(characterRemoteDataSource.getCharacter(url = url))
+    }
+
+    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? {
+        return dao.getFavorite(favoriteId)
     }
 
     override suspend fun getFavoriteList(): List<FavoriteEntity> {

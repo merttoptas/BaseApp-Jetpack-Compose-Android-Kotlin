@@ -1,17 +1,20 @@
 package com.merttoptas.composebase.features.screen.characters
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import androidx.paging.compose.collectAsLazyPagingItems
-import com.merttoptas.composebase.domain.usecase.GetCharactersUseCase
+import com.merttoptas.composebase.data.model.dto.CharacterDto
+import com.merttoptas.composebase.domain.usecase.characters.GetCharactersUseCase
+import com.merttoptas.composebase.domain.usecase.favorite.UpdateFavoriteUseCase
 import com.merttoptas.composebase.domain.viewstate.IViewEvent
 import com.merttoptas.composebase.domain.viewstate.characters.CharactersViewState
 import com.merttoptas.composebase.features.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharactersViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
+    private val updateFavoriteUseCase: UpdateFavoriteUseCase
 ) : BaseViewModel<CharactersViewState, CharactersViewEvent>() {
 
     private val config = PagingConfig(pageSize = 20)
@@ -36,18 +40,18 @@ class CharactersViewModel @Inject constructor(
             delay(2000)
             val params = GetCharactersUseCase.Params(config, hashMapOf())
             val pagedFlow = getCharactersUseCase(params).cachedIn(scope = viewModelScope)
-
-            Log.d("deneme1", "pagedFlow: ${pagedFlow.toString()}")
-            setState { currentState.copy(pagedData = pagedFlow) }
-            setState { currentState.copy(isLoading = false) }
-
+            setState { currentState.copy(pagedData = pagedFlow, isLoading = false) }
         }
+    }
+
+    fun updateFavorite(dto: CharacterDto) = viewModelScope.launch {
+        val params = UpdateFavoriteUseCase.Params(dto)
+        call(updateFavoriteUseCase(params))
     }
 
     override fun createInitialState() = CharactersViewState()
 }
 
 sealed class CharactersViewEvent : IViewEvent {
-    object DirectToLogin : CharactersViewEvent()
-    object DirectToDashBoard : CharactersViewEvent()
+    class UpdateFavorite(dto: CharacterDto) : CharactersViewEvent()
 }

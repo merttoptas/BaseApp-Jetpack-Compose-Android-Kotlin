@@ -38,5 +38,6 @@ fun RickAndMortyScaffold(
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
+        backgroundColor = backgroundColor
     )
 }

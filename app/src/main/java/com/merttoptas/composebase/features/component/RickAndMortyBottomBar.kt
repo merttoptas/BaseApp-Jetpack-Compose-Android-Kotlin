@@ -36,7 +36,7 @@ fun RickAndMortyBottomAppBar(
                 )
             ),
         elevation = 10.dp,
-        backgroundColor = MaterialTheme.colors.background
+        backgroundColor = MaterialTheme.colors.onSecondary
     ) {
         BottomNav.values().forEach { screen ->
             BottomNavigationItem(

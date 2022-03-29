@@ -24,8 +24,11 @@ class CharacterModule {
         retrofit.create(CharacterService::class.java)
 
     @Provides
-    fun provideCharacterRemoteDataSource(characterService: CharacterService): CharacterRemoteDataSource =
-        CharacterRemoteDataSourceImpl(characterService)
+    fun provideCharacterRemoteDataSource(
+        characterService: CharacterService,
+        dao: FavoriteDao
+    ): CharacterRemoteDataSource =
+        CharacterRemoteDataSourceImpl(characterService, dao)
 
     @Provides
     fun provideCharacterRepository(

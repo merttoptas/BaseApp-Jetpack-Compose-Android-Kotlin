@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.merttoptas.composebase.domain.viewstate.IViewEvent
 import com.merttoptas.composebase.domain.viewstate.IViewState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
@@ -34,5 +31,16 @@ abstract class BaseViewModel<State : IViewState, Event : IViewEvent> : ViewModel
 
     protected fun setEvent(event: Event) {
         viewModelScope.launch { _uiEvent.emit(event) }
+    }
+
+    protected suspend fun <T> call(
+        callFlow: Flow<T>,
+        completionHandler: (collect: T) -> Unit = {}
+    ) {
+        callFlow
+            .catch { }
+            .collect {
+                completionHandler.invoke(it)
+            }
     }
 }
