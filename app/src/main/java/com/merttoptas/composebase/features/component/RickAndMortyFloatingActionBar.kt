@@ -10,6 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.merttoptas.composebase.features.navigation.BottomNav
+import com.merttoptas.composebase.features.navigation.NavScreen
 import com.merttoptas.composebase.utils.Utility.getAnimateFloat
 import kotlinx.coroutines.delay
 
@@ -20,6 +23,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun RickAndMortyFloatingActionBar(
     navController: NavController,
+    currentRoute: String?,
+    screen: BottomNav,
 ) {
     var isClick by remember { mutableStateOf(false) }
 
@@ -31,7 +36,17 @@ fun RickAndMortyFloatingActionBar(
     }
 
     FloatingActionButton(
-        onClick = { isClick = true },
+        onClick = {
+            isClick = true
+            navController.navigate(NavScreen.Favorites.route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
+            }
+            navController.navigate(NavScreen.Favorites.route)
+        },
         contentColor = Color.Transparent,
         backgroundColor = Color.White,
     ) {

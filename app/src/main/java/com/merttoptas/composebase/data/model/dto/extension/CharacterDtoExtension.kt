@@ -30,7 +30,7 @@ fun FavoriteEntity.toCharacterDto() = CharacterDto(
     episode,
     gender,
     id,
-    imageUrl,
+    image,
     location?.toLocationDto(),
     name,
     origin?.toLocationDto(),
@@ -60,6 +60,8 @@ fun OriginResponse.toLocationDto() = LocationDto(
 
 fun String.getIdFromUrl(): Int = substring(lastIndexOf("/") + 1).toIntOrNull() ?: 0
 
+fun List<FavoriteEntity>.toFavoriteDtoList() = map { it.toCharacterDto() }
+
 fun LocationDto.toLocationDto() = LocationEntity(
     locationId = url.getIdFromUrl() ?: 0,
     name = name,
@@ -69,7 +71,7 @@ fun LocationDto.toLocationDto() = LocationEntity(
 fun CharacterDto.toFavoriteEntity() = FavoriteEntity(
     id = id ?: 0,
     name = name.orEmpty(),
-    imageUrl = image.orEmpty(),
+    image = image.orEmpty(),
     created = created.orEmpty(),
     origin = origin?.toLocationDto(),
     location = location?.toLocationDto(),

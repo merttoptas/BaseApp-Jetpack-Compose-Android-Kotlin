@@ -24,6 +24,7 @@ ext {
     coil_version = '1.4.0'
     lottie_version = '4.0.0'
     shimmer_version = '1.0.0'
+    navigation_version = '2.4.0-alpha07'
 
     //Network
     retrofit_version = '2.9.0'

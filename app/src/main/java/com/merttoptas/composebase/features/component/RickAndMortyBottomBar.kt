@@ -14,6 +14,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.merttoptas.composebase.features.navigation.BottomNav
 import com.merttoptas.composebase.features.navigation.NavScreen
 import com.merttoptas.composebase.utils.Constants
@@ -70,7 +71,7 @@ fun RickAndMortyBottomAppBar(
                                 // Pop up to the start destination of the graph to
                                 // avoid building up a large stack of destinations
                                 // on the back stack as users select items
-                                popUpTo(charactersRoute) {
+                                popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                             }

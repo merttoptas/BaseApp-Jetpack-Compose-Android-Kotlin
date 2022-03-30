@@ -19,10 +19,6 @@ data class Result(
     val type: String,
     val url: String
 ) : Parcelable {
-    
-    fun convertToJSON(): String {
-        return Gson().toJson(this)
-    }
 
     companion object {
         fun create(jsonString: String): Result? {

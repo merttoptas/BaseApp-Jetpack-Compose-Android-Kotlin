@@ -19,7 +19,7 @@ data class FavoriteEntity(
     @NonNull
     @ColumnInfo(name = Constants.COLUMN_ID) val id: Int,
     @ColumnInfo(name = Constants.COLUMN_NAME) val name: String,
-    @ColumnInfo(name = Constants.COLUMN_IMAGE_URL) val imageUrl: String,
+    @ColumnInfo(name = Constants.COLUMN_IMAGE_URL) val image: String,
     @ColumnInfo(name = Constants.COLUMN_CREATED) val created: String,
     @Embedded(prefix = Constants.PREF_ORIGIN) val origin: LocationEntity?,
     @Embedded(prefix = Constants.PREF_LOCATION) val location: LocationEntity?,

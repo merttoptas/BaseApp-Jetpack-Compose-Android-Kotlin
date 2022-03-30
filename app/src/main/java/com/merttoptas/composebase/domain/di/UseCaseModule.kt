@@ -3,6 +3,7 @@ package com.merttoptas.composebase.domain.di
 import com.merttoptas.composebase.domain.repository.CharacterRepository
 import com.merttoptas.composebase.domain.usecase.characters.GetCharactersUseCase
 import com.merttoptas.composebase.domain.usecase.favorite.DeleteFavoriteUseCase
+import com.merttoptas.composebase.domain.usecase.favorite.GetFavoritesUseCase
 import com.merttoptas.composebase.domain.usecase.favorite.UpdateFavoriteUseCase
 import dagger.Module
 import dagger.Provides
@@ -35,4 +36,10 @@ class UseCaseModule {
     fun provideDeleteFavoriteUseCase(
         characterRepository: CharacterRepository
     ) = DeleteFavoriteUseCase(characterRepository)
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetFavoritesUseCase(
+        characterRepository: CharacterRepository
+    ) = GetFavoritesUseCase(characterRepository)
 }
