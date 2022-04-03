@@ -2,37 +2,36 @@ package com.merttoptas.composebase.features.screen.favorites
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Switch
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
-import com.merttoptas.composebase.BuildConfig
-import com.merttoptas.composebase.data.model.Status
-import com.merttoptas.composebase.data.model.dto.CharacterDto
-import com.merttoptas.composebase.domain.viewstate.favorites.FavoritesViewState
-import com.merttoptas.composebase.domain.viewstate.settings.SettingsViewState
+import com.airbnb.lottie.compose.*
+import com.merttoptas.composebase.R
 import com.merttoptas.composebase.features.component.*
 import com.merttoptas.composebase.features.navigation.NavScreen
-import com.merttoptas.composebase.features.screen.settings.SettingsViewModel
-import com.merttoptas.composebase.utils.Utility
 import com.merttoptas.composebase.utils.Utility.toJson
 
 /**
@@ -51,8 +50,25 @@ fun FavoritesScreen(
         scaffoldState = scaffoldState,
         topBar = {
             RickAndMortyTopBar(
-                text = "Favorites",
+                text = stringResource(R.string.favorite_screen_title),
                 elevation = 10.dp,
+                navigationIcon = {
+                    IconButton(onClick = { }) {
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        viewModel.isAllDeleteFavoritesChange(true)
+
+                    }) {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            painter = rememberVectorPainter(Icons.Default.Delete),
+                            contentDescription = null,
+                            tint = Color.Gray
+                        )
+                    }
+                },
             )
         },
         content = { Content(viewModel, navController) },
@@ -70,6 +86,8 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
             modifier = Modifier
@@ -79,15 +97,24 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
             RickAndMortyAlertDialog(
                 isDisplayed = viewState.isDisplay,
                 onClickDelete = {
-                    viewModel.onDeleteFavorite()
+                    if (viewState.isAllDeleteFavorites) {
+                        viewModel.deleteAllFavorites()
+                    } else {
+                        viewModel.onDeleteFavorite()
+                    }
                     viewModel.onDisplayChange(false, viewState.favoriteId)
                 },
                 onBackPressed = { viewModel.onDisplayChange(false, viewState.favoriteId) },
             )
         }
 
+        if (viewState.isLoading.not() && viewState.favoritesList.isEmpty()) {
+            EmptyListAnimation()
+        }
 
         LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
             contentPadding = PaddingValues(vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -95,7 +122,7 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                 items(10) {
                     RickAndMortyCharacterShimmer()
                 }
-            } else {
+            } else if (viewState.favoritesList.isNotEmpty()) {
                 items(items = viewState.favoritesList) { item ->
                     RickAndMortyFavoriteRowCard(
                         status = item.status,
@@ -107,6 +134,35 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun EmptyListAnimation() {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_search))
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column {
+            LottieAnimation(
+                composition,
+                modifier = Modifier,
+                restartOnPlay = true,
+                alignment = Alignment.Center,
+                iterations = LottieConstants.IterateForever,
+            )
+            RickAndMortyText(
+                text = stringResource(R.string.favorite_screen_empty_list_text),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+                    .wrapContentHeight(),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.subtitle1
+            )
         }
     }
 }

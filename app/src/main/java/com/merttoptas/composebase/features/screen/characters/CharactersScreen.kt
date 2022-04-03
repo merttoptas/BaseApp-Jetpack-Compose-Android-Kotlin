@@ -1,20 +1,25 @@
 package com.merttoptas.composebase.features.screen.characters
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.features.component.RickAndMortyCharacterShimmer
@@ -42,14 +47,7 @@ fun CharactersScreen(
         scaffoldState = scaffoldState,
         topBar = {
             RickAndMortyTopBar(
-                text = "Characters",
-                actions = {
-                    IconButton(onClick = {
-
-                    }) {
-
-                    }
-                },
+                text = stringResource(id = R.string.characters_screen_title),
                 elevation = 10.dp,
             )
         },
@@ -62,9 +60,7 @@ fun CharactersScreen(
 @Composable
 private fun Content(viewModel: CharactersViewModel, navController: NavController) {
     val viewState by viewModel.uiState.collectAsState()
-
     var pagingItems: LazyPagingItems<CharacterDto>? = null
-
     viewState.pagedData?.let {
         pagingItems = rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
     }
@@ -82,20 +78,32 @@ private fun Content(viewModel: CharactersViewModel, navController: NavController
                 items(10) {
                     RickAndMortyCharacterShimmer()
                 }
-            } else {
-                pagingItems?.let {
-                    itemsIndexed(items = it) { index, item ->
-                        RickAndMortyCharactersCard(
-                            status = item?.status ?: Status.Unknown,
-                            detailClick = {
-                                navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
-                            },
-                            viewModel = viewModel,
-                            dto = item
-                        )
-                    }
+            } else if (viewState.pagedData != null && pagingItems != null) {
+                itemsIndexed(items = pagingItems!!) { index, item ->
+                    RickAndMortyCharactersCard(
+                        status = item?.status ?: Status.Unknown,
+                        detailClick = {
+                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
+                        },
+                        viewModel = viewModel,
+                        dto = item
+                    )
                 }
             }
         }
     }
+}
+
+@Preview(
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Dark Mode"
+)
+@Composable
+fun DetailContentItemViewPreview() {
+    CharactersScreen(viewModel = hiltViewModel(), navController = rememberNavController())
 }

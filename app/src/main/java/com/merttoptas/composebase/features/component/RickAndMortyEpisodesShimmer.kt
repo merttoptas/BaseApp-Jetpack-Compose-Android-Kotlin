@@ -26,7 +26,6 @@ fun RickAndMortyEpisodesShimmer(
             .fillMaxWidth()
             .height(100.dp),
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Color.White
     ) {
         Row(
             modifier = Modifier

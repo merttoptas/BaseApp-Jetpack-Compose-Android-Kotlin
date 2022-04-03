@@ -35,23 +35,15 @@ class CharacterRepositoryImpl @Inject constructor(
         emitAll(characterRemoteDataSource.getCharacter(url = url))
     }
 
-    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? {
-        return dao.getFavorite(favoriteId)
-    }
+    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = dao.getFavorite(favoriteId)
 
-    override suspend fun getFavoriteList(): List<FavoriteEntity> {
-        return dao.getFavoriteList()
-    }
+    override suspend fun getFavoriteList(): List<FavoriteEntity> = dao.getFavoriteList()
 
-    override suspend fun deleteFavoriteById(favoriteId: Int) {
-        return dao.deleteFavoriteById(favoriteId)
-    }
+    override suspend fun deleteFavoriteById(favoriteId: Int) = dao.deleteFavoriteById(favoriteId)
 
-    override suspend fun saveFavorite(entity: FavoriteEntity) {
-        return dao.insert(entity)
-    }
+    override suspend fun deleteFavoriteList() = dao.deleteFavoriteList()
 
-    override suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) {
-        return dao.insert(entityList)
-    }
+    override suspend fun saveFavorite(entity: FavoriteEntity) = dao.insert(entity)
+
+    override suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) = dao.insert(entityList)
 }

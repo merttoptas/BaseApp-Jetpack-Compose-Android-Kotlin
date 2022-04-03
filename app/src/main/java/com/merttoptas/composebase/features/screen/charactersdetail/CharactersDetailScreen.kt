@@ -1,23 +1,29 @@
 package com.merttoptas.composebase.features.screen.charactersdetail
 
-
-import androidx.compose.foundation.*
+import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.domain.viewstate.charactersdetail.CharactersDetailViewState
@@ -25,6 +31,9 @@ import com.merttoptas.composebase.features.component.RickAndMortyNetworkImage
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyText
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
+import com.merttoptas.composebase.features.screen.characters.CharactersScreen
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -37,6 +46,18 @@ fun CharactersDetailScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(viewModel.uiEvent) {
+        launch {
+            viewModel.uiEvent.collect {
+                when (it) {
+                    is CharactersDetailViewEvent.SnackBarError -> {
+                        scaffoldState.snackbarHostState.showSnackbar(it.message ?: "")
+                    }
+                }
+            }
+        }
+    }
 
     RickAndMortyScaffold(
         topBar = {
@@ -60,7 +81,7 @@ fun CharactersDetailScreen(
                         )
                     }
                 },
-                text = "Detail"
+                text = stringResource(id = R.string.character_detail_screen_title)
             )
         },
         content = {
@@ -123,7 +144,7 @@ private fun CharacterInfoContainer(viewState: CharactersDetailViewState) {
         ) {
             CharacterInfoRow(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Name",
+                text = stringResource(id = R.string.character_detail_card_name),
                 value = viewState.data?.name ?: ""
             )
             Divider(thickness = 0.5.dp)
@@ -131,7 +152,7 @@ private fun CharacterInfoContainer(viewState: CharactersDetailViewState) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                text = "Species",
+                text = stringResource(id = R.string.character_detail_card_species),
                 value = viewState.data?.species ?: ""
             )
             Divider(thickness = 0.5.dp)
@@ -139,7 +160,7 @@ private fun CharacterInfoContainer(viewState: CharactersDetailViewState) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                text = "Gender",
+                text = stringResource(id = R.string.character_detail_card_gender),
                 value = viewState.data?.gender ?: ""
             )
             Divider(thickness = 0.5.dp)
@@ -147,7 +168,7 @@ private fun CharacterInfoContainer(viewState: CharactersDetailViewState) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                text = "Last Know Location",
+                text = stringResource(id = R.string.character_detail_card_last_know_location),
                 value = viewState.data?.origin?.name ?: ""
             )
             Divider(thickness = 0.5.dp)
@@ -155,7 +176,7 @@ private fun CharacterInfoContainer(viewState: CharactersDetailViewState) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                text = "Location",
+                text = stringResource(id = R.string.character_detail_card_location),
                 value = viewState.data?.location?.name ?: ""
             )
             Divider(thickness = 0.5.dp)
@@ -181,4 +202,19 @@ private fun CharacterInfoRow(modifier: Modifier, text: String, value: String) {
             color = MaterialTheme.colors.primary
         )
     }
+}
+
+
+@Preview(
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Dark Mode"
+)
+@Composable
+fun DetailContentItemViewPreview() {
+    CharactersDetailScreen(viewModel = hiltViewModel(), navController = rememberNavController())
 }

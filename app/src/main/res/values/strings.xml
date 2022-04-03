@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">ComposeBase</string>
+
+    <string name="characters_screen_title">Characters</string>
+    <string name="character_detail_screen_title">Detail</string>
+    <string name="character_detail_card_name">Name</string>
+    <string name="character_detail_card_species">Species</string>
+    <string name="character_detail_card_gender">Gender</string>
+    <string name="character_detail_card_last_know_location">Last Know Location</string>
+    <string name="character_detail_card_location">Location</string>
+
+    <string name="episodes_screen_title">Episodes</string>
+
+    <string name="favorite_screen_title">Favorites</string>
+    <string name="favorite_screen_empty_list_text">You haven\'t added\na character to your favorites yet</string>
+
 </resources>

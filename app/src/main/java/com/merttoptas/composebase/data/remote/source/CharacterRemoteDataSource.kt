@@ -17,6 +17,7 @@ interface CharacterRemoteDataSource {
     suspend fun getFavoriteList(): List<FavoriteEntity>
     suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = null
     suspend fun deleteFavoriteById(favoriteId: Int) : Unit
+    suspend fun deleteFavoriteList() : Unit
     suspend fun saveFavorite(entity: FavoriteEntity) : Unit
     suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) : Unit
 }

@@ -99,7 +99,6 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
 
             composable(NavScreen.Episodes.route) {
                 EpisodesScreen(
-                    navController = navController,
                     hiltViewModel()
                 )
             }

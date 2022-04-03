@@ -38,12 +38,24 @@ class FavoritesViewModel @Inject constructor(
         setState { currentState.copy(isDisplay = isDisplay, favoriteId = favoriteId) }
     }
 
+    fun isAllDeleteFavoritesChange(isDisplay: Boolean) {
+        setState { currentState.copy(isDisplay = isDisplay, isAllDeleteFavorites = true) }
+    }
+
     fun onDeleteFavorite() {
         viewModelScope.launch {
             currentState.favoriteId?.let {
                 call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(it)))
                 updateFavoriteList()
             }
+        }
+    }
+
+    fun deleteAllFavorites() {
+        viewModelScope.launch {
+            call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(null)))
+            updateFavoriteList()
+            setState { currentState.copy(isAllDeleteFavorites = false) }
         }
     }
 

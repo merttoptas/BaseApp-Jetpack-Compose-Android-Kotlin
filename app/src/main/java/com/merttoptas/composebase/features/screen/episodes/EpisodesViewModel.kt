@@ -33,11 +33,11 @@ class EpisodesViewModel @Inject constructor(
             episodesRepository.getAllEpisodes().collect {
                 when (it) {
                     is DataState.Success -> {
-                        Log.d("deneme1", it.data.results.toString())
                         setState { currentState.copy(data = it.data.results, isLoading = false) }
                     }
                     is DataState.Error -> {
                         setState { currentState.copy(isLoading = false) }
+                        setEvent(EpisodesViewEvent.SnackBarError(it.apiError?.message))
 
                     }
                     is DataState.Loading -> {

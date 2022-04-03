@@ -102,7 +102,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     //Coil
-    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation("io.coil-kt:coil-compose:$coil_version")
 
     //Paging 3.0
     implementation "androidx.paging:paging-compose:$paging_version"

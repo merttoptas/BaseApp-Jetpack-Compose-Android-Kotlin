@@ -26,7 +26,7 @@ import javax.inject.Inject
 class CharactersViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val updateFavoriteUseCase: UpdateFavoriteUseCase
-) : BaseViewModel<CharactersViewState, CharactersViewEvent>() {
+) : BaseViewModel<CharactersViewState, IViewEvent>() {
 
     private val config = PagingConfig(pageSize = 20)
 
@@ -37,10 +37,10 @@ class CharactersViewModel @Inject constructor(
     private fun getAllCharacters() {
         viewModelScope.launch {
             setState { currentState.copy(isLoading = true) }
-            delay(2000)
+            delay(1000)
             val params = GetCharactersUseCase.Params(config, hashMapOf())
             val pagedFlow = getCharactersUseCase(params).cachedIn(scope = viewModelScope)
-            setState { currentState.copy(pagedData = pagedFlow, isLoading = false) }
+            setState { currentState.copy(isLoading = false, pagedData = pagedFlow) }
         }
     }
 
@@ -50,8 +50,4 @@ class CharactersViewModel @Inject constructor(
     }
 
     override fun createInitialState() = CharactersViewState()
-}
-
-sealed class CharactersViewEvent : IViewEvent {
-    class UpdateFavorite(dto: CharacterDto) : CharactersViewEvent()
 }

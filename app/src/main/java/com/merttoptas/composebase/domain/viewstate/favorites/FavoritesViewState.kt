@@ -11,5 +11,6 @@ data class FavoritesViewState(
     val favoritesList: List<FavoriteEntity> = emptyList(),
     val favoriteId: Int? = null,
     val isDisplay: Boolean = false,
+    val isAllDeleteFavorites: Boolean = false,
     val isLoading: Boolean = false,
 ) : IViewState

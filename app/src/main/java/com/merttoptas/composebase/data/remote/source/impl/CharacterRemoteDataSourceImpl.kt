@@ -22,9 +22,7 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
     override suspend fun getAllCharacters(
         page: Int,
         options: Map<String, String>
-    ): CharacterResponse {
-        return characterService.getAllCharacters(page, options)
-    }
+    ): CharacterResponse = characterService.getAllCharacters(page, options)
 
     override suspend fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>> =
         getResult { characterService.getCharacter(characterId = characterId) }
@@ -34,23 +32,16 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
             characterService.getCharacter(url)
         }
 
-    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? {
-        return dao.getFavorite(favoriteId)
-    }
+    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = dao.getFavorite(favoriteId)
 
-    override suspend fun getFavoriteList(): List<FavoriteEntity> {
-        return dao.getFavoriteList()
-    }
+    override suspend fun getFavoriteList(): List<FavoriteEntity> = dao.getFavoriteList()
 
-    override suspend fun deleteFavoriteById(favoriteId: Int) {
-        return dao.deleteFavoriteById(favoriteId)
-    }
+    override suspend fun deleteFavoriteById(favoriteId: Int) = dao.deleteFavoriteById(favoriteId)
 
-    override suspend fun saveFavorite(entity: FavoriteEntity) {
-        return dao.insert(entity)
-    }
+    override suspend fun deleteFavoriteList() = dao.deleteFavoriteList()
 
-    override suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) {
-        return dao.insert(entityList)
-    }
+    override suspend fun saveFavorite(entity: FavoriteEntity) = dao.insert(entity)
+
+    override suspend fun saveFavoriteList(entityList: List<FavoriteEntity>) = dao.insert(entityList)
+
 }

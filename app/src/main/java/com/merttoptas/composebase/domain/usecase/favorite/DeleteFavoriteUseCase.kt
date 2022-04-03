@@ -13,11 +13,15 @@ class DeleteFavoriteUseCase(
 ) : BaseFavoriteUseCase<DeleteFavoriteUseCase.Params, Unit>() {
 
     data class Params(
-        val characterId: Int
+        val characterId: Int?
     )
 
     override suspend fun FlowCollector<Unit>.execute(params: Params) {
-        repository.deleteFavoriteById(params.characterId)
+        params.characterId?.let {
+            repository.deleteFavoriteById(params.characterId)
+        } ?: kotlin.run {
+            repository.deleteFavoriteList()
+        }
         emit(Unit)
     }
 }

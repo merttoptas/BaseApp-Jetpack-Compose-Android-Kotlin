@@ -29,12 +29,10 @@ fun RickAndMortyEpisodesCard(
     name: String,
     date: String,
     episode: String,
-    detailClick: () -> Unit
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
-            .clickable { detailClick() },
+            .fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
     ) {
         ConstraintLayout(modifier = modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {

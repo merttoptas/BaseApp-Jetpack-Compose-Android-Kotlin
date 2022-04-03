@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.Flow
  * Created by merttoptas on 27.03.2022
  */
 
+
+
 object Utility {
+
     inline fun <reified T> T.toJson(): String {
         return try {
             Gson().toJson(this)
