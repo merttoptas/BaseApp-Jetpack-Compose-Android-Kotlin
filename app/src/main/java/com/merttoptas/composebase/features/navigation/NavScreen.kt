@@ -11,5 +11,5 @@ sealed class NavScreen(val route: String) {
     object Episodes : NavScreen("episodes")
     object CharacterDetail : NavScreen("character_detail")
     object Favorites : NavScreen("favorites")
-    object Locations : NavScreen("locations")
+    object Search : NavScreen("search")
 }

@@ -28,9 +28,9 @@ enum class BottomNav(
         Constants.SCREEN_NAME_FAVORITES
     ),
     LOCATIONS(
-        NavScreen.Locations.route,
-        R.drawable.ic_baseline_location_on,
-        Constants.SCREEN_NAME_LOCATIONS
+        NavScreen.Search.route,
+        R.drawable.ic_baseline_search_24,
+        Constants.SCREEN_NAME_SEARCH
     ),
     SETTINGS(
         NavScreen.Settings .route,

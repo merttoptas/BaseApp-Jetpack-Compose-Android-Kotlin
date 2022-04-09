@@ -20,6 +20,7 @@ import com.merttoptas.composebase.features.screen.characters.CharactersScreen
 import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailScreen
 import com.merttoptas.composebase.features.screen.episodes.EpisodesScreen
 import com.merttoptas.composebase.features.screen.favorites.FavoritesScreen
+import com.merttoptas.composebase.features.screen.search.SearchScreen
 import com.merttoptas.composebase.features.screen.settings.SettingsScreen
 import com.merttoptas.composebase.features.screen.splash.SplashScreen
 
@@ -50,8 +51,6 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                 if (navItem.route == currentRoute) {
                     RickAndMortyFloatingActionBar(
                         navController = navController,
-                        currentRoute,
-                        navItem
                     )
                 }
             }
@@ -99,6 +98,12 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
 
             composable(NavScreen.Episodes.route) {
                 EpisodesScreen(
+                    hiltViewModel()
+                )
+            }
+
+            composable(NavScreen.Search.route) {
+                SearchScreen(
                     hiltViewModel()
                 )
             }

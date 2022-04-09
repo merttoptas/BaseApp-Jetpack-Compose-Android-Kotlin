@@ -84,8 +84,6 @@ val AppTypography = Typography(
         fontFamily = fonts,
         fontWeight = FontWeight.W400,
         fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp,
     ),
     button = TextStyle(
         fontFamily = fonts,
