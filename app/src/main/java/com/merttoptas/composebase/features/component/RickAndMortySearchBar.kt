@@ -39,6 +39,12 @@ fun RickAndMortySearchBar(
         RickAndMortyTextField(
             value = text,
             onValueChange = { onTextChange(it) },
+            placeholder = {
+                RickAndMortyText(
+                    text = "Search character for name",
+                    color = colorResource(R.color.light_gray),
+                )
+            },
         )
         Box(
             Modifier

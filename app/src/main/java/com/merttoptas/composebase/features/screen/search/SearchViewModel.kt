@@ -16,21 +16,35 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val application: RickAndMortyApp
-) : BaseViewModel<SearchViewState, IViewEvent>() {
+) : BaseViewModel<SearchViewState, SearchViewEvent>() {
 
     init {
         setState { currentState.copy(isLoading = application.isDark.value) }
     }
 
-    fun onChangeTheme() {
-        viewModelScope.launch {
-            application.toggleTheme()
-            setState { currentState.copy(isLoading = application.isDark.value) }
-        }
+    fun searchText(value: String?) {
+        setState { currentState.copy(searchText = value) }
+    }
+
+    fun selectGender(value: String) {
+        setState { currentState.copy(gender = currentState.gender.map { it.copy(selected = it.name == value && it.selected.not()) }) }
+    }
+
+    fun selectStatus(value: String) {
+        setState { currentState.copy(status = currentState.status.map { it.copy(selected = it.name == value && it.selected.not()) }) }
     }
 
     override fun createInitialState() = SearchViewState()
-    override fun onTriggerEvent(event: IViewEvent) {
-        TODO("Not yet implemented")
+    override fun onTriggerEvent(event: SearchViewEvent) {
+        viewModelScope.launch {
+            when (event) {
+                is SearchViewEvent.NewSearchEvent -> {}
+
+            }
+        }
     }
+}
+
+sealed class SearchViewEvent : IViewEvent {
+    object NewSearchEvent : SearchViewEvent()
 }

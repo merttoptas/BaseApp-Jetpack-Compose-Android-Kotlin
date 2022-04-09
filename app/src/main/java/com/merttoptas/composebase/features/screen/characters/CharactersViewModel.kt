@@ -46,6 +46,7 @@ class CharactersViewModel @Inject constructor(
     }
 
     override fun createInitialState() = CharactersViewState()
+
     override fun onTriggerEvent(event: CharactersViewEvent) {
         viewModelScope.launch {
             when (event) {
