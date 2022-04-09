@@ -18,18 +18,16 @@ class SplashViewModel @Inject constructor(
 ) : BaseViewModel<SplashViewState, SplashViewEvent>() {
 
     init {
-        //TODO: check if user is logged in
         viewModelScope.launch {
             delay(1000)
             setEvent(SplashViewEvent.DirectToDashBoard)
-
         }
     }
 
     override fun createInitialState() = SplashViewState()
+    override fun onTriggerEvent(event: SplashViewEvent) {}
 }
 
 sealed class SplashViewEvent : IViewEvent {
-    object DirectToLogin : SplashViewEvent()
     object DirectToDashBoard : SplashViewEvent()
 }

@@ -25,6 +25,7 @@ class CharactersDetailViewModel @Inject constructor(
     }
 
     override fun createInitialState() = CharactersDetailViewState()
+    override fun onTriggerEvent(event: CharactersDetailViewEvent) {}
 }
 
 sealed class CharactersDetailViewEvent : IViewEvent {

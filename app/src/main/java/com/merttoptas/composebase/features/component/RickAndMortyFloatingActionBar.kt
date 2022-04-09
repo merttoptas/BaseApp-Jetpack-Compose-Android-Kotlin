@@ -3,6 +3,7 @@ package com.merttoptas.composebase.features.component
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
@@ -11,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import com.merttoptas.composebase.features.navigation.BottomNav
 import com.merttoptas.composebase.features.navigation.NavScreen
 import com.merttoptas.composebase.utils.Utility.getAnimateFloat
 import kotlinx.coroutines.delay
@@ -23,8 +23,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun RickAndMortyFloatingActionBar(
     navController: NavController,
-    currentRoute: String?,
-    screen: BottomNav,
 ) {
     var isClick by remember { mutableStateOf(false) }
 
@@ -48,7 +46,7 @@ fun RickAndMortyFloatingActionBar(
             navController.navigate(NavScreen.Favorites.route)
         },
         contentColor = Color.Transparent,
-        backgroundColor = Color.White,
+        backgroundColor = MaterialTheme.colors.onPrimary
     ) {
         Icon(
             Icons.Filled.Favorite,

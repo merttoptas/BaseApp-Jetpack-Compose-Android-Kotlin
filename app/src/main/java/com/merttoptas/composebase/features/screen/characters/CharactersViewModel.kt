@@ -11,10 +11,6 @@ import com.merttoptas.composebase.domain.viewstate.characters.CharactersViewStat
 import com.merttoptas.composebase.features.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +22,7 @@ import javax.inject.Inject
 class CharactersViewModel @Inject constructor(
     private val getCharactersUseCase: GetCharactersUseCase,
     private val updateFavoriteUseCase: UpdateFavoriteUseCase
-) : BaseViewModel<CharactersViewState, IViewEvent>() {
+) : BaseViewModel<CharactersViewState, CharactersViewEvent>() {
 
     private val config = PagingConfig(pageSize = 20)
 
@@ -44,10 +40,21 @@ class CharactersViewModel @Inject constructor(
         }
     }
 
-    fun updateFavorite(dto: CharacterDto) = viewModelScope.launch {
+    private fun updateFavorite(dto: CharacterDto) = viewModelScope.launch {
         val params = UpdateFavoriteUseCase.Params(dto)
         call(updateFavoriteUseCase(params))
     }
 
     override fun createInitialState() = CharactersViewState()
+    override fun onTriggerEvent(event: CharactersViewEvent) {
+        viewModelScope.launch {
+            when (event) {
+                is CharactersViewEvent.UpdateFavorite -> updateFavorite(event.dto)
+            }
+        }
+    }
+}
+
+sealed class CharactersViewEvent : IViewEvent {
+    class UpdateFavorite(val dto: CharacterDto) : CharactersViewEvent()
 }

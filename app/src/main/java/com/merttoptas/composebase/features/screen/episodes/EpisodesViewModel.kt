@@ -51,6 +51,7 @@ class EpisodesViewModel @Inject constructor(
     }
 
     override fun createInitialState() = EpisodesViewState()
+    override fun onTriggerEvent(event: EpisodesViewEvent) {}
 }
 
 sealed class EpisodesViewEvent : IViewEvent {

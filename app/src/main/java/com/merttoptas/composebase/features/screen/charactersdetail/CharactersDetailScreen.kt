@@ -72,14 +72,7 @@ fun CharactersDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        navController.popBackStack()
-                    }) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left),
-                            contentDescription = null
-                        )
-                    }
+                    IconButton(onClick = {}) {}
                 },
                 text = stringResource(id = R.string.character_detail_screen_title)
             )

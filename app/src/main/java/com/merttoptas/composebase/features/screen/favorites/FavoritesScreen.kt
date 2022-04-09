@@ -58,8 +58,7 @@ fun FavoritesScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        viewModel.isAllDeleteFavoritesChange(true)
-
+                        viewModel.onTriggerEvent(FavoritesViewEvent.OnIsDeleteAllFavoritesChange)
                     }) {
                         Icon(
                             modifier = Modifier.size(24.dp),
@@ -98,13 +97,29 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                 isDisplayed = viewState.isDisplay,
                 onClickDelete = {
                     if (viewState.isAllDeleteFavorites) {
-                        viewModel.deleteAllFavorites()
+                        viewModel.onTriggerEvent(FavoritesViewEvent.OnDeleteAllFavorites)
                     } else {
-                        viewModel.onDeleteFavorite()
+                        viewModel.onTriggerEvent(FavoritesViewEvent.OnDeleteFavorite)
                     }
-                    viewModel.onDisplayChange(false, viewState.favoriteId)
+                    viewModel.onTriggerEvent(
+                        FavoritesViewEvent.OnDisplayChange(
+                            viewState.copy(
+                                isDisplay = false,
+                                favoriteId = viewState.favoriteId
+                            )
+                        )
+                    )
                 },
-                onBackPressed = { viewModel.onDisplayChange(false, viewState.favoriteId) },
+                onBackPressed = {
+                    viewModel.onTriggerEvent(
+                        FavoritesViewEvent.OnDisplayChange(
+                            viewState.copy(
+                                isDisplay = false,
+                                favoriteId = viewState.favoriteId
+                            )
+                        )
+                    )
+                },
             )
         }
 
@@ -130,7 +145,16 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                             navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
                         },
                         dto = item,
-                        onDeleteClick = { viewModel.onDisplayChange(true, item.id) }
+                        onDeleteClick = {
+                            viewModel.onTriggerEvent(
+                                FavoritesViewEvent.OnDisplayChange(
+                                    viewState.copy(
+                                        isDisplay = true,
+                                        favoriteId = item.id
+                                    )
+                                )
+                            )
+                        }
                     )
                 }
             }

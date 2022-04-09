@@ -80,7 +80,7 @@ private fun Content(viewModel: SettingsViewModel, viewState: SettingsViewState) 
 
                     Switch(
                         checked = viewState.isDark,
-                        onCheckedChange = { viewModel.onChangeTheme() })
+                        onCheckedChange = { viewModel.onTriggerEvent(SettingsViewEvent.OnChangeTheme) })
                 }
 
                 Row(

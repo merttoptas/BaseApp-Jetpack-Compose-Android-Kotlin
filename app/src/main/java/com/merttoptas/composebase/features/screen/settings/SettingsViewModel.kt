@@ -16,18 +16,30 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val application: RickAndMortyApp
-) : BaseViewModel<SettingsViewState, IViewEvent>() {
+) : BaseViewModel<SettingsViewState, SettingsViewEvent>() {
 
     init {
         setState { currentState.copy(isDark = application.isDark.value) }
     }
 
-    fun onChangeTheme() {
+   private fun onChangeTheme() {
         viewModelScope.launch {
             application.toggleTheme()
             setState { currentState.copy(isDark = application.isDark.value) }
         }
     }
 
+    override fun onTriggerEvent(event: SettingsViewEvent) {
+        viewModelScope.launch {
+            when (event) {
+                is SettingsViewEvent.OnChangeTheme -> onChangeTheme()
+            }
+        }
+    }
+
     override fun createInitialState() = SettingsViewState()
+}
+
+sealed class SettingsViewEvent : IViewEvent {
+    object OnChangeTheme : SettingsViewEvent()
 }

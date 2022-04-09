@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.data.model.dto.CharacterDto
+import com.merttoptas.composebase.features.screen.characters.CharactersViewEvent
 import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
 import com.merttoptas.composebase.features.ui.theme.Gray500
 import com.merttoptas.composebase.utils.Utility.getAnimateFloat
@@ -40,7 +41,7 @@ fun RickAndMortyFavoriteButton(
         isClick = true
         isFavorite = !isFavorite
         dto.isFavorite = isFavorite
-        viewModel.updateFavorite(dto = dto)
+        viewModel.onTriggerEvent(CharactersViewEvent.UpdateFavorite(dto))
     }) {
         val tintColor = if (isFavorite) Red else Gray500
 

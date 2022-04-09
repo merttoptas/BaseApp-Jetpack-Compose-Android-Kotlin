@@ -18,6 +18,8 @@ abstract class BaseViewModel<State : IViewState, Event : IViewEvent> : ViewModel
 
     val currentState: State get() = uiState.value
 
+    abstract fun onTriggerEvent(event: Event)
+
     private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialState)
     val uiState: StateFlow<State> = _uiState
 

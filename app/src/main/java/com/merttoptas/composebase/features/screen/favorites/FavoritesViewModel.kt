@@ -19,7 +19,7 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val getFavoritesUseCase: GetFavoritesUseCase,
     private val deleteFavoriteUseCase: DeleteFavoriteUseCase
-) : BaseViewModel<FavoritesViewState, IViewEvent>() {
+) : BaseViewModel<FavoritesViewState, FavoritesViewEvent>() {
 
     init {
         getFavorites()
@@ -34,15 +34,27 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun onDisplayChange(isDisplay: Boolean, favoriteId: Int?) {
-        setState { currentState.copy(isDisplay = isDisplay, favoriteId = favoriteId) }
+    override fun onTriggerEvent(event: FavoritesViewEvent) {
+        viewModelScope.launch {
+            when(event) {
+                is FavoritesViewEvent.OnDeleteFavorite -> {
+                    onDeleteFavorite()
+                }
+                is FavoritesViewEvent.OnDisplayChange -> {
+                    setState { currentState.copy(isDisplay = event.viewState.isDisplay, favoriteId = event.viewState.favoriteId) }
+                }
+                is FavoritesViewEvent.OnDeleteAllFavorites -> {
+                    deleteAllFavorites()
+                }
+                is  FavoritesViewEvent.OnIsDeleteAllFavoritesChange -> {
+                    setState { currentState.copy(isDisplay = isDisplay, isAllDeleteFavorites = true) }
+
+                }
+            }
+        }
     }
 
-    fun isAllDeleteFavoritesChange(isDisplay: Boolean) {
-        setState { currentState.copy(isDisplay = isDisplay, isAllDeleteFavorites = true) }
-    }
-
-    fun onDeleteFavorite() {
+    private fun onDeleteFavorite() {
         viewModelScope.launch {
             currentState.favoriteId?.let {
                 call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(it)))
@@ -51,7 +63,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-    fun deleteAllFavorites() {
+   private fun deleteAllFavorites() {
         viewModelScope.launch {
             call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(null)))
             updateFavoriteList()
@@ -67,4 +79,11 @@ class FavoritesViewModel @Inject constructor(
     }
 
     override fun createInitialState() = FavoritesViewState()
+}
+
+sealed class FavoritesViewEvent : IViewEvent {
+    class OnDisplayChange(val viewState: FavoritesViewState) : FavoritesViewEvent()
+    object OnDeleteFavorite : FavoritesViewEvent()
+    object OnDeleteAllFavorites : FavoritesViewEvent()
+    object OnIsDeleteAllFavoritesChange : FavoritesViewEvent()
 }
