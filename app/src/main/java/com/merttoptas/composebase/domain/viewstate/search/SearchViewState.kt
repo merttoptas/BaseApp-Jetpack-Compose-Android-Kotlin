@@ -21,9 +21,9 @@ data class SearchViewState(
         CharacterStatus(Status.Unknown.value, false)
     ),
     val gender: List<CharacterGender> = listOf(
-        CharacterGender("Female", false),
-        CharacterGender("Male", false),
-        CharacterGender("Genderless", false),
+        CharacterGender("female", false),
+        CharacterGender("male", false),
+        CharacterGender("genderless", false),
         CharacterGender("unknown", false)
     ),
     val isLoading: Boolean = false
