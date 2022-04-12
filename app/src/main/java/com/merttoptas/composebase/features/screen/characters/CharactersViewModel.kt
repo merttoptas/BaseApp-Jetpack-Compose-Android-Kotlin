@@ -33,9 +33,9 @@ class CharactersViewModel @Inject constructor(
     private fun getAllCharacters() {
         viewModelScope.launch {
             setState { currentState.copy(isLoading = true) }
-            delay(1000)
             val params = GetCharactersUseCase.Params(config, hashMapOf())
             val pagedFlow = getCharactersUseCase(params).cachedIn(scope = viewModelScope)
+            delay(1000)
             setState { currentState.copy(isLoading = false, pagedData = pagedFlow) }
         }
     }

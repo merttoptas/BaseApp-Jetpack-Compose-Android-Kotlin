@@ -14,4 +14,15 @@
     <string name="favorite_screen_title">Favorites</string>
     <string name="favorite_screen_empty_list_text">You haven\'t added\na character to your favorites yet</string>
 
+    <!--- Settings -->
+    <string name="settings_screen_title">Settings</string>
+    <string name="settings_screen_app_version_title">App Version</string>
+
+    <!--- Search -->
+    <string name="search_screen_title">Search</string>
+    <string name="search_modal_title">Filter</string>
+    <string name="search_modal_status_title">Status</string>
+    <string name="search_modal_gender_title">Gender</string>
+    <string name="search_modal_button_text">Apply</string>
+
 </resources>

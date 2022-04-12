@@ -54,9 +54,7 @@ fun EpisodesScreen(
                 text = stringResource(id = R.string.episodes_screen_title),
                 actions = {
                     IconButton(onClick = {
-
                     }) {
-
                     }
                 },
                 elevation = 10.dp,

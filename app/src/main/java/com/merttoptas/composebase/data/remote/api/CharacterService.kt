@@ -27,4 +27,10 @@ interface CharacterService {
     suspend fun getCharacter(
         @Url url: String
     ): Response<CharacterInfoResponse>
+
+    @GET(Constants.CHARACTER_FILTER)
+    suspend fun getFilterCharacter(
+        @Query(Constants.PARAM_PAGE) page: Int,
+        @QueryMap options: Map<String, String>? = null
+    ): CharacterResponse
 }

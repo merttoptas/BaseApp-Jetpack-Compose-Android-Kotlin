@@ -35,6 +35,11 @@ class CharacterRepositoryImpl @Inject constructor(
         emitAll(characterRemoteDataSource.getCharacter(url = url))
     }
 
+    override suspend fun getFilterCharacters(
+        page: Int,
+        options: Map<String, String>
+    ): CharacterResponse = characterRemoteDataSource.getFilterCharacters(page, options)
+
     override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = dao.getFavorite(favoriteId)
 
     override suspend fun getFavoriteList(): List<FavoriteEntity> = dao.getFavoriteList()

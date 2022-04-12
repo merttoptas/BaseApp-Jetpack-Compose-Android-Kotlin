@@ -24,6 +24,10 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
         options: Map<String, String>
     ): CharacterResponse = characterService.getAllCharacters(page, options)
 
+    override suspend fun getFilterCharacters(
+        page: Int, options: Map<String, String>
+    ): CharacterResponse = characterService.getFilterCharacter(page, options)
+
     override suspend fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>> =
         getResult { characterService.getCharacter(characterId = characterId) }
 

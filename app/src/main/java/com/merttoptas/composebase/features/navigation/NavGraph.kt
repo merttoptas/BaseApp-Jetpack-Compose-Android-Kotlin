@@ -104,7 +104,8 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
 
             composable(NavScreen.Search.route) {
                 SearchScreen(
-                    hiltViewModel()
+                    hiltViewModel(),
+                    navController
                 )
             }
 

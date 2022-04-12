@@ -1,8 +1,11 @@
 package com.merttoptas.composebase.domain.viewstate.search
 
 import android.os.Parcelable
+import androidx.paging.PagingData
 import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.domain.viewstate.IViewState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -11,6 +14,7 @@ import kotlinx.parcelize.Parcelize
 
 data class SearchViewState(
     val searchText: String? = null,
+    val pagedData: Flow<PagingData<CharacterDto>>? = null,
     val status: List<CharacterStatus> = listOf(
         CharacterStatus(Status.Alive.value, false),
         CharacterStatus(Status.Dead.value, false),
@@ -20,7 +24,7 @@ data class SearchViewState(
         CharacterGender("Female", false),
         CharacterGender("Male", false),
         CharacterGender("Genderless", false),
-        CharacterGender("Unknown", false)
+        CharacterGender("unknown", false)
     ),
     val isLoading: Boolean = false
 ) : IViewState

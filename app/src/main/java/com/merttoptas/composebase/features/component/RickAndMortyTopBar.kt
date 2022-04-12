@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -42,5 +43,23 @@ fun RickAndMortyTopBar(
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         elevation = elevation
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BodyPreview() {
+    RickAndMortyTopBar(
+        modifier = Modifier,
+        text = "Value",
+        title = {
+            RickAndMortyText(
+                text = "Title",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colors.secondary,
+                style = MaterialTheme.typography.subtitle1
+            )
+        },
     )
 }

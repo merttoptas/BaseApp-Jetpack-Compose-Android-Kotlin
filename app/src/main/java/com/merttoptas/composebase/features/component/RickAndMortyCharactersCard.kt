@@ -27,7 +27,7 @@ import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
 fun RickAndMortyCharactersCard(
     modifier: Modifier = Modifier,
     status: Status,
-    viewModel: CharactersViewModel,
+    viewModel: Any,
     dto: CharacterDto?,
     detailClick: () -> Unit,
 ) {

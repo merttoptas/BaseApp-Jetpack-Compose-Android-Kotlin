@@ -10,11 +10,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.features.screen.characters.CharactersViewEvent
 import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
+import com.merttoptas.composebase.features.screen.search.SearchViewEvent
+import com.merttoptas.composebase.features.screen.search.SearchViewModel
 import com.merttoptas.composebase.features.ui.theme.Gray500
 import com.merttoptas.composebase.utils.Utility.getAnimateFloat
 import kotlinx.coroutines.delay
@@ -24,7 +28,7 @@ import kotlinx.coroutines.delay
  */
 @Composable
 fun RickAndMortyFavoriteButton(
-    viewModel: CharactersViewModel = hiltViewModel(),
+    viewModel: Any = hiltViewModel(),
     dto: CharacterDto
 ) {
     var isFavorite by rememberSaveable(dto) { mutableStateOf(dto.isFavorite) }
@@ -41,7 +45,12 @@ fun RickAndMortyFavoriteButton(
         isClick = true
         isFavorite = !isFavorite
         dto.isFavorite = isFavorite
-        viewModel.onTriggerEvent(CharactersViewEvent.UpdateFavorite(dto))
+
+        if (viewModel is CharactersViewModel) {
+            viewModel.onTriggerEvent(CharactersViewEvent.UpdateFavorite(dto))
+        } else if (viewModel is SearchViewModel) {
+            viewModel.onTriggerEvent(SearchViewEvent.UpdateFavorite(dto))
+        }
     }) {
         val tintColor = if (isFavorite) Red else Gray500
 
@@ -52,4 +61,27 @@ fun RickAndMortyFavoriteButton(
             tint = tintColor
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BodyPreview() {
+    RickAndMortyFavoriteButton(
+        dto = CharacterDto(
+            id = 1,
+            name = "Rick Sanchez",
+            status = Status.Alive,
+            type = "Human",
+            created = "2017-11-04T18:48:46.250Z",
+            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            gender = "",
+            location = null,
+            origin = null,
+            species = "",
+            url = "",
+            isFavorite = true
+        ),
+        viewModel = hiltViewModel()
+    )
 }

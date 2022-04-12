@@ -1,11 +1,17 @@
 package com.merttoptas.composebase.features.screen.search
 
 import androidx.lifecycle.viewModelScope
-import com.merttoptas.composebase.RickAndMortyApp
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import com.merttoptas.composebase.data.model.dto.CharacterDto
+import com.merttoptas.composebase.data.remote.utils.Constants
+import com.merttoptas.composebase.domain.usecase.characters.GetCharactersFilterUseCase
+import com.merttoptas.composebase.domain.usecase.favorite.UpdateFavoriteUseCase
 import com.merttoptas.composebase.domain.viewstate.IViewEvent
 import com.merttoptas.composebase.domain.viewstate.search.SearchViewState
 import com.merttoptas.composebase.features.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,11 +21,44 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val application: RickAndMortyApp
+    private val getCharactersFilterUseCase: GetCharactersFilterUseCase,
+    private val updateFavoriteUseCase: UpdateFavoriteUseCase
 ) : BaseViewModel<SearchViewState, SearchViewEvent>() {
 
-    init {
-        setState { currentState.copy(isLoading = application.isDark.value) }
+    private val config = PagingConfig(pageSize = 20)
+
+    override fun onTriggerEvent(event: SearchViewEvent) {
+        viewModelScope.launch {
+            when (event) {
+                is SearchViewEvent.NewSearchEvent -> {
+                    onSearch(event.viewState)
+                }
+                is SearchViewEvent.UpdateFavorite -> {
+                    updateFavorite(event.dto)
+                }
+            }
+        }
+    }
+
+    private fun onSearch(viewState: SearchViewState) {
+        viewModelScope.launch {
+            setState { currentState.copy(isLoading = true) }
+
+            val queryData = HashMap<String, String>()
+            viewState.searchText?.let { queryData[Constants.PARAM_NAME] = it }
+            viewState.status.find { c -> c.selected }?.name?.let { queryData[Constants.PARAM_STATUS] = it }
+            viewState.gender.find { c -> c.selected }?.name?.let { queryData[Constants.PARAM_GENDER] = it }
+
+            val params = GetCharactersFilterUseCase.Params(config, queryData)
+            delay(1000)
+            val pagedFlow = getCharactersFilterUseCase(params).cachedIn(scope = viewModelScope)
+            setState { currentState.copy(isLoading = false, pagedData = pagedFlow) }
+        }
+    }
+
+    private fun updateFavorite(dto: CharacterDto) = viewModelScope.launch {
+        val params = UpdateFavoriteUseCase.Params(dto)
+        call(updateFavoriteUseCase(params))
     }
 
     fun searchText(value: String?) {
@@ -35,16 +74,9 @@ class SearchViewModel @Inject constructor(
     }
 
     override fun createInitialState() = SearchViewState()
-    override fun onTriggerEvent(event: SearchViewEvent) {
-        viewModelScope.launch {
-            when (event) {
-                is SearchViewEvent.NewSearchEvent -> {}
-
-            }
-        }
-    }
 }
 
 sealed class SearchViewEvent : IViewEvent {
-    object NewSearchEvent : SearchViewEvent()
+    class NewSearchEvent(val viewState: SearchViewState) : SearchViewEvent()
+    class UpdateFavorite(val dto: CharacterDto) : SearchViewEvent()
 }

@@ -5,24 +5,37 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemsIndexed
 import com.merttoptas.composebase.R
+import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.domain.viewstate.search.SearchViewState
 import com.merttoptas.composebase.features.component.*
+import com.merttoptas.composebase.features.navigation.NavScreen
+import com.merttoptas.composebase.utils.Utility
+import com.merttoptas.composebase.utils.Utility.toJson
 import kotlinx.coroutines.launch
 
 /**
@@ -32,13 +45,14 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel = hiltViewModel(),
+    viewModel: SearchViewModel,
+    navController: NavController,
 ) {
     val scaffoldState = rememberScaffoldState()
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
-    )
-    val state = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val state = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded })
+
     val viewState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
 
@@ -47,13 +61,13 @@ fun SearchScreen(
         scaffoldState = scaffoldState,
         topBar = {
             RickAndMortyTopBar(
-                text = "Search",
+                text = stringResource(id = R.string.search_screen_title),
+                elevation = 10.dp,
                 actions = {
                     IconButton(onClick = {
                         scope.launch {
                             state.show()
                         }
-
                     }) {
                         Image(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_filter),
@@ -71,17 +85,24 @@ fun SearchScreen(
                     BottomSheetLayout(viewModel, viewState, state)
                 }
             ) {
-                Content(viewModel, viewState)
+                Content(viewModel, navController)
             }
         },
         backgroundColor = MaterialTheme.colors.background
     )
-
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
-private fun Content(viewModel: SearchViewModel, viewState: SearchViewState) {
+private fun Content(viewModel: SearchViewModel, navController: NavController) {
+    val viewState by viewModel.uiState.collectAsState()
+
+    var pagingItems: LazyPagingItems<CharacterDto>? = null
+    viewState.pagedData?.let {
+        pagingItems = Utility.rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
+    }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
@@ -93,9 +114,31 @@ private fun Content(viewModel: SearchViewModel, viewState: SearchViewState) {
             text = viewState.searchText ?: "",
             onTextChange = { viewModel.searchText(it) },
             onClickSearch = {
-                // viewModel.onTriggerEvent(SearchEvent.NewSearchEvent)
+                viewModel.onTriggerEvent(SearchViewEvent.NewSearchEvent(viewState))
+                keyboardController?.hide()
             }
         )
+        LazyColumn(
+            contentPadding = PaddingValues(vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            if (viewState.isLoading) {
+                items(10) {
+                    RickAndMortyCharacterShimmer()
+                }
+            } else if (viewState.pagedData != null && pagingItems != null) {
+                itemsIndexed(items = pagingItems!!) { index, item ->
+                    RickAndMortyCharactersCard(
+                        status = item?.status ?: Status.Unknown,
+                        detailClick = {
+                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
+                        },
+                        viewModel = viewModel,
+                        dto = item
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -110,7 +153,7 @@ private fun BottomSheetLayout(
 
     ConstraintLayout(
         modifier = Modifier
-            .background(Color.White)
+            .background(color = MaterialTheme.colors.surface)
             .padding(horizontal = 20.dp, vertical = 15.dp)
     ) {
         val (title, divider, description, button) = createRefs()
@@ -122,7 +165,7 @@ private fun BottomSheetLayout(
                 width = Dimension.wrapContent
 
             },
-            text = "Filter"
+            text = stringResource(id = R.string.search_modal_title)
         )
         Divider(
             modifier = Modifier
@@ -144,7 +187,10 @@ private fun BottomSheetLayout(
                     top.linkTo(divider.bottom)
                 },
         ) {
-            RickAndMortyText(text = "Status", color = MaterialTheme.colors.onSurface)
+            RickAndMortyText(
+                text = stringResource(id = R.string.search_modal_status_title),
+                color = MaterialTheme.colors.onSurface
+            )
             Row(modifier = Modifier.padding(top = 10.dp)) {
                 viewState.status.forEach {
                     RickAndMortySelectableText(
@@ -161,7 +207,7 @@ private fun BottomSheetLayout(
             }
 
             RickAndMortyText(
-                text = "Gender",
+                text = stringResource(id = R.string.search_modal_gender_title),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colors.onSurface
             )
@@ -184,14 +230,14 @@ private fun BottomSheetLayout(
                 bottom.linkTo(parent.bottom, 30.dp)
             },
             onClick = {
-                viewModel.onTriggerEvent(SearchViewEvent.NewSearchEvent)
+                viewModel.onTriggerEvent(SearchViewEvent.NewSearchEvent(viewState))
                 scope.launch {
                     state.hide()
                 }
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
-            borderColor = MaterialTheme.colors.primaryVariant,
-            text = "Apply"
+            borderColor = MaterialTheme.colors.primary,
+            text = stringResource(id = R.string.search_modal_button_text)
         )
     }
 }
@@ -207,5 +253,8 @@ private fun BottomSheetLayout(
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    com.merttoptas.composebase.features.screen.settings.SettingsScreen()
+    SearchScreen(
+        viewModel = hiltViewModel(),
+        navController = rememberNavController()
+    )
 }

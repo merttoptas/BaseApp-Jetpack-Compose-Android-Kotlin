@@ -7,14 +7,16 @@ object Constants {
     const val BASE_URL = "https://rickandmortyapi.com/api/"
     const val CHARACTER_LIST = "character"
     const val GET_CHARACTER = "character/{id}"
-    const val Location_LIST = "location"
+    const val CHARACTER_FILTER = "character/"
     const val EPISODE_LIST = "episode"
     const val GET_EPISODE = "episode/{id}"
-    const val MULTIPLE_EPISODE_LIST = "episode/{[0-9]}"
 
     //Query Parameter
     const val PARAM_PAGE = "page"
     const val PARAM_ID = "id"
+    const val PARAM_NAME = "name"
+    const val PARAM_STATUS = "status"
+    const val PARAM_GENDER = "gender"
 
     const val TABLE_NAME = "favorite"
     const val COLUMN_ID = "id"

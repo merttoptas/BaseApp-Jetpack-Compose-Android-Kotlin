@@ -38,7 +38,7 @@ fun RickAndMortyTextField(
         onValueChange = onValueChange,
         shape = RoundedCornerShape(14.dp),
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.background,
+            backgroundColor = MaterialTheme.colors.surface,
             textColor = MaterialTheme.colors.onBackground,
             cursorColor = MaterialTheme.colors.primary,
             focusedIndicatorColor = Color.Transparent,
