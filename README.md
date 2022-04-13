@@ -38,7 +38,7 @@ This Sample Application was developed by using Jetpack Compose. MVVM architectur
   ## Architecture
 MVVM (Model-View-ViewModel) architecture pattern has been used in the development of this application. The development language of the application is Kotlin.
 
-* Architectures;
+* Architecture;
     * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
     * [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) 
     * [Navigation](https://developer.android.com/guide/navigation)
@@ -82,10 +82,10 @@ This project uses many of the popular libraries, plugins and tools of the androi
 - [Gson](https://github.com/google/gson) - A modern JSON library for Kotlin and Java.
   
 ## Features
-  - Users can save their own favorite charecters.
-  - The users can view all characters  information; such as name, status, etc.
-  - The users can view selected characters details alive or died, species, gender, last know location. On the detail page, the users can add or remove the character to their favorites.
-  - The users can search by character name and filter by status and gender.
+  - Users can save their own favorite characters.
+  - The users can view all characters' informations; such as names, statuses, etc.
+  - The users can view selected characters' details such as alive or dead, species, genders, last know locations. On the detail page, the users can add or remove the characters to their favorites.
+  - The users can search characters by name and filter by status and gender.
   - The users can change application theme.
   
 ## 🏆 MAD Scores
