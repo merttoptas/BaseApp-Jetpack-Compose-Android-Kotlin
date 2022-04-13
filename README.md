@@ -36,9 +36,9 @@
 This Sample Application was developed by using Jetpack Compose. MVVM architecture and best practice are followed. You can find everything you need in the Jetpack Compose project within the application.  
 
   ## Architecture
-MVVM (Model-View-ViewModel) architecture pattern in the development of this application. The development language of the application is Kotlin.
+MVVM (Model-View-ViewModel) architecture pattern has been used in the development of this application. The development language of the application is Kotlin.
 
-* Architecture;
+* Architectures;
     * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
     * [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) 
     * [Navigation](https://developer.android.com/guide/navigation)
