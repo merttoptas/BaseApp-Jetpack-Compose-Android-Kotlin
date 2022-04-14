@@ -1,34 +1,29 @@
 package com.merttoptas.composebase.features.screen.characters
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.items
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
+import com.merttoptas.composebase.domain.viewstate.characters.CharactersViewState
 import com.merttoptas.composebase.features.component.RickAndMortyCharacterShimmer
 import com.merttoptas.composebase.features.component.RickAndMortyCharactersCard
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
-import com.merttoptas.composebase.features.navigation.NavScreen
 import com.merttoptas.composebase.utils.Utility.rememberFlowWithLifecycle
-import com.merttoptas.composebase.utils.Utility.toJson
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -36,8 +31,8 @@ import com.merttoptas.composebase.utils.Utility.toJson
 
 @Composable
 fun CharactersScreen(
-    navController: NavController,
-    viewModel: CharactersViewModel
+    viewModel: CharactersViewModel,
+    navigateToDetail: (CharacterDto?) -> Unit
 ) {
 
     val scaffoldState = rememberScaffoldState()
@@ -51,21 +46,33 @@ fun CharactersScreen(
                 elevation = 10.dp,
             )
         },
-        content = { Content(viewModel, navController) },
+        content = {
+            Content(
+                viewState = viewModel.uiState.collectAsState().value,
+                onTriggerEvent = {
+                  viewModel.onTriggerEvent(it)
+                },
+                clickDetail = {
+                    navigateToDetail.invoke(it)
+                }
+            )
+        },
         backgroundColor = MaterialTheme.colors.background
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Content(viewModel: CharactersViewModel, navController: NavController) {
-    val viewState by viewModel.uiState.collectAsState()
+private fun Content(
+    viewState: CharactersViewState,
+    onTriggerEvent: (CharactersViewEvent) -> Unit,
+    clickDetail: (CharacterDto?) -> Unit
+) {
     var pagingItems: LazyPagingItems<CharacterDto>? = null
     viewState.pagedData?.let {
         pagingItems = rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp),
@@ -79,14 +86,16 @@ private fun Content(viewModel: CharactersViewModel, navController: NavController
                     RickAndMortyCharacterShimmer()
                 }
             } else if (viewState.pagedData != null && pagingItems != null) {
-                itemsIndexed(items = pagingItems!!) { index, item ->
+                items(items = pagingItems!!) { item ->
                     RickAndMortyCharactersCard(
                         status = item?.status ?: Status.Unknown,
                         detailClick = {
-                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
+                            clickDetail.invoke(item)
                         },
-                        viewModel = viewModel,
-                        dto = item
+                        dto = item,
+                        onTriggerEvent = {
+                            onTriggerEvent.invoke(CharactersViewEvent.UpdateFavorite(it))
+                        }
                     )
                 }
             }
@@ -105,5 +114,5 @@ private fun Content(viewModel: CharactersViewModel, navController: NavController
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    CharactersScreen(viewModel = hiltViewModel(), navController = rememberNavController())
+    CharactersScreen(viewModel = hiltViewModel(), navigateToDetail = {})
 }

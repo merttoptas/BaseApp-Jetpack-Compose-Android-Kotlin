@@ -11,8 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.merttoptas.composebase.features.navigation.NavScreen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -20,11 +18,10 @@ import kotlinx.coroutines.launch
  * Created by merttoptas on 12.03.2022
  */
 
-
 @Composable
 fun SplashScreen(
-    navController: NavController,
-    viewModel: SplashViewModel
+    viewModel: SplashViewModel,
+    navigateToDashboard: (Int) -> Unit
 ) {
     Content()
     LaunchedEffect(viewModel.uiEvent) {
@@ -32,9 +29,7 @@ fun SplashScreen(
             viewModel.uiEvent.collect {
                 when (it) {
                     is SplashViewEvent.DirectToDashBoard -> {
-                        navController.navigate(NavScreen.Characters.route) {
-                            popUpTo(0)
-                        }
+                       navigateToDashboard.invoke(0)
                     }
                 }
             }

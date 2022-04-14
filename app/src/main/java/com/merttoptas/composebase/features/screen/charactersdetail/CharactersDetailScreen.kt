@@ -41,8 +41,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CharactersDetailScreen(
-    navController: NavController,
-    viewModel: CharactersDetailViewModel = viewModel()
+    viewModel: CharactersDetailViewModel = viewModel(),
+    navigateToBack: () -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState by viewModel.uiState.collectAsState()
@@ -64,7 +64,9 @@ fun CharactersDetailScreen(
             RickAndMortyTopBar(
                 elevation = 10.dp,
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+                        navigateToBack()
+                    }) {
                         Image(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left),
                             contentDescription = null
@@ -87,7 +89,6 @@ fun CharactersDetailScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Content(viewState: CharactersDetailViewState) {
     Column(
@@ -209,5 +210,5 @@ private fun CharacterInfoRow(modifier: Modifier, text: String, value: String) {
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    CharactersDetailScreen(viewModel = hiltViewModel(), navController = rememberNavController())
+    CharactersDetailScreen(viewModel = hiltViewModel(), navigateToBack = {})
 }

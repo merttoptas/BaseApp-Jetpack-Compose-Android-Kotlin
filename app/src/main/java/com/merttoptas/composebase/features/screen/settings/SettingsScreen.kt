@@ -1,10 +1,9 @@
 package com.merttoptas.composebase.features.screen.settings
 
-import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.material.rememberScaffoldState
@@ -12,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.merttoptas.composebase.R
@@ -42,60 +42,71 @@ fun SettingsScreen(
                 elevation = 10.dp,
             )
         },
-        content = { Content(viewModel, viewState) },
+        content = {
+            Content(
+                viewState = viewState,
+                onTriggerEvent = {
+                    viewModel.onTriggerEvent(it)
+                }
+            )
+        },
         backgroundColor = MaterialTheme.colors.background
     )
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Content(viewModel: SettingsViewModel, viewState: SettingsViewState) {
-
-    Column(
+private fun Content(
+    viewState: SettingsViewState,
+    onTriggerEvent: (SettingsViewEvent) -> Unit
+) {
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp),
     ) {
-        Card(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 20.dp),
-            shape = RoundedCornerShape(8.dp),
+                .padding(horizontal = 20.dp, vertical = 20.dp)
+                .border(
+                    border = BorderStroke(width = 1.dp, color = Color.LightGray),
+                    shape = RoundedCornerShape(8.dp)
+                )
         ) {
-            Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 20.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    RickAndMortyText(
-                        text = stringResource(id = R.string.settings_screen_title),
-                        style = MaterialTheme.typography.body2
-                    )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                RickAndMortyText(
+                    text = stringResource(id = R.string.settings_dark_theme),
+                    style = MaterialTheme.typography.body2
+                )
 
-                    Switch(
-                        checked = viewState.isDark,
-                        onCheckedChange = { viewModel.onTriggerEvent(SettingsViewEvent.OnChangeTheme) })
-                }
+                Switch(
+                    checked = viewState.isDark,
+                    onCheckedChange = {
+                        onTriggerEvent.invoke(SettingsViewEvent.OnChangeTheme)
+                    })
+            }
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    RickAndMortyText(
-                        text = stringResource(id = R.string.settings_screen_app_version_title),
-                        style = MaterialTheme.typography.body2
-                    )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                RickAndMortyText(
+                    text = stringResource(id = R.string.settings_screen_app_version_title),
+                    style = MaterialTheme.typography.body2
+                )
 
-                    RickAndMortyText(
-                        text = BuildConfig.VERSION_NAME,
-                        style = MaterialTheme.typography.body2
-                    )
-                }
+                RickAndMortyText(
+                    text = BuildConfig.VERSION_NAME,
+                    style = MaterialTheme.typography.body2
+                )
             }
         }
     }
