@@ -16,6 +16,7 @@
 
     <!--- Settings -->
     <string name="settings_screen_title">Settings</string>
+    <string name="settings_dark_theme">Dark Theme</string>
     <string name="settings_screen_app_version_title">App Version</string>
 
     <!--- Search -->

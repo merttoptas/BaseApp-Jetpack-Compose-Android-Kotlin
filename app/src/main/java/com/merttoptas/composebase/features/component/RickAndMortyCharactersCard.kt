@@ -13,11 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
-import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -27,9 +25,9 @@ import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
 fun RickAndMortyCharactersCard(
     modifier: Modifier = Modifier,
     status: Status,
-    viewModel: Any,
     dto: CharacterDto?,
     detailClick: () -> Unit,
+    onTriggerEvent: (CharacterDto) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -87,7 +85,12 @@ fun RickAndMortyCharactersCard(
             }
             Box(modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.CenterEnd) {
                 dto?.let {
-                    RickAndMortyFavoriteButton(viewModel, it)
+                    RickAndMortyFavoriteButton(
+                        dto = it,
+                        onTriggerEvent = { dto ->
+                            onTriggerEvent.invoke(dto)
+                        }
+                    )
                 }
             }
         }
@@ -100,7 +103,7 @@ private fun BodyPreview() {
     RickAndMortyCharactersCard(
         status = Status.Alive,
         detailClick = {},
-        viewModel = hiltViewModel(),
+        onTriggerEvent = {},
         dto = CharacterDto(
             id = 1,
             name = "Rick Sanchez",

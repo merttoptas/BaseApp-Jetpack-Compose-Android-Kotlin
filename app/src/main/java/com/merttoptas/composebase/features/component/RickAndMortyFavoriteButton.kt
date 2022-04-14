@@ -12,13 +12,8 @@ import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
-import com.merttoptas.composebase.features.screen.characters.CharactersViewEvent
-import com.merttoptas.composebase.features.screen.characters.CharactersViewModel
-import com.merttoptas.composebase.features.screen.search.SearchViewEvent
-import com.merttoptas.composebase.features.screen.search.SearchViewModel
 import com.merttoptas.composebase.features.ui.theme.Gray500
 import com.merttoptas.composebase.utils.Utility.getAnimateFloat
 import kotlinx.coroutines.delay
@@ -28,8 +23,8 @@ import kotlinx.coroutines.delay
  */
 @Composable
 fun RickAndMortyFavoriteButton(
-    viewModel: Any = hiltViewModel(),
-    dto: CharacterDto
+    dto: CharacterDto,
+    onTriggerEvent: (CharacterDto) -> Unit
 ) {
     var isFavorite by rememberSaveable(dto) { mutableStateOf(dto.isFavorite) }
     var isClick by remember { mutableStateOf(false) }
@@ -46,11 +41,13 @@ fun RickAndMortyFavoriteButton(
         isFavorite = !isFavorite
         dto.isFavorite = isFavorite
 
-        if (viewModel is CharactersViewModel) {
-            viewModel.onTriggerEvent(CharactersViewEvent.UpdateFavorite(dto))
-        } else if (viewModel is SearchViewModel) {
-            viewModel.onTriggerEvent(SearchViewEvent.UpdateFavorite(dto))
-        }
+//        if (viewModel is CharactersViewModel) {
+//            viewModel.onTriggerEvent(CharactersViewEvent.UpdateFavorite(dto))
+//        } else if (viewModel is SearchViewModel) {
+//            viewModel.onTriggerEvent(SearchViewEvent.UpdateFavorite(dto))
+//        }
+
+        onTriggerEvent.invoke(dto)
     }) {
         val tintColor = if (isFavorite) Red else Gray500
 
@@ -82,6 +79,6 @@ private fun BodyPreview() {
             url = "",
             isFavorite = true
         ),
-        viewModel = hiltViewModel()
+        onTriggerEvent = {}
     )
 }

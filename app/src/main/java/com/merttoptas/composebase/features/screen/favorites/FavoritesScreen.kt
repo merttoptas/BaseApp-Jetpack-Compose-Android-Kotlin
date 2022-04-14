@@ -1,7 +1,6 @@
 package com.merttoptas.composebase.features.screen.favorites
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,13 +22,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.*
 import com.merttoptas.composebase.R
+import com.merttoptas.composebase.data.model.FavoriteEntity
+import com.merttoptas.composebase.domain.viewstate.favorites.FavoritesViewState
 import com.merttoptas.composebase.features.component.*
-import com.merttoptas.composebase.features.navigation.NavScreen
-import com.merttoptas.composebase.utils.Utility.toJson
 
 /**
  * Created by merttoptas on 30.03.2022
@@ -37,8 +34,8 @@ import com.merttoptas.composebase.utils.Utility.toJson
 
 @Composable
 fun FavoritesScreen(
-    navController: NavController,
     viewModel: FavoritesViewModel = hiltViewModel(),
+    navigateCharacterDetail: (FavoriteEntity) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
 
@@ -67,16 +64,27 @@ fun FavoritesScreen(
                 },
             )
         },
-        content = { Content(viewModel, navController) },
+        content = {
+            Content(
+                viewState = viewModel.uiState.collectAsState().value,
+                triggerEvent = {
+                    viewModel.onTriggerEvent(it)
+                },
+                clickDetail = {
+                    navigateCharacterDetail.invoke(it)
+                })
+        },
         backgroundColor = MaterialTheme.colors.background
     )
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Content(viewModel: FavoritesViewModel, navController: NavController) {
-    val viewState by viewModel.uiState.collectAsState()
+private fun Content(
+    viewState: FavoritesViewState,
+    triggerEvent: (FavoritesViewEvent) -> Unit,
+    clickDetail: (FavoriteEntity) -> Unit
+) {
 
     Column(
         modifier = Modifier
@@ -94,11 +102,11 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                 isDisplayed = viewState.isDisplay,
                 onClickDelete = {
                     if (viewState.isAllDeleteFavorites) {
-                        viewModel.onTriggerEvent(FavoritesViewEvent.OnDeleteAllFavorites)
+                        triggerEvent.invoke(FavoritesViewEvent.OnDeleteAllFavorites)
                     } else {
-                        viewModel.onTriggerEvent(FavoritesViewEvent.OnDeleteFavorite)
+                        triggerEvent.invoke(FavoritesViewEvent.OnDeleteFavorite)
                     }
-                    viewModel.onTriggerEvent(
+                    triggerEvent.invoke(
                         FavoritesViewEvent.OnDisplayChange(
                             viewState.copy(
                                 isDisplay = false,
@@ -108,7 +116,7 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                     )
                 },
                 onBackPressed = {
-                    viewModel.onTriggerEvent(
+                    triggerEvent.invoke(
                         FavoritesViewEvent.OnDisplayChange(
                             viewState.copy(
                                 isDisplay = false,
@@ -139,11 +147,11 @@ private fun Content(viewModel: FavoritesViewModel, navController: NavController)
                     RickAndMortyFavoriteRowCard(
                         status = item.status,
                         detailClick = {
-                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
+                            clickDetail.invoke(item)
                         },
                         dto = item,
                         onDeleteClick = {
-                            viewModel.onTriggerEvent(
+                            triggerEvent.invoke(
                                 FavoritesViewEvent.OnDisplayChange(
                                     viewState.copy(
                                         isDisplay = true,
@@ -199,5 +207,5 @@ private fun EmptyListAnimation() {
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    Content(viewModel = hiltViewModel(), navController = rememberNavController())
+    Content(viewState = hiltViewModel(), triggerEvent = {}, clickDetail = {})
 }

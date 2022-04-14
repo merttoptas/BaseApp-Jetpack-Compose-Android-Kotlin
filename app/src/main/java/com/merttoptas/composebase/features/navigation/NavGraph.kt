@@ -23,6 +23,7 @@ import com.merttoptas.composebase.features.screen.favorites.FavoritesScreen
 import com.merttoptas.composebase.features.screen.search.SearchScreen
 import com.merttoptas.composebase.features.screen.settings.SettingsScreen
 import com.merttoptas.composebase.features.screen.splash.SplashScreen
+import com.merttoptas.composebase.utils.Utility.toJson
 
 /**
  * Created by merttoptas on 9.03.2022
@@ -64,22 +65,30 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
         ) {
             composable(NavScreen.Splash.route) {
                 SplashScreen(
-                    navController = navController,
-                    hiltViewModel()
+                    hiltViewModel(),
+                    navigateToDashboard = {
+                        navController.navigate(NavScreen.Characters.route) {
+                            popUpTo(it)
+                        }
+                    }
                 )
             }
             composable(NavScreen.Characters.route) {
                 CharactersScreen(
-                    navController = navController,
-                    hiltViewModel()
+                    hiltViewModel(),
+                    navigateToDetail = {
+                        navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${it.toJson()}"))
+                    }
                 )
             }
             composable(
                 NavScreen.CharacterDetail.route.plus("?characterDetail={characterDetail}"),
                 content = {
                     CharactersDetailScreen(
-                        navController = navController,
-                        viewModel = hiltViewModel()
+                        viewModel = hiltViewModel(),
+                        navigateToBack = {
+                            navController.popBackStack()
+                        }
                     )
                 },
                 enterTransition = {
@@ -105,7 +114,9 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
             composable(NavScreen.Search.route) {
                 SearchScreen(
                     hiltViewModel(),
-                    navController
+                    navigateToDetail = {
+                        navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${it.toJson()}"))
+                    }
                 )
             }
 
@@ -119,8 +130,10 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
                 NavScreen.Favorites.route,
                 content = {
                     FavoritesScreen(
-                        navController = navController,
-                        viewModel = hiltViewModel()
+                        viewModel = hiltViewModel(),
+                        navigateCharacterDetail = {
+                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${it.toJson()}"))
+                        }
                     )
                 },
                 enterTransition = {

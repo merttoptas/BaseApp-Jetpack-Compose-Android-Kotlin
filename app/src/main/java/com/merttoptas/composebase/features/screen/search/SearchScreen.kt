@@ -23,19 +23,15 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.items
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.domain.viewstate.search.SearchViewState
 import com.merttoptas.composebase.features.component.*
-import com.merttoptas.composebase.features.navigation.NavScreen
 import com.merttoptas.composebase.utils.Utility
-import com.merttoptas.composebase.utils.Utility.toJson
 import kotlinx.coroutines.launch
 
 /**
@@ -46,7 +42,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
-    navController: NavController,
+    navigateToDetail: (CharacterDto?) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
     val state = rememberModalBottomSheetState(
@@ -85,7 +81,18 @@ fun SearchScreen(
                     BottomSheetLayout(viewModel, viewState, state)
                 }
             ) {
-                Content(viewModel, navController)
+                Content(
+                    viewState = viewState,
+                    onTriggerEvent = {
+                        viewModel.onTriggerEvent(it)
+                    },
+                    clickDetail = {
+                        navigateToDetail.invoke(it)
+                    },
+                    onTextChange = {
+                        viewModel.searchText(it)
+                    }
+                )
             }
         },
         backgroundColor = MaterialTheme.colors.background
@@ -94,8 +101,12 @@ fun SearchScreen(
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
-private fun Content(viewModel: SearchViewModel, navController: NavController) {
-    val viewState by viewModel.uiState.collectAsState()
+private fun Content(
+    viewState: SearchViewState,
+    onTriggerEvent: (SearchViewEvent) -> Unit,
+    clickDetail: (CharacterDto?) -> Unit,
+    onTextChange: (String) -> Unit
+) {
 
     var pagingItems: LazyPagingItems<CharacterDto>? = null
     viewState.pagedData?.let {
@@ -112,9 +123,11 @@ private fun Content(viewModel: SearchViewModel, navController: NavController) {
         RickAndMortySearchBar(
             modifier = Modifier.padding(top = 15.dp),
             text = viewState.searchText ?: "",
-            onTextChange = { viewModel.searchText(it) },
+            onTextChange = {
+                onTextChange.invoke(it)
+            },
             onClickSearch = {
-                viewModel.onTriggerEvent(SearchViewEvent.NewSearchEvent(viewState))
+                onTriggerEvent.invoke(SearchViewEvent.NewSearchEvent(viewState))
                 keyboardController?.hide()
             }
         )
@@ -127,14 +140,16 @@ private fun Content(viewModel: SearchViewModel, navController: NavController) {
                     RickAndMortyCharacterShimmer()
                 }
             } else if (viewState.pagedData != null && pagingItems != null) {
-                itemsIndexed(items = pagingItems!!) { index, item ->
+                items(items = pagingItems!!) { item ->
                     RickAndMortyCharactersCard(
                         status = item?.status ?: Status.Unknown,
                         detailClick = {
-                            navController.navigate(NavScreen.CharacterDetail.route.plus("?characterDetail=${item.toJson()}"))
+                            clickDetail.invoke(item)
                         },
-                        viewModel = viewModel,
-                        dto = item
+                        dto = item,
+                        onTriggerEvent = {
+                            onTriggerEvent.invoke(SearchViewEvent.UpdateFavorite(it))
+                        }
                     )
                 }
             }
@@ -255,6 +270,6 @@ private fun BottomSheetLayout(
 fun DetailContentItemViewPreview() {
     SearchScreen(
         viewModel = hiltViewModel(),
-        navController = rememberNavController()
+        navigateToDetail = {}
     )
 }
