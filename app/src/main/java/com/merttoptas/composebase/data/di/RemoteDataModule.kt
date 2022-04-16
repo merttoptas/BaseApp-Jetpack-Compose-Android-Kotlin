@@ -26,15 +26,16 @@ object RemoteDataModule {
     @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        gsonConverterFactory: GsonConverterFactory,
+        apiUrl: String
     ): Retrofit {
-        return Retrofit.Builder().baseUrl(Constants.BASE_URL)
+        return Retrofit.Builder().baseUrl(apiUrl)
             .addConverterFactory(gsonConverterFactory)
             .client(okHttpClient).build()
     }
 
     @Provides
-    fun provideBlockchainApiUrl(): String = Constants.BASE_URL
+    fun provideRickAndMortyApiUrl(): String = Constants.BASE_URL
 
     @Provides
     @Singleton
