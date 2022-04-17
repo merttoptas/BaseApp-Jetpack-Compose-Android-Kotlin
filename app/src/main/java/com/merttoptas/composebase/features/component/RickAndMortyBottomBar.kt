@@ -1,11 +1,9 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,7 +26,7 @@ fun RickAndMortyBottomAppBar(
     navController: NavController,
     currentRoute: String?
 ) {
-    BottomNavigation(
+    BottomAppBar(
         modifier = Modifier
             .clip(
                 RoundedCornerShape(
@@ -36,6 +34,7 @@ fun RickAndMortyBottomAppBar(
                     topEnd = 30.dp
                 )
             ),
+        cutoutShape = CircleShape,
         elevation = 10.dp,
         backgroundColor = MaterialTheme.colors.onSecondary
     ) {

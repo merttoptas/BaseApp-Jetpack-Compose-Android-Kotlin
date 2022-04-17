@@ -1,9 +1,9 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
@@ -45,8 +45,9 @@ fun RickAndMortyFloatingActionBar(
             }
             navController.navigate(NavScreen.Favorites.route)
         },
-        contentColor = Color.Transparent,
-        backgroundColor = MaterialTheme.colors.onPrimary
+        contentColor = Color.White,
+        backgroundColor = Color.White,
+        shape = CircleShape,
     ) {
         Icon(
             Icons.Filled.Favorite,
