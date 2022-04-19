@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.*
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.FavoriteEntity
-import com.merttoptas.composebase.domain.viewstate.favorites.FavoritesViewState
 import com.merttoptas.composebase.features.component.*
 
 /**
@@ -38,6 +37,7 @@ fun FavoritesScreen(
     navigateCharacterDetail: (FavoriteEntity) -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
+    val viewState = viewModel.uiState.collectAsState().value
 
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -66,7 +66,11 @@ fun FavoritesScreen(
         },
         content = {
             Content(
-                viewState = viewModel.uiState.collectAsState().value,
+                isLoading = viewState.isLoading,
+                favoriteId = viewState.favoriteId,
+                isDisplay = viewState.isDisplay,
+                isAllDeleteFavorites = viewState.isAllDeleteFavorites,
+                favoritesList = viewState.favoritesList,
                 triggerEvent = {
                     viewModel.onTriggerEvent(it)
                 },
@@ -81,7 +85,11 @@ fun FavoritesScreen(
 
 @Composable
 private fun Content(
-    viewState: FavoritesViewState,
+    isLoading: Boolean,
+    favoriteId: Int?,
+    isDisplay: Boolean,
+    isAllDeleteFavorites: Boolean,
+    favoritesList: List<FavoriteEntity>,
     triggerEvent: (FavoritesViewEvent) -> Unit,
     clickDetail: (FavoriteEntity) -> Unit
 ) {
@@ -93,75 +101,93 @@ private fun Content(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            RickAndMortyAlertDialog(
-                isDisplayed = viewState.isDisplay,
-                onClickDelete = {
-                    if (viewState.isAllDeleteFavorites) {
-                        triggerEvent.invoke(FavoritesViewEvent.OnDeleteAllFavorites)
-                    } else {
-                        triggerEvent.invoke(FavoritesViewEvent.OnDeleteFavorite)
-                    }
-                    triggerEvent.invoke(
-                        FavoritesViewEvent.OnDisplayChange(
-                            viewState.copy(
-                                isDisplay = false,
-                                favoriteId = viewState.favoriteId
-                            )
-                        )
-                    )
-                },
-                onBackPressed = {
-                    triggerEvent.invoke(
-                        FavoritesViewEvent.OnDisplayChange(
-                            viewState.copy(
-                                isDisplay = false,
-                                favoriteId = viewState.favoriteId
-                            )
-                        )
-                    )
-                },
-            )
-        }
+        ShowRickAndMortAlertDialog(
+            isDisplay = isDisplay,
+            isAllDeleteFavorites = isAllDeleteFavorites,
+            triggerEvent = triggerEvent,
+            favoriteId = favoriteId
+        )
 
-        if (viewState.isLoading.not() && viewState.favoritesList.isEmpty()) {
+        if (isLoading.not() && favoritesList.isEmpty()) {
             EmptyListAnimation()
         }
+        FavoriteList(isLoading, favoritesList, clickDetail, triggerEvent)
+    }
+}
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            if (viewState.isLoading) {
-                items(10) {
-                    RickAndMortyCharacterShimmer()
+@Composable
+private fun ShowRickAndMortAlertDialog(
+    isDisplay: Boolean,
+    isAllDeleteFavorites: Boolean,
+    triggerEvent: (FavoritesViewEvent) -> Unit,
+    favoriteId: Int?
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        RickAndMortyAlertDialog(
+            isDisplayed = isDisplay,
+            onClickDelete = {
+                if (isAllDeleteFavorites) {
+                    triggerEvent.invoke(FavoritesViewEvent.OnDeleteAllFavorites)
+                } else {
+                    triggerEvent.invoke(FavoritesViewEvent.OnDeleteFavorite)
                 }
-            } else if (viewState.favoritesList.isNotEmpty()) {
-                items(items = viewState.favoritesList) { item ->
-                    RickAndMortyFavoriteRowCard(
-                        status = item.status,
-                        detailClick = {
-                            clickDetail.invoke(item)
-                        },
-                        dto = item,
-                        onDeleteClick = {
-                            triggerEvent.invoke(
-                                FavoritesViewEvent.OnDisplayChange(
-                                    viewState.copy(
-                                        isDisplay = true,
-                                        favoriteId = item.id
-                                    )
-                                )
-                            )
-                        }
+                triggerEvent.invoke(
+                    FavoritesViewEvent.OnDisplayChange(
+                        isDisplay = false,
+                        favoriteId = favoriteId
                     )
-                }
+                )
+            },
+            onBackPressed = {
+                triggerEvent.invoke(
+                    FavoritesViewEvent.OnDisplayChange(
+                        isDisplay = false,
+                        favoriteId = favoriteId
+                    )
+                )
+            },
+        )
+    }
+}
+
+@Composable
+private fun FavoriteList(
+    isLoading: Boolean,
+    favoritesList: List<FavoriteEntity>,
+    clickDetail: (FavoriteEntity) -> Unit,
+    triggerEvent: (FavoritesViewEvent) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentPadding = PaddingValues(vertical = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        if (isLoading) {
+            items(10) {
+                RickAndMortyCharacterShimmer()
+            }
+        } else if (favoritesList.isNotEmpty()) {
+            items(items = favoritesList) { item ->
+                RickAndMortyFavoriteRowCard(
+                    status = item.status,
+                    detailClick = {
+                        clickDetail.invoke(item)
+                    },
+                    dto = item,
+                    onDeleteClick = {
+                        triggerEvent.invoke(
+                            FavoritesViewEvent.OnDisplayChange(
+                                isDisplay = true,
+                                favoriteId = item.id
+                            )
+                        )
+                    }
+                )
             }
         }
     }
@@ -207,5 +233,5 @@ private fun EmptyListAnimation() {
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    Content(viewState = hiltViewModel(), triggerEvent = {}, clickDetail = {})
+    Content(false, 1, false, false, listOf(), triggerEvent = {}, clickDetail = {})
 }

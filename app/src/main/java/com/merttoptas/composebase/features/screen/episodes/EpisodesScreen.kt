@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.features.component.*
 import com.merttoptas.composebase.R
-import com.merttoptas.composebase.domain.viewstate.episodes.EpisodesViewState
+import com.merttoptas.composebase.data.model.EpisodesResultResponse
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -29,7 +29,7 @@ fun EpisodesScreen(
     viewModel: EpisodesViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
-
+    val viewState = viewModel.uiState.collectAsState().value
     LaunchedEffect(viewModel.uiEvent) {
         launch {
             viewModel.uiEvent.collect {
@@ -59,7 +59,8 @@ fun EpisodesScreen(
         },
         content = {
             Content(
-                viewState = viewModel.uiState.collectAsState().value
+                isLoading = viewState.isLoading,
+                data = viewState.data,
             )
         }
     )
@@ -67,7 +68,8 @@ fun EpisodesScreen(
 
 @Composable
 private fun Content(
-    viewState: EpisodesViewState
+    isLoading: Boolean,
+    data: List<EpisodesResultResponse>?,
 ) {
     Box(
         modifier = Modifier
@@ -78,12 +80,12 @@ private fun Content(
             contentPadding = PaddingValues(vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (viewState.isLoading) {
+            if (isLoading) {
                 items(10) {
                     RickAndMortyEpisodesShimmer()
                 }
             } else {
-                items(items = viewState.data ?: listOf()) { item ->
+                items(items = data ?: listOf()) { item ->
                     RickAndMortyEpisodesCard(
                         name = item.name ?: "",
                         date = item.airDate ?: "",
