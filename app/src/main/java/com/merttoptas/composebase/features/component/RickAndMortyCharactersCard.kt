@@ -58,12 +58,12 @@ fun RickAndMortyCharactersCard(
                 Spacer(modifier = Modifier.width(10.dp))
                 Column(modifier = Modifier.fillMaxHeight()) {
                     RickAndMortyText(
-                        text = dto?.name ?: "",
+                        text = dto?.name.orEmpty(),
                         style = MaterialTheme.typography.body1,
                         color = MaterialTheme.colors.secondaryVariant
                     )
                     RickAndMortyText(
-                        text = dto?.species ?: "",
+                        text = dto?.species.orEmpty(),
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.secondaryVariant,
                     )

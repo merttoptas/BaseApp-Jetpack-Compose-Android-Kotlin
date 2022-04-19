@@ -1,8 +1,8 @@
+@file:OptIn(ExperimentalComposeUiApi::class)
+
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +11,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +22,6 @@ import com.merttoptas.composebase.R
  * Created by merttoptas on 19.03.2022
  */
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RickAndMortyEpisodesCard(
     modifier: Modifier = Modifier,

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+
 package com.merttoptas.composebase.features.screen.search
 
 import android.content.res.Configuration
@@ -40,7 +42,6 @@ import kotlinx.coroutines.launch
  * Created by merttoptas on 9.04.2022
  */
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
@@ -103,7 +104,6 @@ fun SearchScreen(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun Content(
     isLoading: Boolean,
@@ -128,7 +128,7 @@ private fun Content(
     ) {
         RickAndMortySearchBar(
             modifier = Modifier.padding(top = 15.dp),
-            text = searchText ?: "",
+            text = searchText.orEmpty(),
             onTextChange = {
                 onTextChange.invoke(it)
             },
@@ -158,7 +158,7 @@ private fun ShowSearchList(
                 RickAndMortyCharacterShimmer()
             }
         } else if (pagedData != null && pagingItems != null) {
-            items(items = pagingItems!!) { item ->
+            items(items = pagingItems) { item ->
                 RickAndMortyCharactersCard(
                     status = item?.status ?: Status.Unknown,
                     detailClick = {
@@ -174,7 +174,6 @@ private fun ShowSearchList(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun BottomSheetLayout(
     viewModel: SearchViewModel,

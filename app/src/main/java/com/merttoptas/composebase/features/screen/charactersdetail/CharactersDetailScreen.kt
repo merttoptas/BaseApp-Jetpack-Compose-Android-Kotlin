@@ -48,7 +48,7 @@ fun CharactersDetailScreen(
             viewModel.uiEvent.collect {
                 when (it) {
                     is CharactersDetailViewEvent.SnackBarError -> {
-                        scaffoldState.snackbarHostState.showSnackbar(it.message ?: "")
+                        scaffoldState.snackbarHostState.showSnackbar(it.message.orEmpty())
                     }
                 }
             }
@@ -135,7 +135,7 @@ private fun CharacterInfoContainer(data: Result?) {
             CharacterInfoRow(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.character_detail_card_name),
-                value = data?.name ?: ""
+                value = data?.name.orEmpty()
             )
             Divider(thickness = 0.5.dp)
             CharacterInfoRow(
@@ -143,7 +143,7 @@ private fun CharacterInfoContainer(data: Result?) {
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 text = stringResource(id = R.string.character_detail_card_species),
-                value = data?.species ?: ""
+                value = data?.species.orEmpty()
             )
             Divider(thickness = 0.5.dp)
             CharacterInfoRow(
@@ -151,7 +151,7 @@ private fun CharacterInfoContainer(data: Result?) {
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 text = stringResource(id = R.string.character_detail_card_gender),
-                value = data?.gender ?: ""
+                value = data?.gender.orEmpty()
             )
             Divider(thickness = 0.5.dp)
             CharacterInfoRow(
@@ -159,7 +159,7 @@ private fun CharacterInfoContainer(data: Result?) {
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 text = stringResource(id = R.string.character_detail_card_last_know_location),
-                value = data?.origin?.name ?: ""
+                value = data?.origin?.name.orEmpty()
             )
             Divider(thickness = 0.5.dp)
             CharacterInfoRow(
@@ -167,7 +167,7 @@ private fun CharacterInfoContainer(data: Result?) {
                     .fillMaxWidth()
                     .padding(top = 10.dp),
                 text = stringResource(id = R.string.character_detail_card_location),
-                value = data?.location?.name ?: ""
+                value = data?.location?.name.orEmpty()
             )
             Divider(thickness = 0.5.dp)
         }
