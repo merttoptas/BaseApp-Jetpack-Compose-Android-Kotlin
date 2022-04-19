@@ -19,7 +19,6 @@ import androidx.paging.compose.items
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
-import com.merttoptas.composebase.domain.viewstate.characters.CharactersViewState
 import com.merttoptas.composebase.features.component.RickAndMortyCharacterShimmer
 import com.merttoptas.composebase.features.component.RickAndMortyCharactersCard
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold

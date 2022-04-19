@@ -35,7 +35,7 @@ fun EpisodesScreen(
             viewModel.uiEvent.collect {
                 when (it) {
                     is EpisodesViewEvent.SnackBarError -> {
-                        scaffoldState.snackbarHostState.showSnackbar(it.message ?: "")
+                        scaffoldState.snackbarHostState.showSnackbar(it.message.orEmpty())
                     }
                 }
             }
@@ -87,9 +87,9 @@ private fun Content(
             } else {
                 items(items = data ?: listOf()) { item ->
                     RickAndMortyEpisodesCard(
-                        name = item.name ?: "",
-                        date = item.airDate ?: "",
-                        episode = item.episode ?: "",
+                        name = item.name.orEmpty(),
+                        date = item.airDate.orEmpty(),
+                        episode = item.episode.orEmpty(),
                     )
                 }
             }
