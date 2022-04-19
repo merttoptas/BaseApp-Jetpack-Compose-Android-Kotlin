@@ -36,18 +36,28 @@ class FavoritesViewModel @Inject constructor(
 
     override fun onTriggerEvent(event: FavoritesViewEvent) {
         viewModelScope.launch {
-            when(event) {
+            when (event) {
                 is FavoritesViewEvent.OnDeleteFavorite -> {
                     onDeleteFavorite()
                 }
                 is FavoritesViewEvent.OnDisplayChange -> {
-                    setState { currentState.copy(isDisplay = event.viewState.isDisplay, favoriteId = event.viewState.favoriteId) }
+                    setState {
+                        currentState.copy(
+                            isDisplay = event.isDisplay,
+                            favoriteId = event.favoriteId
+                        )
+                    }
                 }
                 is FavoritesViewEvent.OnDeleteAllFavorites -> {
                     deleteAllFavorites()
                 }
-                is  FavoritesViewEvent.OnIsDeleteAllFavoritesChange -> {
-                    setState { currentState.copy(isDisplay = isDisplay, isAllDeleteFavorites = true) }
+                is FavoritesViewEvent.OnIsDeleteAllFavoritesChange -> {
+                    setState {
+                        currentState.copy(
+                            isDisplay = true,
+                            isAllDeleteFavorites = true
+                        )
+                    }
 
                 }
             }
@@ -63,7 +73,7 @@ class FavoritesViewModel @Inject constructor(
         }
     }
 
-   private fun deleteAllFavorites() {
+    private fun deleteAllFavorites() {
         viewModelScope.launch {
             call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(null)))
             updateFavoriteList()
@@ -82,7 +92,7 @@ class FavoritesViewModel @Inject constructor(
 }
 
 sealed class FavoritesViewEvent : IViewEvent {
-    class OnDisplayChange(val viewState: FavoritesViewState) : FavoritesViewEvent()
+    class OnDisplayChange(val isDisplay: Boolean, val favoriteId: Int?) : FavoritesViewEvent()
     object OnDeleteFavorite : FavoritesViewEvent()
     object OnDeleteAllFavorites : FavoritesViewEvent()
     object OnIsDeleteAllFavoritesChange : FavoritesViewEvent()

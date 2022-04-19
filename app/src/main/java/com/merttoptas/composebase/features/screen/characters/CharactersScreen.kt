@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -24,6 +25,7 @@ import com.merttoptas.composebase.features.component.RickAndMortyCharactersCard
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
 import com.merttoptas.composebase.utils.Utility.rememberFlowWithLifecycle
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by merttoptas on 13.03.2022
@@ -34,8 +36,8 @@ fun CharactersScreen(
     viewModel: CharactersViewModel,
     navigateToDetail: (CharacterDto?) -> Unit
 ) {
-
     val scaffoldState = rememberScaffoldState()
+    val viewState = viewModel.uiState.collectAsState().value
 
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -48,7 +50,8 @@ fun CharactersScreen(
         },
         content = {
             Content(
-                viewState = viewModel.uiState.collectAsState().value,
+                isLoading = viewState.isLoading,
+                pagedData = viewState.pagedData,
                 onTriggerEvent = {
                   viewModel.onTriggerEvent(it)
                 },
@@ -63,12 +66,13 @@ fun CharactersScreen(
 
 @Composable
 private fun Content(
-    viewState: CharactersViewState,
+    isLoading :Boolean = false,
+    pagedData: Flow<PagingData<CharacterDto>>? = null,
     onTriggerEvent: (CharactersViewEvent) -> Unit,
     clickDetail: (CharacterDto?) -> Unit
 ) {
     var pagingItems: LazyPagingItems<CharacterDto>? = null
-    viewState.pagedData?.let {
+    pagedData?.let {
         pagingItems = rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
     }
 
@@ -81,11 +85,11 @@ private fun Content(
             contentPadding = PaddingValues(vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (viewState.isLoading) {
+            if (isLoading) {
                 items(10) {
                     RickAndMortyCharacterShimmer()
                 }
-            } else if (viewState.pagedData != null && pagingItems != null) {
+            } else if (pagedData != null && pagingItems != null) {
                 items(items = pagingItems!!) { item ->
                     RickAndMortyCharactersCard(
                         status = item?.status ?: Status.Unknown,

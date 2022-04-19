@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.merttoptas.composebase.R
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.BuildConfig
-import com.merttoptas.composebase.domain.viewstate.settings.SettingsViewState
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyText
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
@@ -44,7 +43,7 @@ fun SettingsScreen(
         },
         content = {
             Content(
-                viewState = viewState,
+                isDark = viewState.isDark,
                 onTriggerEvent = {
                     viewModel.onTriggerEvent(it)
                 }
@@ -57,7 +56,7 @@ fun SettingsScreen(
 
 @Composable
 private fun Content(
-    viewState: SettingsViewState,
+    isDark: Boolean = false,
     onTriggerEvent: (SettingsViewEvent) -> Unit
 ) {
     Box(
@@ -86,7 +85,7 @@ private fun Content(
                 )
 
                 Switch(
-                    checked = viewState.isDark,
+                    checked = isDark,
                     onCheckedChange = {
                         onTriggerEvent.invoke(SettingsViewEvent.OnChangeTheme)
                     })
