@@ -31,7 +31,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is SearchViewEvent.NewSearchEvent -> {
-                    onSearch(event.viewState)
+                    onSearch(currentState)
                 }
                 is SearchViewEvent.UpdateFavorite -> {
                     updateFavorite(event.dto)
@@ -77,6 +77,6 @@ class SearchViewModel @Inject constructor(
 }
 
 sealed class SearchViewEvent : IViewEvent {
-    class NewSearchEvent(val viewState: SearchViewState) : SearchViewEvent()
+    object NewSearchEvent : SearchViewEvent()
     class UpdateFavorite(val dto: CharacterDto) : SearchViewEvent()
 }

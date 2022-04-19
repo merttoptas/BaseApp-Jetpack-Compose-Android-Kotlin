@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -32,6 +33,7 @@ import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.domain.viewstate.search.SearchViewState
 import com.merttoptas.composebase.features.component.*
 import com.merttoptas.composebase.utils.Utility
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
@@ -82,7 +84,9 @@ fun SearchScreen(
                 }
             ) {
                 Content(
-                    viewState = viewState,
+                    isLoading = viewState.isLoading,
+                    searchText = viewState.searchText,
+                    pagedData = viewState.pagedData,
                     onTriggerEvent = {
                         viewModel.onTriggerEvent(it)
                     },
@@ -102,14 +106,16 @@ fun SearchScreen(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun Content(
-    viewState: SearchViewState,
+    isLoading: Boolean,
+    searchText: String?,
+    pagedData: Flow<PagingData<CharacterDto>>?,
     onTriggerEvent: (SearchViewEvent) -> Unit,
     clickDetail: (CharacterDto?) -> Unit,
     onTextChange: (String) -> Unit
 ) {
 
     var pagingItems: LazyPagingItems<CharacterDto>? = null
-    viewState.pagedData?.let {
+    pagedData?.let {
         pagingItems = Utility.rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
     }
 
@@ -122,36 +128,47 @@ private fun Content(
     ) {
         RickAndMortySearchBar(
             modifier = Modifier.padding(top = 15.dp),
-            text = viewState.searchText ?: "",
+            text = searchText ?: "",
             onTextChange = {
                 onTextChange.invoke(it)
             },
             onClickSearch = {
-                onTriggerEvent.invoke(SearchViewEvent.NewSearchEvent(viewState))
+                onTriggerEvent.invoke(SearchViewEvent.NewSearchEvent)
                 keyboardController?.hide()
             }
         )
-        LazyColumn(
-            contentPadding = PaddingValues(vertical = 10.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            if (viewState.isLoading) {
-                items(10) {
-                    RickAndMortyCharacterShimmer()
-                }
-            } else if (viewState.pagedData != null && pagingItems != null) {
-                items(items = pagingItems!!) { item ->
-                    RickAndMortyCharactersCard(
-                        status = item?.status ?: Status.Unknown,
-                        detailClick = {
-                            clickDetail.invoke(item)
-                        },
-                        dto = item,
-                        onTriggerEvent = {
-                            onTriggerEvent.invoke(SearchViewEvent.UpdateFavorite(it))
-                        }
-                    )
-                }
+        ShowSearchList(isLoading, pagingItems, pagedData, clickDetail, onTriggerEvent)
+    }
+}
+
+@Composable
+private fun ShowSearchList(
+    isLoading: Boolean,
+    pagingItems: LazyPagingItems<CharacterDto>?,
+    pagedData: Flow<PagingData<CharacterDto>>?,
+    clickDetail: (CharacterDto?) -> Unit,
+    onTriggerEvent: (SearchViewEvent) -> Unit
+) {
+    LazyColumn(
+        contentPadding = PaddingValues(vertical = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        if (isLoading) {
+            items(10) {
+                RickAndMortyCharacterShimmer()
+            }
+        } else if (pagedData != null && pagingItems != null) {
+            items(items = pagingItems!!) { item ->
+                RickAndMortyCharactersCard(
+                    status = item?.status ?: Status.Unknown,
+                    detailClick = {
+                        clickDetail.invoke(item)
+                    },
+                    dto = item,
+                    onTriggerEvent = {
+                        onTriggerEvent.invoke(SearchViewEvent.UpdateFavorite(it))
+                    }
+                )
             }
         }
     }
@@ -245,7 +262,7 @@ private fun BottomSheetLayout(
                 bottom.linkTo(parent.bottom, 30.dp)
             },
             onClick = {
-                viewModel.onTriggerEvent(SearchViewEvent.NewSearchEvent(viewState))
+                viewModel.onTriggerEvent(SearchViewEvent.NewSearchEvent)
                 scope.launch {
                     state.hide()
                 }
