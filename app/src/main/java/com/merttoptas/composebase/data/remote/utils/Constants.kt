@@ -31,4 +31,6 @@ object Constants {
     const val COLUMN_TYPE = "type"
     const val COLUMN_URL = "url"
     const val COLUMN_EPISODE = "episode"
+
+    const val CONTENT_LENGTH = 250_000L
 }

@@ -30,4 +30,5 @@ ext {
     //Network
     retrofit_version = '2.9.0'
     okhttp_version = '4.9.3'
+    chucker_version = "3.5.2"
 }

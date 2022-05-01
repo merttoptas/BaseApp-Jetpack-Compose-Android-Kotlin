@@ -110,6 +110,10 @@ dependencies {
     //Json
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_version"
 
+    //Chucker
+    debugImplementation "com.github.chuckerteam.chucker:library:$chucker_version"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chucker_version"
+
     implementation "com.airbnb.android:lottie-compose:$lottie_version"
     implementation "com.valentinilk.shimmer:compose-shimmer:$shimmer_version"
 
