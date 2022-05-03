@@ -5,7 +5,6 @@ package com.merttoptas.composebase.features.navigation
  */
 
 sealed class NavScreen(val route: String) {
-    object Splash : NavScreen("splash")
     object Settings : NavScreen("settings")
     object Characters : NavScreen("characters")
     object Episodes : NavScreen("episodes")

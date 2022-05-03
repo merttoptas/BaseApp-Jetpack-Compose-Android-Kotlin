@@ -26,6 +26,7 @@ ext {
     shimmer_version = '1.0.0'
     navigation_version = '2.4.0-alpha07'
     coil_version = '1.4.0'
+    splash_version = '1.0.0-beta02'
 
     //Network
     retrofit_version = '2.9.0'

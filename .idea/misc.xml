@@ -36,11 +36,17 @@
         <entry key="../../../../layout/compose-model-1650209369408.xml" value="0.45555555555555555" />
         <entry key="../../../../layout/compose-model-1650209572105.xml" value="0.25" />
         <entry key="../../../../layout/compose-model-1650363040967.xml" value="0.45555555555555555" />
+        <entry key="../../../../layout/compose-model-1651609736457.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1651610128681.xml" value="0.32432432432432434" />
+        <entry key="../../../../layout/compose-model-1651610347240.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.246" />
         <entry key="app/src/main/res/drawable/ic_arrow_left.xml" value="0.315" />
         <entry key="app/src/main/res/drawable/ic_arrow_right_icon.xml" value="0.362" />
         <entry key="app/src/main/res/drawable/ic_filter.xml" value="0.2725" />
         <entry key="app/src/main/res/drawable/ic_outline_people.xml" value="0.2155" />
+        <entry key="app/src/main/res/drawable/splash_background_logo.xml" value="0.25" />
         <entry key="app/src/main/res/font/underdog.xml" value="0.4036458333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.246" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2725" />
       </map>
     </option>

@@ -114,6 +114,9 @@ dependencies {
     debugImplementation "com.github.chuckerteam.chucker:library:$chucker_version"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:$chucker_version"
 
+    //Splash
+    implementation "androidx.core:core-splashscreen:$splash_version"
+
     implementation "com.airbnb.android:lottie-compose:$lottie_version"
     implementation "com.valentinilk.shimmer:compose-shimmer:$shimmer_version"
 

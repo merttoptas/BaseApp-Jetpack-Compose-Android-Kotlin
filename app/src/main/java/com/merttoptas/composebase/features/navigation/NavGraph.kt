@@ -22,7 +22,6 @@ import com.merttoptas.composebase.features.screen.episodes.EpisodesScreen
 import com.merttoptas.composebase.features.screen.favorites.FavoritesScreen
 import com.merttoptas.composebase.features.screen.search.SearchScreen
 import com.merttoptas.composebase.features.screen.settings.SettingsScreen
-import com.merttoptas.composebase.features.screen.splash.SplashScreen
 import com.merttoptas.composebase.utils.Utility.toJson
 
 /**
@@ -31,7 +30,7 @@ import com.merttoptas.composebase.utils.Utility.toJson
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun NavGraph(startDestination: String = NavScreen.Splash.route) {
+fun NavGraph(startDestination: String = NavScreen.Characters.route) {
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -63,16 +62,6 @@ fun NavGraph(startDestination: String = NavScreen.Splash.route) {
             startDestination = startDestination,
             Modifier.padding(innerPadding)
         ) {
-            composable(NavScreen.Splash.route) {
-                SplashScreen(
-                    hiltViewModel(),
-                    navigateToDashboard = {
-                        navController.navigate(NavScreen.Characters.route) {
-                            popUpTo(it)
-                        }
-                    }
-                )
-            }
             composable(NavScreen.Characters.route) {
                 CharactersScreen(
                     hiltViewModel(),

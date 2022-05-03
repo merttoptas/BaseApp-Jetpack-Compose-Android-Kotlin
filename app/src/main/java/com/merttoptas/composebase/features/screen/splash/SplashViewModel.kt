@@ -19,7 +19,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            delay(1000)
+            delay(2000)
             setEvent(SplashViewEvent.DirectToDashBoard)
         }
     }
