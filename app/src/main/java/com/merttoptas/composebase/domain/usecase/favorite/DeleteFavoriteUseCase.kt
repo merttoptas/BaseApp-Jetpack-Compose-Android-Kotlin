@@ -1,8 +1,10 @@
 package com.merttoptas.composebase.domain.usecase.favorite
 
-import com.merttoptas.composebase.domain.base.BaseFavoriteUseCase
+import com.merttoptas.composebase.domain.base.BaseUseCase
+import com.merttoptas.composebase.domain.base.IParams
 import com.merttoptas.composebase.domain.repository.CharacterRepository
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
  * Created by merttoptas on 29.03.2022
@@ -10,18 +12,18 @@ import kotlinx.coroutines.flow.FlowCollector
 
 class DeleteFavoriteUseCase(
     internal val repository: CharacterRepository
-) : BaseFavoriteUseCase<DeleteFavoriteUseCase.Params, Unit>() {
+) : BaseUseCase<DeleteFavoriteUseCase.Params, Unit> {
 
     data class Params(
         val characterId: Int?
-    )
+    ) : IParams
 
-    override suspend fun FlowCollector<Unit>.execute(params: Params) {
-        params.characterId?.let {
-            repository.deleteFavoriteById(params.characterId)
+    override suspend fun invoke(param: Params): Flow<Unit> {
+        param.characterId?.let {
+            repository.deleteFavoriteById(param.characterId)
         } ?: kotlin.run {
             repository.deleteFavoriteList()
         }
-        emit(Unit)
+        return flow { emit(Unit) }
     }
 }

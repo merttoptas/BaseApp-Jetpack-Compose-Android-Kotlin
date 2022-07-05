@@ -4,7 +4,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.merttoptas.composebase.data.model.dto.CharacterDto
-import com.merttoptas.composebase.domain.base.BasePaginationUseCase
+import com.merttoptas.composebase.domain.base.BaseUseCase
+import com.merttoptas.composebase.domain.base.IParams
 import com.merttoptas.composebase.domain.repository.CharacterRepository
 import kotlinx.coroutines.flow.Flow
 
@@ -14,17 +15,17 @@ import kotlinx.coroutines.flow.Flow
 
 class GetCharactersUseCase(
     internal val repository: CharacterRepository
-) : BasePaginationUseCase<GetCharactersUseCase.Params, CharacterDto>() {
+) : BaseUseCase<GetCharactersUseCase.Params, PagingData<CharacterDto>> {
 
     data class Params(
         val pagingConfig: PagingConfig,
         val options: Map<String, String>
-    )
+    ) : IParams
 
-    override fun execute(params: Params): Flow<PagingData<CharacterDto>> {
+    override suspend fun invoke(param: Params): Flow<PagingData<CharacterDto>> {
         return Pager(
-            config = params.pagingConfig,
-            pagingSourceFactory = { CharacterPagingSource(repository, params.options) }
+            config = param.pagingConfig,
+            pagingSourceFactory = { CharacterPagingSource(repository, param.options) }
         ).flow
     }
 }

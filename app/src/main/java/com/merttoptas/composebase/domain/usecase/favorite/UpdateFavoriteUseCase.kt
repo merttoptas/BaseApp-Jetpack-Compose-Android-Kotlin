@@ -1,11 +1,11 @@
 package com.merttoptas.composebase.domain.usecase.favorite
 
-import android.util.Log
 import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.data.model.dto.extension.toFavoriteEntity
-import com.merttoptas.composebase.domain.base.BaseFavoriteUseCase
+import com.merttoptas.composebase.domain.base.BaseUseCase
+import com.merttoptas.composebase.domain.base.IParams
 import com.merttoptas.composebase.domain.repository.CharacterRepository
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.flow
 
 /**
  * Created by merttoptas on 27.03.2022
@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.FlowCollector
 
 class UpdateFavoriteUseCase(
     internal val repository: CharacterRepository
-) : BaseFavoriteUseCase<UpdateFavoriteUseCase.Params, Unit>() {
+) : BaseUseCase<UpdateFavoriteUseCase.Params, Unit> {
 
     data class Params(
         val character: CharacterDto
-    )
+    ) : IParams
 
-    override suspend fun FlowCollector<Unit>.execute(params: Params) {
-        val dto = params.character
+    override suspend fun invoke(param: Params) = flow<Unit> {
+        val dto = param.character
         val character = repository.getFavorite(dto.id ?: 0)
         if (character == null) {
             repository.saveFavorite(dto.toFavoriteEntity())
