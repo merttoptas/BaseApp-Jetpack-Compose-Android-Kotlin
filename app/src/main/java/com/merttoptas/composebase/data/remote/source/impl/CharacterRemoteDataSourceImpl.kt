@@ -19,6 +19,8 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
 ) :
     BaseRemoteDataSource(), CharacterRemoteDataSource {
 
+    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = dao.getFavorite(favoriteId)
+
     override suspend fun getAllCharacters(
         page: Int,
         options: Map<String, String>
@@ -36,7 +38,6 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
             characterService.getCharacter(url)
         }
 
-    override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = dao.getFavorite(favoriteId)
 
     override suspend fun getFavoriteList(): List<FavoriteEntity> = dao.getFavoriteList()
 

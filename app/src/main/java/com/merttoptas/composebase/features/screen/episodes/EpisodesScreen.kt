@@ -30,6 +30,7 @@ fun EpisodesScreen(
 ) {
     val scaffoldState = rememberScaffoldState()
     val viewState = viewModel.uiState.collectAsState().value
+
     LaunchedEffect(viewModel.uiEvent) {
         launch {
             viewModel.uiEvent.collect {
