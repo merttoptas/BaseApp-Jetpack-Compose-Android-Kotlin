@@ -17,7 +17,7 @@ import com.merttoptas.composebase.data.remote.utils.Constants
 @Database(
     entities = [FavoriteEntity::class],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(EpisodeConverter::class)
 abstract class RickAndMortyDatabase : RoomDatabase() {
