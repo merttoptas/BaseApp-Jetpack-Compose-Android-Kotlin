@@ -12,9 +12,17 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.navOptions
+import androidx.tracing.trace
 import com.merttoptas.composebase.features.navigation.BottomNav
-import com.merttoptas.composebase.features.navigation.NavScreen
+import com.merttoptas.composebase.features.screen.characters.navigation.navigateCharacter
+import com.merttoptas.composebase.features.screen.episodes.navigation.navigateToEpisodes
+import com.merttoptas.composebase.features.screen.favorites.navigation.navigateToFavorites
+import com.merttoptas.composebase.features.screen.search.navigation.navigateToSearch
+import com.merttoptas.composebase.features.screen.settings.navigation.navigateToSettings
 import com.merttoptas.composebase.utils.Constants
 
 /**
@@ -24,7 +32,8 @@ import com.merttoptas.composebase.utils.Constants
 @Composable
 fun RickAndMortyBottomAppBar(
     navController: NavController,
-    currentRoute: String?
+    currentRoute: String?,
+    currentDestination: NavDestination?,
 ) {
     BottomAppBar(
         modifier = Modifier
@@ -39,6 +48,8 @@ fun RickAndMortyBottomAppBar(
         backgroundColor = MaterialTheme.colors.onSecondary
     ) {
         BottomNav.values().forEach { screen ->
+            val selected = currentDestination.isBottomNavDestinationInHierarchy(screen)
+
             BottomNavigationItem(
                 alwaysShowLabel = true,
                 selectedContentColor = MaterialTheme.colors.primary,
@@ -58,31 +69,42 @@ fun RickAndMortyBottomAppBar(
                         textAlign = TextAlign.Center
                     )
                 },
-                selected = currentRoute == screen.route,
+                selected = selected,
                 onClick = {
-                    if (currentRoute == screen.route) {
-                        return@BottomNavigationItem
-                    }
-
-                    if (currentRoute != screen.route) {
-                        navController.navigate(screen.route) {
-                            NavScreen.Characters.route.let { charactersRoute ->
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                            }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                    }
+                    navigateToBottomNavDestination(screen, navController)
                 }
             )
         }
     }
 }
+
+fun navigateToBottomNavDestination(bottomNav: BottomNav, navController: NavController) {
+    trace("Navigation: ${bottomNav.name}") {
+        val bottomNavOptions = navOptions {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            // Avoid multiple copies of the same destination when
+            // reselecting the same item
+            launchSingleTop = true
+            // Restore state when reselecting a previously selected item
+            restoreState = true
+        }
+
+        when (bottomNav) {
+            BottomNav.CHARACTERS -> navController.navigateCharacter(bottomNavOptions)
+            BottomNav.EPISODES -> navController.navigateToEpisodes(bottomNavOptions)
+            BottomNav.FAVORITES -> navController.navigateToFavorites(bottomNavOptions)
+            BottomNav.SEARCH -> navController.navigateToSearch(bottomNavOptions)
+            BottomNav.SETTINGS -> navController.navigateToSettings(bottomNavOptions)
+        }
+    }
+}
+
+private fun NavDestination?.isBottomNavDestinationInHierarchy(destination: BottomNav) =
+    this?.hierarchy?.any {
+        it.route?.contains(destination.name, true) ?: false
+    } ?: false

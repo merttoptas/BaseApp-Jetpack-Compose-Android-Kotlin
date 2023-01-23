@@ -1,6 +1,11 @@
 package com.merttoptas.composebase.features.navigation
 
 import com.merttoptas.composebase.R
+import com.merttoptas.composebase.features.screen.characters.navigation.charactersNavigationRoute
+import com.merttoptas.composebase.features.screen.episodes.navigation.episodesNavigationRoute
+import com.merttoptas.composebase.features.screen.favorites.navigation.favoritesNavigationRoute
+import com.merttoptas.composebase.features.screen.search.navigation.searchNavigationRoute
+import com.merttoptas.composebase.features.screen.settings.navigation.settingsNavigationRoute
 import com.merttoptas.composebase.utils.Constants
 
 /**
@@ -13,27 +18,27 @@ enum class BottomNav(
     val screenName: String
 ) {
     CHARACTERS(
-        NavScreen.Characters.route,
+        charactersNavigationRoute,
         R.drawable.ic_outline_people,
         Constants.SCREEN_NAME_CHARACTERS
     ),
     EPISODES(
-        NavScreen.Episodes.route,
+       episodesNavigationRoute,
         R.drawable.ic_baseline_movie_creation_24,
         Constants.SCREEN_NAME_EPISODES
     ),
     FAVORITES(
-        NavScreen.Favorites.route,
+        favoritesNavigationRoute,
         R.drawable.ic_baseline_favorite_24,
         Constants.SCREEN_NAME_FAVORITES
     ),
-    LOCATIONS(
-        NavScreen.Search.route,
+    SEARCH(
+       searchNavigationRoute,
         R.drawable.ic_baseline_search_24,
         Constants.SCREEN_NAME_SEARCH
     ),
     SETTINGS(
-        NavScreen.Settings .route,
+        settingsNavigationRoute,
         R.drawable.ic_baseline_settings,
         Constants.SCREEN_NAME_SETTINGS
     )

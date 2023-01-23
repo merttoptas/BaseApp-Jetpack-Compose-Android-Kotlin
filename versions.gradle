@@ -2,8 +2,8 @@ ext {
 
     // SDK build
     minSdkVersion = 23
-    targetSdkVersion = 32
-    compileSdkVersion = 32
+    targetSdkVersion = 33
+    compileSdkVersion = 33
 
     // Plugins
     gradle_plugin_version = '4.1.3'
@@ -26,6 +26,7 @@ ext {
     navigation_version = '2.4.0-alpha07'
     coil_version = '1.4.0'
     splash_version = '1.0.0-beta02'
+    tracing_version = "1.2.0-alpha01"
 
     //Network
     retrofit_version = '2.9.0'
