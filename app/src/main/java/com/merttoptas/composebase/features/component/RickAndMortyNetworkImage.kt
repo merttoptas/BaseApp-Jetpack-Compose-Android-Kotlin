@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import coil.annotation.ExperimentalCoilApi
-import coil.compose.ImagePainter
+import coil.compose.AsyncImagePainter
 import coil.compose.rememberImagePainter
 import coil.size.OriginalSize
 
@@ -42,7 +42,7 @@ fun RickAndMortyNetworkImage(
             contentScale = contentScale,
             modifier = modifier
         )
-        if (painter.state is ImagePainter.State.Loading)
+        if (painter.state is AsyncImagePainter.State.Loading)
             CircularProgressIndicator(Modifier.align(Alignment.Center))
     }
 }
