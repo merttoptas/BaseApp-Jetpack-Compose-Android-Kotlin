@@ -1,5 +1,6 @@
 package com.merttoptas.composebase.data.di
 
+import androidx.compose.runtime.Stable
 import com.merttoptas.composebase.data.remote.api.EpisodesService
 import com.merttoptas.composebase.data.remote.source.EpisodesRemoteDataSource
 import com.merttoptas.composebase.data.remote.source.impl.EpisodesRemoteDataSourceImpl
@@ -14,7 +15,7 @@ import retrofit2.Retrofit
 /**
  * Created by merttoptas on 19.03.2022
  */
-
+@Stable
 @Module
 @InstallIn(ViewModelComponent::class)
 class EpisodesModule {

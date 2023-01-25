@@ -1,6 +1,7 @@
 package com.merttoptas.composebase.data.di
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
@@ -23,7 +24,7 @@ import javax.inject.Singleton
 /**
  * Created by merttoptas on 12.03.2022
  */
-
+@Stable
 @Module
 @InstallIn(SingletonComponent::class)
 object RemoteDataModule {
@@ -84,7 +85,7 @@ object RemoteDataModule {
         retentionPeriod = RetentionManager.Period.ONE_HOUR
     )
 }
-
+@Stable
 class AuthInterceptor @Inject constructor() : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
