@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,7 +24,7 @@ import com.merttoptas.composebase.features.screen.episodes.navigation.navigateTo
 import com.merttoptas.composebase.features.screen.favorites.navigation.navigateToFavorites
 import com.merttoptas.composebase.features.screen.search.navigation.navigateToSearch
 import com.merttoptas.composebase.features.screen.settings.navigation.navigateToSettings
-import com.merttoptas.composebase.utils.Constants
+import com.merttoptas.composebase.R
 
 /**
  * Created by merttoptas on 12.03.2022
@@ -32,7 +33,6 @@ import com.merttoptas.composebase.utils.Constants
 @Composable
 fun RickAndMortyBottomAppBar(
     navController: NavController,
-    currentRoute: String?,
     currentDestination: NavDestination?,
 ) {
     BottomAppBar(
@@ -64,7 +64,9 @@ fun RickAndMortyBottomAppBar(
 
                 label = {
                     RickAndMortyText(
-                        text = if (screen.screenName == Constants.SCREEN_NAME_FAVORITES) "" else screen.screenName,
+                        text = if (screen.titleTextId == R.string.favorite_screen_title) "" else stringResource(
+                            id = screen.titleTextId
+                        ),
                         style = MaterialTheme.typography.overline,
                         textAlign = TextAlign.Center
                     )
