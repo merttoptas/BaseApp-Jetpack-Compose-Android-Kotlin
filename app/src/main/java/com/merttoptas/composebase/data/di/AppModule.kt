@@ -1,6 +1,7 @@
 package com.merttoptas.composebase.data.di
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 import com.merttoptas.composebase.RickAndMortyApp
 import dagger.Module
 import dagger.Provides
@@ -13,6 +14,7 @@ import javax.inject.Singleton
  * Created by merttoptas on 25.03.2022
  */
 
+@Stable
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {

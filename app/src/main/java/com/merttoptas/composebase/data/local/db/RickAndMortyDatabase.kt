@@ -1,6 +1,7 @@
 package com.merttoptas.composebase.data.local.db
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -13,7 +14,7 @@ import com.merttoptas.composebase.data.remote.utils.Constants
 /**
  * Created by merttoptas on 27.03.2022
  */
-
+@Stable
 @Database(
     entities = [FavoriteEntity::class],
     version = 1,

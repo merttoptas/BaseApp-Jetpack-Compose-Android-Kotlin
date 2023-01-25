@@ -1,6 +1,7 @@
 package com.merttoptas.composebase.data.di
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 import androidx.room.Room
 import com.merttoptas.composebase.data.local.dao.FavoriteDao
 import com.merttoptas.composebase.data.local.db.RickAndMortyDatabase
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 /**
  * Created by merttoptas on 27.03.2022
  */
-
+@Stable
 @Module
 @InstallIn(SingletonComponent::class)
 class LocalModule {
