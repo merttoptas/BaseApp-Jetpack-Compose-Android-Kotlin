@@ -6,8 +6,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -43,7 +41,6 @@ fun NavGraph() {
                 if (navItem.route == currentRoute) {
                     RickAndMortyBottomAppBar(
                         navController = navController,
-                        currentRoute = currentRoute,
                         currentDestination = currentDestination
                     )
                 }

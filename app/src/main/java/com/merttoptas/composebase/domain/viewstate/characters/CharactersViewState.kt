@@ -1,5 +1,6 @@
 package com.merttoptas.composebase.domain.viewstate.characters
 
+import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
 import com.merttoptas.composebase.data.model.Result
 import com.merttoptas.composebase.data.model.dto.CharacterDto
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Created by merttoptas on 13.03.2022
  */
+@Stable
 data class CharactersViewState(
     val isLoading: Boolean = false,
     val pagedData: Flow<PagingData<CharacterDto>>? = null,

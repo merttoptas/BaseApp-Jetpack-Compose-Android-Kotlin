@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import com.google.accompanist.navigation.animation.composable
-import com.merttoptas.composebase.features.navigation.NavScreen
 import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailScreen
 
 /**

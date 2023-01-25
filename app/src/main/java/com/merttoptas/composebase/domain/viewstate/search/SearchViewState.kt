@@ -1,6 +1,7 @@
 package com.merttoptas.composebase.domain.viewstate.search
 
 import android.os.Parcelable
+import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
@@ -12,6 +13,7 @@ import kotlinx.parcelize.Parcelize
  * Created by merttoptas on 9.04.2022
  */
 
+@Stable
 data class SearchViewState(
     val searchText: String? = null,
     val pagedData: Flow<PagingData<CharacterDto>>? = null,
