@@ -1,8 +1,9 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -10,7 +11,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://maven.google.com")
+        }
+
     }
 }
 rootProject.name = "ComposeBase"
-include ':app'
+include(":app")
