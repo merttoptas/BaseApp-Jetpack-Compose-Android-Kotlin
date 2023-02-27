@@ -5,14 +5,15 @@ import com.merttoptas.composebase.data.model.CharacterResponse
 import com.merttoptas.composebase.data.model.FavoriteEntity
 import com.merttoptas.composebase.data.remote.utils.DataState
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
 /**
  * Created by merttoptas on 12.03.2022
  */
 
 interface CharacterRemoteDataSource {
-    suspend fun getAllCharacters(page: Int, options: Map<String, String>): CharacterResponse
-    suspend fun getFilterCharacters(page: Int, options: Map<String, String>): CharacterResponse
+    suspend fun getAllCharacters(page: Int, options: Map<String, String>): Response<CharacterResponse>
+    suspend fun getFilterCharacters(page: Int, options: Map<String, String>): Response<CharacterResponse>
     suspend fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>>
     suspend fun getCharacter(url: String): Flow<DataState<CharacterInfoResponse>>
     suspend fun getFavoriteList(): List<FavoriteEntity>
