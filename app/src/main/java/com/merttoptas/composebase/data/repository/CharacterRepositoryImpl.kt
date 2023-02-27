@@ -10,6 +10,7 @@ import com.merttoptas.composebase.domain.repository.CharacterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -24,7 +25,7 @@ class CharacterRepositoryImpl @Inject constructor(
     override suspend fun getAllCharacters(
         page: Int,
         options: Map<String, String>
-    ): CharacterResponse =
+    ): Response<CharacterResponse> =
         characterRemoteDataSource.getAllCharacters(page = page, options = options)
 
     override fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>> = flow {
@@ -38,7 +39,7 @@ class CharacterRepositoryImpl @Inject constructor(
     override suspend fun getFilterCharacters(
         page: Int,
         options: Map<String, String>
-    ): CharacterResponse = characterRemoteDataSource.getFilterCharacters(page, options)
+    ): Response<CharacterResponse> = characterRemoteDataSource.getFilterCharacters(page, options)
 
     override suspend fun getFavorite(favoriteId: Int): FavoriteEntity? = dao.getFavorite(favoriteId)
 

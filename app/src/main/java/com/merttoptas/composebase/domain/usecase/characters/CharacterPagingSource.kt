@@ -13,7 +13,7 @@ import java.io.IOException
 
 class CharacterPagingSource(
     internal val repository: CharacterRepository,
-    internal val options: Map<String, String>
+    private val options: Map<String, String>
 ) : PagingSource<Int, CharacterDto>() {
 
     override fun getRefreshKey(state: PagingState<Int, CharacterDto>): Int? {
@@ -27,11 +27,18 @@ class CharacterPagingSource(
         val page = params.key ?: 1
         return try {
             val response = repository.getAllCharacters(page, options)
-            val characterList = response.results.orEmpty().toCharacterDtoList()
 
-            characterList.map {
-                val characterFav = repository.getFavorite(it.id ?: 0)
-                it.isFavorite = characterFav != null
+            val characterList = if (response.isSuccessful) {
+                response.body()?.results.orEmpty().toCharacterDtoList()
+            } else {
+                emptyList()
+            }
+
+            if (characterList.isNotEmpty()) {
+                characterList.map {
+                    val characterFav = repository.getFavorite(it.id ?: 0)
+                    it.isFavorite = characterFav != null
+                }
             }
 
             LoadResult.Page(

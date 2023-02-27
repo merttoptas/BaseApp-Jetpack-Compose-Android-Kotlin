@@ -16,7 +16,7 @@ interface CharacterService {
     suspend fun getAllCharacters(
         @Query(Constants.PARAM_PAGE) page: Int,
         @QueryMap options: Map<String, String>? = null
-    ): CharacterResponse
+    ): Response<CharacterResponse>
 
     @GET(Constants.GET_CHARACTER)
     suspend fun getCharacter(
@@ -32,5 +32,5 @@ interface CharacterService {
     suspend fun getFilterCharacter(
         @Query(Constants.PARAM_PAGE) page: Int,
         @QueryMap options: Map<String, String>? = null
-    ): CharacterResponse
+    ): Response<CharacterResponse>
 }

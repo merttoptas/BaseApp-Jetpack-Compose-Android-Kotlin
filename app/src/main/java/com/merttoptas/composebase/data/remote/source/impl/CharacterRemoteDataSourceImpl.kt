@@ -8,6 +8,7 @@ import com.merttoptas.composebase.data.remote.api.CharacterService
 import com.merttoptas.composebase.data.remote.source.CharacterRemoteDataSource
 import com.merttoptas.composebase.data.remote.utils.DataState
 import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -24,11 +25,11 @@ class CharacterRemoteDataSourceImpl @Inject constructor(
     override suspend fun getAllCharacters(
         page: Int,
         options: Map<String, String>
-    ): CharacterResponse = characterService.getAllCharacters(page, options)
+    ): Response<CharacterResponse> = characterService.getAllCharacters(page, options)
 
     override suspend fun getFilterCharacters(
         page: Int, options: Map<String, String>
-    ): CharacterResponse = characterService.getFilterCharacter(page, options)
+    ): Response<CharacterResponse> = characterService.getFilterCharacter(page, options)
 
     override suspend fun getCharacter(characterId: Int): Flow<DataState<CharacterInfoResponse>> =
         getResult { characterService.getCharacter(characterId = characterId) }
