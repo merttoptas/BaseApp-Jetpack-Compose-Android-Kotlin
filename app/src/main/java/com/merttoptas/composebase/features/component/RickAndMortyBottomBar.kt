@@ -68,7 +68,8 @@ fun RickAndMortyBottomAppBar(
                             id = screen.titleTextId
                         ),
                         style = MaterialTheme.typography.overline,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        maxLines = 1
                     )
                 },
                 selected = selected,

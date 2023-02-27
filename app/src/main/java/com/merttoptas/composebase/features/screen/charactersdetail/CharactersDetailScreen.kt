@@ -25,6 +25,7 @@ import com.merttoptas.composebase.features.component.RickAndMortyNetworkImage
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyText
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
+import com.merttoptas.composebase.features.ui.theme.VeryDarkBlue
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -180,7 +181,7 @@ private fun CharacterInfoRow(modifier: Modifier, text: String, value: String) {
         RickAndMortyText(
             text = text,
             style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.onSurface
+            color = VeryDarkBlue
         )
 
         RickAndMortyText(
