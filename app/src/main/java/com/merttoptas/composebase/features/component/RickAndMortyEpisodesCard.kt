@@ -44,7 +44,7 @@ fun RickAndMortyEpisodesCard(
                 },
                 text = "Episode Name: $name",
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface
+                color = MaterialTheme.colors.onBackground
             )
             RickAndMortyText(
                 modifier = Modifier.constrainAs(textDate) {
@@ -53,7 +53,7 @@ fun RickAndMortyEpisodesCard(
                 },
                 text = "Date: $date",
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colors.onBackground,
             )
             RickAndMortyText(
                 modifier = Modifier.constrainAs(textEpisode) {
@@ -62,7 +62,7 @@ fun RickAndMortyEpisodesCard(
                 },
                 text = "Episode: $episode",
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onSurface,
+                color = MaterialTheme.colors.onBackground,
             )
 
             Image(
