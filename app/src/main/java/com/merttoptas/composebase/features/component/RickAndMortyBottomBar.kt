@@ -49,6 +49,8 @@ fun RickAndMortyBottomAppBar(
     ) {
         BottomNav.values().forEach { screen ->
             val selected = currentDestination.isBottomNavDestinationInHierarchy(screen)
+            val primaryColor = MaterialTheme.colors.primary
+            val secondaryColor = MaterialTheme.colors.secondary
 
             BottomNavigationItem(
                 alwaysShowLabel = true,
@@ -67,6 +69,7 @@ fun RickAndMortyBottomAppBar(
                         text = if (screen.titleTextId == R.string.favorite_screen_title) "" else stringResource(
                             id = screen.titleTextId
                         ),
+                        color = if (selected) primaryColor else secondaryColor,
                         style = MaterialTheme.typography.overline,
                         textAlign = TextAlign.Center,
                         maxLines = 1
