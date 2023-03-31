@@ -54,106 +54,96 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = "1.4.4"
     }
 }
 
 dependencies {
-    implementation("androidx.compose.material:material:1.3.1")
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.foundation:foundation:1.3.1")
-    implementation("androidx.compose.ui:ui:1.3.3")
-    implementation("androidx.compose.foundation:foundation-layout:1.3.1")
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation("androidx.compose.foundation:foundation")
 
-    // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview:1.3.3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.3.3")
+    implementation("androidx.activity:activity-compose")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
-    // custom design system based on Foundation)
-    implementation("androidx.compose.material:material-icons-core:1.3.1")
-    // Optional - Add full set of material icons
-    implementation("androidx.compose.material:material-icons-extended:1.3.1")
-    // Optional - Add window size utils
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.1")
-
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.activity:activity-ktx:1.6.1")
-    implementation("androidx.appcompat:appcompat:1.6.0")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout.compose)
 
     //ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["lifecycle_version"]}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1")
-    implementation("androidx.navigation:navigation-compose:${rootProject.extra["navigation_version"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycle_version"]}")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.extra["lifecycle_version"]}")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     //Hilt
-    implementation("com.google.dagger:hilt-android:${rootProject.extra["hilt_version"]}")
-    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hilt_version"]}")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    // to libs
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:${rootProject.extra["retrofit_version"]}")
-    implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofit_version"]}")
-    implementation("com.squareup.okhttp3:okhttp:${rootProject.extra["okhttp_version"]}")
-    implementation("com.squareup.okhttp3:logging-interceptor:${rootProject.extra["okhttp_version"]}")
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging)
+    implementation(libs.okhttp)
 
     //DataStore
-    implementation("androidx.datastore:datastore:${rootProject.extra["datastore_version"]}")
-    implementation("androidx.datastore:datastore-preferences:${rootProject.extra["datastore_version"]}")
+    implementation(libs.androidx.dataStore.core)
+    implementation(libs.androidx.dataStore.preferences)
 
-    //Accompanistaccompanist_version
-    implementation("com.google.accompanist:accompanist-insets:${rootProject.extra["accompanist_version"]}")
-    implementation("com.google.accompanist:accompanist-pager:${rootProject.extra["accompanist_version"]}")
-    implementation("com.google.accompanist:accompanist-pager-indicators:${rootProject.extra["accompanist_version"]}")
-    implementation("com.google.accompanist:accompanist-placeholder-material:${rootProject.extra["accompanist_version"]}")
-    implementation("com.google.accompanist:accompanist-swiperefresh:${rootProject.extra["accompanist_version"]}")
+    //Accompanist
+    implementation(libs.accompanist.insets)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
+    implementation(libs.accompanist.placeholder)
+    implementation(libs.accompanist.swiperefresh)
+    implementation(libs.accompanist.navigation.animation)
 
     //Room
-    implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
-    kapt("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
 
     //Coil
-    implementation("io.coil-kt:coil-compose:${rootProject.extra["coil_version"]}")
+    implementation(libs.coil.kt.compose)
 
     //Paging 3.0
-    implementation("androidx.paging:paging-compose:${rootProject.extra["paging_version"]}")
+    implementation(libs.androidx.paging.compose)
 
     //Json
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${rootProject.extra["kotlinx_version"]}")
+    implementation(libs.kotlinx.serialization.json)
 
     //Chucker chucker_version
-    debugImplementation("com.github.chuckerteam.chucker:library:${rootProject.extra["chucker_version"]}")
-    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:${rootProject.extra["chucker_version"]}")
+    debugImplementation(libs.chucker)
+    releaseImplementation(libs.chucker.no.op)
 
     //Splash
-    implementation("androidx.core:core-splashscreen:${rootProject.extra["splash_version"]}")
+    implementation(libs.androidx.core.splashscreen)
 
-    implementation("com.airbnb.android:lottie-compose:${rootProject.extra["lottie_version"]}")
-    implementation("com.valentinilk.shimmer:compose-shimmer:${rootProject.extra["shimmer_version"]}")
+    implementation(libs.lottie.compose)
+    implementation(libs.shimmer.compose)
 
-    implementation("com.google.accompanist:accompanist-navigation-animation:${rootProject.extra["accompanist_version"]}")
-
-    implementation("androidx.tracing:tracing:${rootProject.extra["tracing_version"]}")
-    implementation("androidx.tracing:tracing-ktx:${rootProject.extra["tracing_version"]}")
-
+    implementation(libs.androidx.tracing.tracing)
+    implementation(libs.androidx.tracing.ktx)
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.3.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.3.3")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    debugImplementation("androidx.compose.ui:ui-tooling:$${rootProject.extra["compose_version"]}")
-
+    testImplementation(libs.junit4)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }
 
 // Allow references to generated code
