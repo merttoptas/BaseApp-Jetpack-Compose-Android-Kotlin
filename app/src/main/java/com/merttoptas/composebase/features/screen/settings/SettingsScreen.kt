@@ -38,7 +38,6 @@ fun SettingsScreen(
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(id = R.string.settings_screen_title),
-                elevation = 10.dp,
             )
         },
         content = {

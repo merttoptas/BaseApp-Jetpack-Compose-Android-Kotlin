@@ -56,7 +56,6 @@ fun CharactersDetailScreen(
     RickAndMortyScaffold(
         topBar = {
             RickAndMortyTopBar(
-                elevation = 10.dp,
                 navigationIcon = {
                     IconButton(onClick = {
                         navigateToBack()

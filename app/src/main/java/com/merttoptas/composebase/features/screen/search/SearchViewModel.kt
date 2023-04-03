@@ -73,10 +73,14 @@ class SearchViewModel @Inject constructor(
         setState { currentState.copy(status = currentState.status.map { it.copy(selected = it.name == value && it.selected.not()) }) }
     }
 
+    fun onActiveChange(value: Boolean) {
+        setState { currentState.copy(active = value) }
+    }
+
     override fun createInitialState() = SearchViewState()
 }
 
-sealed class SearchViewEvent : IViewEvent {
-    object NewSearchEvent : SearchViewEvent()
-    class UpdateFavorite(val dto: CharacterDto) : SearchViewEvent()
+sealed interface SearchViewEvent : IViewEvent {
+    object NewSearchEvent : SearchViewEvent
+    class UpdateFavorite(val dto: CharacterDto) : SearchViewEvent
 }

@@ -55,7 +55,6 @@ fun EpisodesScreen(
                     }) {
                     }
                 },
-                elevation = 10.dp,
             )
         },
         content = {

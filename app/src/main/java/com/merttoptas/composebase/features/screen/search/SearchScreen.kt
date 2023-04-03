@@ -1,15 +1,22 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@file:OptIn(
+    ExperimentalMaterialApi::class,
+    ExperimentalComposeUiApi::class,
+    ExperimentalMaterialApi::class
+)
 
 package com.merttoptas.composebase.features.screen.search
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +44,8 @@ import com.merttoptas.composebase.features.component.*
 import com.merttoptas.composebase.utils.Utility
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import androidx.compose.material3.ListItem
+import androidx.compose.ui.platform.SoftwareKeyboardController
 
 /**
  * Created by merttoptas on 9.04.2022
@@ -61,7 +70,6 @@ fun SearchScreen(
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(id = R.string.search_screen_title),
-                elevation = 10.dp,
                 actions = {
                     IconButton(onClick = {
                         scope.launch {
@@ -88,15 +96,12 @@ fun SearchScreen(
                     isLoading = viewState.isLoading,
                     searchText = viewState.searchText,
                     pagedData = viewState.pagedData,
-                    onTriggerEvent = {
-                        viewModel.onTriggerEvent(it)
-                    },
-                    clickDetail = {
-                        navigateToDetail.invoke(it)
-                    },
-                    onTextChange = {
-                        viewModel.searchText(it)
-                    }
+                    onTriggerEvent = viewModel::onTriggerEvent,
+                    clickDetail = navigateToDetail::invoke,
+                    onTextChange = viewModel::searchText,
+                    onActiveChange = viewModel::onActiveChange,
+                    active = viewState.active,
+                    suggestions = viewState.suggestion
                 )
             }
         },
@@ -108,17 +113,18 @@ fun SearchScreen(
 private fun Content(
     isLoading: Boolean,
     searchText: String?,
+    active: Boolean,
     pagedData: Flow<PagingData<CharacterDto>>?,
+    suggestions: List<String>,
     onTriggerEvent: (SearchViewEvent) -> Unit,
     clickDetail: (CharacterDto?) -> Unit,
+    onActiveChange: (Boolean) -> Unit,
     onTextChange: (String) -> Unit
 ) {
-
     var pagingItems: LazyPagingItems<CharacterDto>? = null
     pagedData?.let {
         pagingItems = Utility.rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
     }
-
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
@@ -127,14 +133,24 @@ private fun Content(
             .padding(horizontal = 15.dp),
     ) {
         RickAndMortySearchBar(
-            modifier = Modifier.padding(top = 15.dp),
+            modifier = Modifier.fillMaxWidth(),
             text = searchText.orEmpty(),
             onTextChange = {
                 onTextChange.invoke(it)
-            },
-            onClickSearch = {
                 onTriggerEvent.invoke(SearchViewEvent.NewSearchEvent)
                 keyboardController?.hide()
+            },
+            onSearchChange = { onActiveChange.invoke(false) },
+            active = active,
+            onActiveSearch = onActiveChange::invoke,
+            content = {
+                SuggestionList(
+                    suggestions = suggestions,
+                    onTextChange = onTextChange,
+                    onTriggerEvent = onTriggerEvent,
+                    onActiveChange = onActiveChange,
+                    keyboardController = keyboardController
+                )
             }
         )
         ShowSearchList(isLoading, pagingItems, pagedData, clickDetail, onTriggerEvent)
@@ -270,6 +286,36 @@ private fun BottomSheetLayout(
             borderColor = MaterialTheme.colors.primary,
             text = stringResource(id = R.string.search_modal_button_text)
         )
+    }
+}
+
+
+@Composable
+private fun SuggestionList(
+    suggestions: List<String>,
+    onTextChange: (String) -> Unit,
+    onTriggerEvent: (SearchViewEvent) -> Unit,
+    onActiveChange: (Boolean) -> Unit,
+    keyboardController: SoftwareKeyboardController?
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        items(suggestions) { suggest ->
+            ListItem(
+                headlineContent = { RickAndMortyText(suggest) },
+                supportingContent = { RickAndMortyText("Character") },
+                leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
+                modifier = Modifier.clickable {
+                    onActiveChange.invoke(false)
+                    onTextChange.invoke(suggest)
+                    onTriggerEvent.invoke(SearchViewEvent.NewSearchEvent)
+                    keyboardController?.hide()
+                }
+            )
+        }
     }
 }
 

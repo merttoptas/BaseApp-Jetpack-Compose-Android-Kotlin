@@ -28,7 +28,9 @@ data class SearchViewState(
         CharacterGender("genderless", false),
         CharacterGender("unknown", false)
     ),
-    val isLoading: Boolean = false
+    val suggestion: List<String> = listOf("Rick", "Morty", "Summer", "Beth", "Jerry"),
+    val isLoading: Boolean = false,
+    val active: Boolean = false
 ) : IViewState
 
 @Parcelize

@@ -44,7 +44,6 @@ fun CharactersScreen(
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(id = R.string.characters_screen_title),
-                elevation = 10.dp,
             )
         },
         content = {

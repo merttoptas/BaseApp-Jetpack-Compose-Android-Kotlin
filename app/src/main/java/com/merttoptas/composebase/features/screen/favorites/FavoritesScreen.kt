@@ -45,7 +45,6 @@ fun FavoritesScreen(
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(R.string.favorite_screen_title),
-                elevation = 10.dp,
                 navigationIcon = {
                     IconButton(onClick = { }) {
                     }

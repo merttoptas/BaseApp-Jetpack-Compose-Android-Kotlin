@@ -1,21 +1,22 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.*
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 
 /**
  * Created by merttoptas on 12.03.2022
  */
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RickAndMortyTopBar(
     modifier: Modifier = Modifier,
@@ -25,24 +26,23 @@ fun RickAndMortyTopBar(
             text = text,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth(),
-            color = MaterialTheme.colors.secondary,
-            style = MaterialTheme.typography.subtitle1
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.titleMedium
         )
     },
-    navigationIcon: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable (() -> Unit) = {},
     actions: @Composable RowScope.() -> Unit = {},
-    backgroundColor: Color = MaterialTheme.colors.background,
-    contentColor: Color = MaterialTheme.colors.background,
-    elevation: Dp = 0.dp
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = title,
         modifier = modifier,
         navigationIcon = navigationIcon,
         actions = actions,
-        backgroundColor = backgroundColor,
-        contentColor = contentColor,
-        elevation = elevation
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
+        windowInsets = windowInsets,
     )
 }
 
@@ -57,9 +57,8 @@ private fun BodyPreview() {
                 text = "Title",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colors.secondary,
-                style = MaterialTheme.typography.subtitle1
-            )
+
+                )
         },
     )
 }

@@ -10,7 +10,8 @@ androidxCoreSplashscreen = "1.0.0"
 androidxEspresso = "3.5.1"
 androidxComposeBom = "2023.03.00"
 androidxComposeCompiler = "1.4.14"
-androidxComposeMaterial3 = "1.0.1"
+androidxComposeMaterial3 = "1.1.0-beta01"
+androidxComposeNavigation = "2.5.3"
 androidxDataStore = "1.0.0"
 androidxLifecycle = "2.6.1"
 androidxPaging = "1.0.0-alpha18"
@@ -45,6 +46,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidConstraintLayoutCompose" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
