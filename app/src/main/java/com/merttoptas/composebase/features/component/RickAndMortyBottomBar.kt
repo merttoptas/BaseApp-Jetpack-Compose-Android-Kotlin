@@ -1,12 +1,14 @@
 package com.merttoptas.composebase.features.component
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -18,13 +20,13 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.navOptions
 import androidx.tracing.trace
+import com.merttoptas.composebase.R
 import com.merttoptas.composebase.features.navigation.BottomNav
 import com.merttoptas.composebase.features.screen.characters.navigation.navigateCharacter
 import com.merttoptas.composebase.features.screen.episodes.navigation.navigateToEpisodes
 import com.merttoptas.composebase.features.screen.favorites.navigation.navigateToFavorites
 import com.merttoptas.composebase.features.screen.search.navigation.navigateToSearch
 import com.merttoptas.composebase.features.screen.settings.navigation.navigateToSettings
-import com.merttoptas.composebase.R
 
 /**
  * Created by merttoptas on 12.03.2022
@@ -35,53 +37,34 @@ fun RickAndMortyBottomAppBar(
     navController: NavController,
     currentDestination: NavDestination?,
 ) {
-    BottomAppBar(
+    NavigationBar( // BottomAppBar
         modifier = Modifier
-            .clip(
-                RoundedCornerShape(
-                    topStart = 30.dp,
-                    topEnd = 30.dp
+            .fillMaxWidth(),
+        content = {
+            BottomNav.values().forEach { bottomNav ->
+                NavigationBarItem(
+                    icon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(bottomNav.iconId),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(bottomNav.titleTextId),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    },
+                    selected = currentDestination.isBottomNavDestinationInHierarchy(bottomNav),
+                    onClick = {
+                        navigateToBottomNavDestination(bottomNav, navController)
+                    }
                 )
-            ),
-        cutoutShape = CircleShape,
-        elevation = 10.dp,
-        backgroundColor = MaterialTheme.colors.onSecondary
-    ) {
-        BottomNav.values().forEach { screen ->
-            val selected = currentDestination.isBottomNavDestinationInHierarchy(screen)
-            val primaryColor = MaterialTheme.colors.primary
-            val secondaryColor = MaterialTheme.colors.secondary
-
-            BottomNavigationItem(
-                alwaysShowLabel = true,
-                selectedContentColor = MaterialTheme.colors.primary,
-                unselectedContentColor = MaterialTheme.colors.secondary,
-                icon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = screen.iconId),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-
-                label = {
-                    RickAndMortyText(
-                        text = if (screen.titleTextId == R.string.favorite_screen_title) "" else stringResource(
-                            id = screen.titleTextId
-                        ),
-                        color = if (selected) primaryColor else secondaryColor,
-                        style = MaterialTheme.typography.overline,
-                        textAlign = TextAlign.Center,
-                        maxLines = 1
-                    )
-                },
-                selected = selected,
-                onClick = {
-                    navigateToBottomNavDestination(screen, navController)
-                }
-            )
+            }
         }
-    }
+    )
 }
 
 fun navigateToBottomNavDestination(bottomNav: BottomNav, navController: NavController) {

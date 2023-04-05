@@ -12,12 +12,15 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +34,8 @@ import com.airbnb.lottie.compose.*
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.FavoriteEntity
 import com.merttoptas.composebase.features.component.*
+import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailViewEvent
+import kotlinx.coroutines.launch
 
 /**
  * Created by merttoptas on 30.03.2022
@@ -43,6 +48,22 @@ fun FavoritesScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val viewState = viewModel.uiState.collectAsState().value
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(viewModel.uiEvent) {
+        launch {
+            viewModel.uiEvent.collect {
+                when (it) {
+                    is FavoritesViewEvent.SnackBarMessage -> {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(it.message.orEmpty())
+                        }
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
 
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -112,6 +133,7 @@ private fun Content(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ShowRickAndMortAlertDialog(
     isDisplay: Boolean,

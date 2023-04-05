@@ -20,7 +20,6 @@ fun RickAndMortyScaffold(
     snackBarHost: @Composable () -> Unit = {
         RickAndMortySnackBar(
             snackbarHostState = snackbarHostState,
-            snackBarEnum = SnackBarEnum.ERROR
         )
     },
     topBar: @Composable (() -> Unit) = {},
@@ -28,7 +27,7 @@ fun RickAndMortyScaffold(
     floatingActionButton: @Composable (() -> Unit) = {},
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(containerColor),
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier
@@ -41,6 +40,5 @@ fun RickAndMortyScaffold(
         containerColor = containerColor,
         snackbarHost = snackBarHost,
         floatingActionButton = floatingActionButton,
-        floatingActionButtonPosition = FabPosition.Center,
-    )
+        )
 }

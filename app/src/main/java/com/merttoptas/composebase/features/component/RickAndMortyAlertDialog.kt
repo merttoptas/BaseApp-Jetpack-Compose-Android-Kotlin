@@ -43,7 +43,7 @@ fun RickAndMortyAlertDialog(
                 TextButton(
                     onClick = onClickDelete,
                 ) {
-                    Text(text = stringResource(id = R.string.dialog_button_negative))
+                    Text(text = stringResource(id = R.string.dialog_button_positive))
                 }
             }
         )

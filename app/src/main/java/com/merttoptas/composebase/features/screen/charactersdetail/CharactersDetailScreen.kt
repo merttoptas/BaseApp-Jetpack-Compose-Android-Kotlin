@@ -2,10 +2,13 @@ package com.merttoptas.composebase.features.screen.charactersdetail
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,11 +25,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Result
 import com.merttoptas.composebase.data.model.Status
+import com.merttoptas.composebase.features.component.RickAndMortyNavigateBack
 import com.merttoptas.composebase.features.component.RickAndMortyNetworkImage
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyText
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
-import com.merttoptas.composebase.features.ui.theme.VeryDarkBlue
 import kotlinx.coroutines.launch
 
 /**
@@ -45,7 +48,7 @@ fun CharactersDetailScreen(
         launch {
             viewModel.uiEvent.collect {
                 when (it) {
-                    is CharactersDetailViewEvent.SnackBarError -> {
+                    is CharactersDetailViewEvent.SnackBarMessage -> {
                         snackbarHostState.showSnackbar(it.message.orEmpty())
                     }
                 }
@@ -57,23 +60,14 @@ fun CharactersDetailScreen(
         topBar = {
             RickAndMortyTopBar(
                 navigationIcon = {
-                    IconButton(onClick = {
-                        navigateToBack()
-                    }) {
-                        Image(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_left),
-                            contentDescription = null
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {}) {}
+                    RickAndMortyNavigateBack(navigateToBack)
                 },
                 text = stringResource(id = R.string.character_detail_screen_title)
             )
         },
         content = {
             Content(
+                modifier = Modifier.padding(it),
                 viewState.data
             )
         },
@@ -82,9 +76,9 @@ fun CharactersDetailScreen(
 }
 
 @Composable
-private fun Content(data: Result?) {
+private fun Content(modifier: Modifier, data: Result?) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -178,14 +172,14 @@ private fun CharacterInfoRow(modifier: Modifier, text: String, value: String) {
     ) {
         RickAndMortyText(
             text = text,
-            style = MaterialTheme.typography.body2,
-            color = VeryDarkBlue
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         RickAndMortyText(
             text = value,
-            style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.primary
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

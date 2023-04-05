@@ -6,6 +6,7 @@ import com.merttoptas.composebase.domain.usecase.favorite.GetFavoritesUseCase
 import com.merttoptas.composebase.domain.viewstate.IViewEvent
 import com.merttoptas.composebase.domain.viewstate.favorites.FavoritesViewState
 import com.merttoptas.composebase.features.base.BaseViewModel
+import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailViewEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -40,6 +41,7 @@ class FavoritesViewModel @Inject constructor(
                 is FavoritesViewEvent.OnDeleteFavorite -> {
                     onDeleteFavorite()
                 }
+
                 is FavoritesViewEvent.OnDisplayChange -> {
                     setState {
                         currentState.copy(
@@ -48,9 +50,11 @@ class FavoritesViewModel @Inject constructor(
                         )
                     }
                 }
+
                 is FavoritesViewEvent.OnDeleteAllFavorites -> {
                     deleteAllFavorites()
                 }
+
                 is FavoritesViewEvent.OnIsDeleteAllFavoritesChange -> {
                     setState {
                         currentState.copy(
@@ -60,6 +64,8 @@ class FavoritesViewModel @Inject constructor(
                     }
 
                 }
+
+                else -> {}
             }
         }
     }
@@ -69,6 +75,7 @@ class FavoritesViewModel @Inject constructor(
             currentState.favoriteId?.let {
                 call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(it)))
                 updateFavoriteList()
+                setEvent(FavoritesViewEvent.SnackBarMessage("Favorite deleted"))
             }
         }
     }
@@ -78,6 +85,7 @@ class FavoritesViewModel @Inject constructor(
             call(deleteFavoriteUseCase(DeleteFavoriteUseCase.Params(null)))
             updateFavoriteList()
             setState { currentState.copy(isAllDeleteFavorites = false) }
+            setEvent(FavoritesViewEvent.SnackBarMessage("All favorites deleted"))
         }
     }
 
@@ -91,9 +99,11 @@ class FavoritesViewModel @Inject constructor(
     override fun createInitialState() = FavoritesViewState()
 }
 
-sealed class FavoritesViewEvent : IViewEvent {
-    class OnDisplayChange(val isDisplay: Boolean, val favoriteId: Int?) : FavoritesViewEvent()
-    object OnDeleteFavorite : FavoritesViewEvent()
-    object OnDeleteAllFavorites : FavoritesViewEvent()
-    object OnIsDeleteAllFavoritesChange : FavoritesViewEvent()
+sealed interface FavoritesViewEvent : IViewEvent {
+    class OnDisplayChange(val isDisplay: Boolean, val favoriteId: Int?) : FavoritesViewEvent
+    object OnDeleteFavorite : FavoritesViewEvent
+    object OnDeleteAllFavorites : FavoritesViewEvent
+    object OnIsDeleteAllFavoritesChange : FavoritesViewEvent
+    class SnackBarMessage(val message: String?) : FavoritesViewEvent
+
 }

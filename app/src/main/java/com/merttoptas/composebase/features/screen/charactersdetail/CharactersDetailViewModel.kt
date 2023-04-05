@@ -20,7 +20,7 @@ class CharactersDetailViewModel @Inject constructor(
         savedStateHandle.get<String>("characterDetail")?.let {
             setState { currentState.copy(isLoading = false, data = Result.create(it)) }
         } ?: kotlin.run {
-           setEvent(CharactersDetailViewEvent.SnackBarError("Something went wrong"))
+           setEvent(CharactersDetailViewEvent.SnackBarMessage("Something went wrong"))
         }
     }
 
@@ -29,5 +29,5 @@ class CharactersDetailViewModel @Inject constructor(
 }
 
 sealed class CharactersDetailViewEvent : IViewEvent {
-    class SnackBarError(val message: String?) : CharactersDetailViewEvent()
+    class SnackBarMessage(val message: String?) : CharactersDetailViewEvent()
 }

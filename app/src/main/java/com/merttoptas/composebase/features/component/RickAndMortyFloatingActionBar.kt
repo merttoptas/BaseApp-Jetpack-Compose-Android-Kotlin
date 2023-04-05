@@ -42,9 +42,6 @@ fun RickAndMortyFloatingActionBar(
                 }
             }
         },
-        contentColor = Color.White,
-        containerColor = Color.White,
-        shape = CircleShape,
     ) {
         Icon(
             Icons.Filled.Favorite,

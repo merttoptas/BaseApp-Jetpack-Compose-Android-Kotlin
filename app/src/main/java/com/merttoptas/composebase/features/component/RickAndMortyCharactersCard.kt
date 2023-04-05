@@ -1,7 +1,18 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -42,57 +53,68 @@ fun RickAndMortyCharactersCard(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .wrapContentWidth()
                 .wrapContentHeight()
-                .padding(vertical = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 10.dp),
+                    .wrapContentWidth()
+                    .wrapContentHeight()
+                    .padding(vertical = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                RickAndMortyNetworkImage(
-                    imageURL = dto?.image,
+                Row(
                     modifier = Modifier
-                        .height(80.dp)
-                        .width(80.dp)
-                        .clip(shape = RoundedCornerShape(15)),
-                    placeholder = R.drawable.ic_place_holder,
-                    contentScale = ContentScale.Crop,
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    RickAndMortyText(
-                        text = dto?.name.orEmpty(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground,
+                        .padding(horizontal = 10.dp),
+                ) {
+                    RickAndMortyNetworkImage(
+                        imageURL = dto?.image,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(shape = RoundedCornerShape(15)),
+                        placeholder = R.drawable.ic_place_holder,
+                        contentScale = ContentScale.Crop,
                     )
-                    RickAndMortyText(
-                        text = dto?.species.orEmpty(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onBackground,
-                    )
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Card(
-                            modifier = Modifier
-                                .size(12.dp),
-                            colors = CardDefaults.cardColors(
-                                containerColor = if (status == Status.Alive) Color.Green else Color.Red,
-                            ),
-                            shape = RoundedCornerShape(50)
-                        ) {}
-                        Spacer(modifier = Modifier.width(5.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         RickAndMortyText(
-                            text = status.name,
+                            text = dto?.name.orEmpty(),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onBackground,
                         )
+                        RickAndMortyText(
+                            text = dto?.species.orEmpty(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground,
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Card(
+                                modifier = Modifier
+                                    .size(12.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = if (status == Status.Alive) Color.Green else Color.Red,
+                                ),
+                                shape = RoundedCornerShape(50)
+                            ) {}
+                            Spacer(modifier = Modifier.width(5.dp))
+                            RickAndMortyText(
+                                text = status.name,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onBackground,
+                            )
+                        }
                     }
+
                 }
             }
-            Box(modifier = Modifier.wrapContentSize(), contentAlignment = Alignment.CenterEnd) {
+            Box(
+                modifier = Modifier
+                    .height(90.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.CenterEnd
+            ) {
                 dto?.let {
                     RickAndMortyFavoriteButton(
                         dto = it,

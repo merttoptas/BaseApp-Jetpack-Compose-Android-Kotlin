@@ -1,6 +1,7 @@
 package com.merttoptas.composebase.features.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,7 +55,7 @@ fun NavGraph() {
             }
         },
         containerColor = MaterialTheme.colorScheme.surface,
-    ) {
+        ) {
         AnimatedNavHost(
             navController = navController,
             startDestination = charactersNavigationRoute,

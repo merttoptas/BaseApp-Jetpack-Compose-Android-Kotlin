@@ -33,6 +33,7 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is SettingsViewEvent.OnChangeTheme -> onChangeTheme()
+                else -> {}
             }
         }
     }
