@@ -4,7 +4,7 @@
     <style name="Theme.ComposeBase" parent="android:Theme.Material.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">#FFFBFE</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
