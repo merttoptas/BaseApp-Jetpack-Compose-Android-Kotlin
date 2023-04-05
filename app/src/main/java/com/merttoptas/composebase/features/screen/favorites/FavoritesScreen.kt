@@ -1,6 +1,9 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.merttoptas.composebase.features.screen.favorites
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,10 +12,12 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,19 +41,15 @@ fun FavoritesScreen(
     viewModel: FavoritesViewModel = hiltViewModel(),
     navigateCharacterDetail: (FavoriteEntity) -> Unit
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val viewState = viewModel.uiState.collectAsState().value
 
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
+        snackbarHostState = snackbarHostState,
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(R.string.favorite_screen_title),
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                    }
-                },
                 actions = {
                     IconButton(onClick = {
                         viewModel.onTriggerEvent(FavoritesViewEvent.OnIsDeleteAllFavoritesChange)
@@ -65,25 +66,23 @@ fun FavoritesScreen(
         },
         content = {
             Content(
+                modifier = Modifier.padding(it),
                 isLoading = viewState.isLoading,
                 favoriteId = viewState.favoriteId,
                 isDisplay = viewState.isDisplay,
                 isAllDeleteFavorites = viewState.isAllDeleteFavorites,
                 favoritesList = viewState.favoritesList,
-                triggerEvent = {
-                    viewModel.onTriggerEvent(it)
-                },
-                clickDetail = {
-                    navigateCharacterDetail.invoke(it)
-                })
+                triggerEvent = viewModel::onTriggerEvent,
+                clickDetail = navigateCharacterDetail::invoke
+            )
         },
-        backgroundColor = MaterialTheme.colors.background
     )
 
 }
 
 @Composable
 private fun Content(
+    modifier: Modifier,
     isLoading: Boolean,
     favoriteId: Int?,
     isDisplay: Boolean,
@@ -92,9 +91,8 @@ private fun Content(
     triggerEvent: (FavoritesViewEvent) -> Unit,
     clickDetail: (FavoriteEntity) -> Unit
 ) {
-
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp),
         verticalArrangement = Arrangement.Center,
@@ -232,5 +230,5 @@ private fun EmptyListAnimation() {
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    Content(false, 1, false, false, listOf(), triggerEvent = {}, clickDetail = {})
+    Content(Modifier, false, 1, false, false, listOf(), triggerEvent = {}, clickDetail = {})
 }

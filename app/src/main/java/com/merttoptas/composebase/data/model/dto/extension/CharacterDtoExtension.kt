@@ -63,7 +63,7 @@ fun String.getIdFromUrl(): Int = substring(lastIndexOf("/") + 1).toIntOrNull() ?
 fun List<FavoriteEntity>.toFavoriteDtoList() = map { it.toCharacterDto() }
 
 fun LocationDto.toLocationDto() = LocationEntity(
-    locationId = url.getIdFromUrl() ?: 0,
+    locationId = url.getIdFromUrl(),
     name = name,
     url = url
 )

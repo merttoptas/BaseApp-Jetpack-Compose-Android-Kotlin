@@ -2,8 +2,8 @@ package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.merttoptas.composebase.features.screen.favorites.navigation.favoritesNavigationRoute
-import com.merttoptas.composebase.features.screen.favorites.navigation.navigateToFavorites
 import com.merttoptas.composebase.utils.Utility.getAnimateFloat
 import kotlinx.coroutines.delay
 
@@ -44,7 +43,7 @@ fun RickAndMortyFloatingActionBar(
             }
         },
         contentColor = Color.White,
-        backgroundColor = Color.White,
+        containerColor = Color.White,
         shape = CircleShape,
     ) {
         Icon(

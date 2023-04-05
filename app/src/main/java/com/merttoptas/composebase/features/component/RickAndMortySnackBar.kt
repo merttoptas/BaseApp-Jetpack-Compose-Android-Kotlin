@@ -1,11 +1,13 @@
 package com.merttoptas.composebase.features.component
 
-import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 /**
  * Created by merttoptas on 12.03.2022
@@ -18,8 +20,7 @@ fun RickAndMortySnackBar(
 ) {
     SnackbarHost(snackbarHostState) { data ->
         Snackbar(
-            elevation = 0.dp,
-            backgroundColor = Color(integerResource(id = snackBarEnum.backgroundColor)),
+            contentColor = Color(integerResource(id = snackBarEnum.backgroundColor)),
             snackbarData = data,
             shape = MaterialTheme.shapes.medium
         )
@@ -36,7 +37,7 @@ sealed class SnackBarEnum(val backgroundColor: Int) {
 @Composable
 private fun BodyPreview() {
     RickAndMortySnackBar(
-        rememberScaffoldState().snackbarHostState,
+        snackbarHostState = SnackbarHostState(),
         SnackBarEnum.SUCCESS
     )
 }

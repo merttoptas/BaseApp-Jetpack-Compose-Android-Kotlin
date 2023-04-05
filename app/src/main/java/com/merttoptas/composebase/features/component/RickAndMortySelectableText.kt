@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,14 +24,14 @@ fun RickAndMortySelectableText(
     modifier: Modifier,
     text: String = "",
     isSelected: Boolean?,
-    style : TextStyle = MaterialTheme.typography.body1,
+    style : TextStyle = MaterialTheme.typography.bodySmall,
     onClick: () -> Unit = {},
 ) {
     val bgColor =
         if (isSelected == true) colorResource(id = R.color.light_blue) else colorResource(
             id = R.color.pale_grey
         )
-    val textColor = if (isSelected == true) Color.White else MaterialTheme.colors.primary
+    val textColor = if (isSelected == true) Color.White else MaterialTheme.colorScheme.primary
 
     RickAndMortyText(
         text = text,

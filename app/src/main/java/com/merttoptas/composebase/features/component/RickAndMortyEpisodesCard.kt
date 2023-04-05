@@ -1,15 +1,14 @@
-@file:OptIn(ExperimentalComposeUiApi::class)
-
 package com.merttoptas.composebase.features.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -17,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.merttoptas.composebase.R
+import com.merttoptas.composebase.features.ui.theme.ComposeBaseTheme
 
 /**
  * Created by merttoptas on 19.03.2022
@@ -30,21 +30,29 @@ fun RickAndMortyEpisodesCard(
     episode: String,
 ) {
     Card(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp,
+        ),
     ) {
-        ConstraintLayout(modifier = modifier.padding(horizontal = 10.dp, vertical = 10.dp)) {
+        ConstraintLayout(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 10.dp)
+        ) {
             val (title, textDate, textEpisode, image) = createRefs()
-
             RickAndMortyText(
                 modifier = Modifier.constrainAs(title) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                 },
                 text = "Episode Name: $name",
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
             RickAndMortyText(
                 modifier = Modifier.constrainAs(textDate) {
@@ -52,8 +60,8 @@ fun RickAndMortyEpisodesCard(
                     start.linkTo(parent.start)
                 },
                 text = "Date: $date",
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             RickAndMortyText(
                 modifier = Modifier.constrainAs(textEpisode) {
@@ -61,8 +69,8 @@ fun RickAndMortyEpisodesCard(
                     start.linkTo(parent.start)
                 },
                 text = "Episode: $episode",
-                style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.onBackground,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
             )
 
             Image(
@@ -79,13 +87,23 @@ fun RickAndMortyEpisodesCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    name = "Light Mode"
+)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Dark Mode"
+)
 @Composable
 private fun BodyPreview() {
-    RickAndMortyEpisodesCard(
-        modifier = Modifier,
-        name = "Rick and Morty",
-        date = "2020-03-19",
-        episode = "S01E01",
-    )
+    ComposeBaseTheme {
+        RickAndMortyEpisodesCard(
+            modifier = Modifier,
+            name = "Rick and Morty",
+            date = "2020-03-19",
+            episode = "S01E01",
+        )
+    }
 }

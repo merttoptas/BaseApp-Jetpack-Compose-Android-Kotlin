@@ -1,9 +1,3 @@
-@file:OptIn(
-    ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class,
-    ExperimentalMaterialApi::class
-)
-
 package com.merttoptas.composebase.features.screen.search
 
 import android.content.res.Configuration
@@ -17,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,28 +40,30 @@ import com.merttoptas.composebase.utils.Utility
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.SoftwareKeyboardController
 
 /**
  * Created by merttoptas on 9.04.2022
  */
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
     navigateToDetail: (CharacterDto?) -> Unit
 ) {
-    val scaffoldState = rememberScaffoldState()
-    val state = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded })
+    val snackbarHostState = remember { SnackbarHostState() }
+    val state = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded })
 
     val viewState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
 
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
+        snackbarHostState = snackbarHostState,
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(id = R.string.search_screen_title),
@@ -86,11 +83,13 @@ fun SearchScreen(
         },
         content = {
             ModalBottomSheetLayout(
+                modifier = Modifier.fillMaxSize().padding(it),
                 sheetState = state,
                 sheetShape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp),
                 sheetContent = {
                     BottomSheetLayout(viewModel, viewState, state)
-                }
+                },
+                sheetBackgroundColor = MaterialTheme.colors.surface,
             ) {
                 Content(
                     isLoading = viewState.isLoading,
@@ -105,10 +104,10 @@ fun SearchScreen(
                 )
             }
         },
-        backgroundColor = MaterialTheme.colors.background
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun Content(
     isLoading: Boolean,
@@ -190,6 +189,7 @@ private fun ShowSearchList(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun BottomSheetLayout(
     viewModel: SearchViewModel,
@@ -282,7 +282,7 @@ private fun BottomSheetLayout(
                     state.hide()
                 }
             },
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colors.primary),
             borderColor = MaterialTheme.colors.primary,
             text = stringResource(id = R.string.search_modal_button_text)
         )
@@ -290,6 +290,7 @@ private fun BottomSheetLayout(
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SuggestionList(
     suggestions: List<String>,

@@ -1,7 +1,7 @@
 package com.merttoptas.composebase.features.component
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,11 +20,11 @@ import androidx.compose.ui.unit.TextUnit
 fun RickAndMortyText(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colors.primary,
+    color: Color = MaterialTheme.colorScheme.primary,
     fontSize: TextUnit = TextUnit.Unspecified,
     letterSpacing: TextUnit = TextUnit.Unspecified,
     textAlign: TextAlign? = null,
-    style: TextStyle = MaterialTheme.typography.subtitle2,
+    style: TextStyle = MaterialTheme.typography.titleSmall,
     lineHeight: TextUnit = TextUnit.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip

@@ -1,12 +1,14 @@
 package com.merttoptas.composebase.features.screen.characters
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,36 +37,35 @@ fun CharactersScreen(
     viewModel: CharactersViewModel,
     navigateToDetail: (CharacterDto?) -> Unit
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val viewState = viewModel.uiState.collectAsState().value
 
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
+        snackbarHostState = snackbarHostState,
         topBar = {
             RickAndMortyTopBar(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.characters_screen_title),
             )
         },
         content = {
             Content(
+                modifier = Modifier
+                    .padding(it),
                 isLoading = viewState.isLoading,
                 pagedData = viewState.pagedData,
-                onTriggerEvent = {
-                  viewModel.onTriggerEvent(it)
-                },
-                clickDetail = {
-                    navigateToDetail.invoke(it)
-                }
+                onTriggerEvent = viewModel::onTriggerEvent,
+                clickDetail = navigateToDetail::invoke,
             )
-        },
-        backgroundColor = MaterialTheme.colors.background
+        }
     )
 }
 
 @Composable
 private fun Content(
-    isLoading :Boolean = false,
+    modifier: Modifier,
+    isLoading: Boolean = false,
     pagedData: Flow<PagingData<CharacterDto>>? = null,
     onTriggerEvent: (CharactersViewEvent) -> Unit,
     clickDetail: (CharacterDto?) -> Unit
@@ -73,11 +74,11 @@ private fun Content(
     pagedData?.let {
         pagingItems = rememberFlowWithLifecycle(it).collectAsLazyPagingItems()
     }
-
-    Box(
-        modifier = Modifier
+    Column(
+        modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 15.dp),
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(horizontal = 15.dp)
     ) {
         LazyColumn(
             contentPadding = PaddingValues(vertical = 10.dp),

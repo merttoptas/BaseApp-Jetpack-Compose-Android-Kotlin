@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +27,6 @@ import com.merttoptas.composebase.features.component.RickAndMortyScaffold
 import com.merttoptas.composebase.features.component.RickAndMortyText
 import com.merttoptas.composebase.features.component.RickAndMortyTopBar
 import com.merttoptas.composebase.features.ui.theme.VeryDarkBlue
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -38,7 +38,7 @@ fun CharactersDetailScreen(
     viewModel: CharactersDetailViewModel = viewModel(),
     navigateToBack: () -> Unit
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val viewState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(viewModel.uiEvent) {
@@ -46,7 +46,7 @@ fun CharactersDetailScreen(
             viewModel.uiEvent.collect {
                 when (it) {
                     is CharactersDetailViewEvent.SnackBarError -> {
-                        scaffoldState.snackbarHostState.showSnackbar(it.message.orEmpty())
+                        snackbarHostState.showSnackbar(it.message.orEmpty())
                     }
                 }
             }
@@ -77,8 +77,7 @@ fun CharactersDetailScreen(
                 viewState.data
             )
         },
-        scaffoldState = scaffoldState,
-        backgroundColor = MaterialTheme.colors.background
+        snackbarHostState = snackbarHostState,
     )
 }
 

@@ -3,8 +3,9 @@ package com.merttoptas.composebase.features.component
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,11 +35,17 @@ fun RickAndMortyCharactersCard(
             .fillMaxWidth()
             .clickable { detailClick() },
         shape = RoundedCornerShape(8.dp),
-        elevation = 8.dp,
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp,
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         Row(
             modifier = Modifier
-                .size(100.dp)
+                .wrapContentWidth()
+                .wrapContentHeight()
                 .padding(vertical = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -49,41 +56,43 @@ fun RickAndMortyCharactersCard(
                 RickAndMortyNetworkImage(
                     imageURL = dto?.image,
                     modifier = Modifier
-                        .fillMaxHeight()
+                        .height(80.dp)
                         .width(80.dp)
                         .clip(shape = RoundedCornerShape(15)),
                     placeholder = R.drawable.ic_place_holder,
                     contentScale = ContentScale.Crop,
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-                Column(modifier = Modifier.fillMaxHeight()) {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     RickAndMortyText(
                         text = dto?.name.orEmpty(),
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.secondaryVariant
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                     RickAndMortyText(
                         text = dto?.species.orEmpty(),
-                        style = MaterialTheme.typography.body2,
-                        color = MaterialTheme.colors.secondaryVariant,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onBackground,
                     )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Card(
                             modifier = Modifier
                                 .size(12.dp),
-                            backgroundColor = if (status == Status.Alive) Color.Green else Color.Red,
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (status == Status.Alive) Color.Green else Color.Red,
+                            ),
                             shape = RoundedCornerShape(50)
                         ) {}
                         Spacer(modifier = Modifier.width(5.dp))
                         RickAndMortyText(
                             text = status.name,
-                            style = MaterialTheme.typography.body2,
-                            color = MaterialTheme.colors.secondaryVariant,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground,
                         )
                     }
                 }
             }
-            Box(modifier = Modifier.fillMaxHeight(), contentAlignment = Alignment.CenterEnd) {
+            Box(modifier = Modifier.wrapContentSize(), contentAlignment = Alignment.CenterEnd) {
                 dto?.let {
                     RickAndMortyFavoriteButton(
                         dto = it,

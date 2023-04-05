@@ -1,11 +1,9 @@
 package com.merttoptas.composebase.features.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -55,12 +53,11 @@ fun NavGraph() {
                 }
             }
         },
-        backgroundColor = MaterialTheme.colors.background,
-    ) { innerPadding ->
+        containerColor = MaterialTheme.colorScheme.surface,
+    ) {
         AnimatedNavHost(
             navController = navController,
             startDestination = charactersNavigationRoute,
-            Modifier.padding(innerPadding)
         ) {
             charactersScreen { navController.navigateCharactersDetail(it.toJson()) }
             charactersDetailScreen { navController.navigateUp() }

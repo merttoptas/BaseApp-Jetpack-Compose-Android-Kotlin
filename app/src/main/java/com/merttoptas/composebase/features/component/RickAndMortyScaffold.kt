@@ -1,8 +1,11 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
@@ -13,31 +16,31 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun RickAndMortyScaffold(
     modifier: Modifier = Modifier,
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-    snackBarHost: @Composable (SnackbarHostState) -> Unit = {
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackBarHost: @Composable () -> Unit = {
         RickAndMortySnackBar(
-            snackbarHostState = scaffoldState.snackbarHostState,
+            snackbarHostState = snackbarHostState,
             snackBarEnum = SnackBarEnum.ERROR
         )
     },
     topBar: @Composable (() -> Unit) = {},
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable (() -> Unit) = {},
-    backgroundColor: Color = MaterialTheme.colors.background,
-    contentColor: Color = contentColorFor(backgroundColor),
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    contentColor: Color = contentColorFor(containerColor),
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
-        modifier = modifier,
-        scaffoldState = scaffoldState,
-        snackbarHost = snackBarHost,
+        modifier = modifier
+            .statusBarsPadding()
+            .navigationBarsPadding(),
         topBar = topBar,
         content = content,
         bottomBar = bottomBar,
         contentColor = contentColor,
+        containerColor = containerColor,
+        snackbarHost = snackBarHost,
         floatingActionButton = floatingActionButton,
         floatingActionButtonPosition = FabPosition.Center,
-        isFloatingActionButtonDocked = true,
-        backgroundColor = backgroundColor
     )
 }

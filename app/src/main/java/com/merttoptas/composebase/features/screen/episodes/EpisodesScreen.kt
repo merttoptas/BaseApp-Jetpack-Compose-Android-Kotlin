@@ -1,23 +1,24 @@
 package com.merttoptas.composebase.features.screen.episodes
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.IconButton
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.merttoptas.composebase.features.component.*
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.EpisodesResultResponse
-import kotlinx.coroutines.flow.collect
+import com.merttoptas.composebase.features.ui.theme.ComposeBaseTheme
 import kotlinx.coroutines.launch
 
 /**
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 fun EpisodesScreen(
     viewModel: EpisodesViewModel
 ) {
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val viewState = viewModel.uiState.collectAsState().value
 
     LaunchedEffect(viewModel.uiEvent) {
@@ -36,43 +37,41 @@ fun EpisodesScreen(
             viewModel.uiEvent.collect {
                 when (it) {
                     is EpisodesViewEvent.SnackBarError -> {
-                        scaffoldState.snackbarHostState.showSnackbar(it.message.orEmpty())
+                        snackbarHostState.showSnackbar(it.message.orEmpty())
                     }
                 }
             }
         }
     }
 
-
     RickAndMortyScaffold(
         modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
+        snackbarHostState = snackbarHostState,
         topBar = {
             RickAndMortyTopBar(
                 text = stringResource(id = R.string.episodes_screen_title),
-                actions = {
-                    IconButton(onClick = {
-                    }) {
-                    }
-                },
             )
         },
         content = {
             Content(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(it),
                 isLoading = viewState.isLoading,
                 data = viewState.data,
             )
-        }
+        },
     )
 }
 
 @Composable
 private fun Content(
+    modifier: Modifier,
     isLoading: Boolean,
     data: List<EpisodesResultResponse>?,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 15.dp),
     ) {
@@ -108,5 +107,17 @@ private fun Content(
 )
 @Composable
 fun DetailContentItemViewPreview() {
-    EpisodesScreen(viewModel = hiltViewModel())
+    ComposeBaseTheme {
+        Content(modifier = Modifier, isLoading = false, data = listOf(
+            EpisodesResultResponse(
+                id = 1,
+                name = "Pilot",
+                airDate = "December 2, 2013",
+                episode = "S01E01",
+                characters = listOf(),
+                url = "https://rickandmortyapi.com/api/episode/1",
+                created = "2017-11-10T12:56:33.798Z"
+            )
+        ))
+    }
 }
