@@ -26,4 +26,10 @@
     <string name="search_modal_gender_title">Gender</string>
     <string name="search_modal_button_text">Apply</string>
 
+    <!--- Dialog -->
+    <string name="dialog_title">Favorite Delete</string>
+    <string name="dialog_message">Do you approve to delete this favorite?</string>
+    <string name="dialog_button_positive">Delete</string>
+    <string name="dialog_button_negative">Dismiss</string>
+
 </resources>

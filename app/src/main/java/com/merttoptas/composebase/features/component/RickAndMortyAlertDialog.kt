@@ -1,22 +1,18 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.merttoptas.composebase.features.ui.theme.ComposeBaseTheme
+import com.merttoptas.composebase.R
 
 /**
  * Created by merttoptas on 30.03.2022
  */
 
+@ExperimentalMaterial3Api
 @Composable
 fun RickAndMortyAlertDialog(
     isDisplayed: Boolean,
@@ -24,60 +20,58 @@ fun RickAndMortyAlertDialog(
     onBackPressed: () -> Unit,
 ) {
     if (isDisplayed) {
-        Dialog(
-            onDismissRequest = { }
-        ) {
-            Card(
-                backgroundColor = Color.White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .clip(shape = RoundedCornerShape(20.dp))
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+        AlertDialog(
+            onDismissRequest = onBackPressed,
+            title = {
+                Text(
+                    text = stringResource(id = R.string.dialog_title),
+                )
+            },
+            text = {
+                Text(
+                    text = stringResource(id = R.string.dialog_message),
+                )
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = onBackPressed,
                 ) {
-                    RickAndMortyText(
-                        text = "Favorite Delete",
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.primary
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    RickAndMortyText(
-                        text = "Do you approve to delete this favorite?",
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        RickAndMortyButton(
-                            onClick = { onClickDelete() },
-                            borderColor = MaterialTheme.colors.error,
-                            text = "Delete",
-                            modifier = Modifier
-                                .height(40.dp)
-                                .weight(0.5f),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.error),
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        RickAndMortyButton(
-                            onClick = { onBackPressed() },
-                            borderColor = MaterialTheme.colors.secondary,
-                            text = "Cancel",
-                            modifier = Modifier
-                                .height(40.dp)
-                                .weight(0.5f),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
-                        )
-                    }
+                    Text(text = stringResource(id = R.string.dialog_button_negative))
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = onClickDelete,
+                ) {
+                    Text(text = stringResource(id = R.string.dialog_button_negative))
                 }
             }
-        }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+fun PreviewAlertDialog() {
+    ComposeBaseTheme {
+        RickAndMortyAlertDialog(
+            isDisplayed = true,
+            onClickDelete = {},
+            onBackPressed = {},
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
+@Composable
+private fun PreviewAlertDialogDark() {
+    ComposeBaseTheme(darkTheme = true) {
+        RickAndMortyAlertDialog(
+            isDisplayed = true,
+            onClickDelete = {},
+            onBackPressed = {},
+        )
     }
 }
