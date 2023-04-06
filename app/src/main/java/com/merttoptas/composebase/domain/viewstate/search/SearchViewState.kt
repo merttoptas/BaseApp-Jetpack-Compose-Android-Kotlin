@@ -30,6 +30,7 @@ data class SearchViewState(
     ),
     val suggestion: List<String> = listOf("Rick", "Morty", "Summer", "Beth", "Jerry"),
     val isLoading: Boolean = false,
+    val openBottomSheet: Boolean = false,
     val active: Boolean = false
 ) : IViewState
 

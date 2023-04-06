@@ -14,5 +14,6 @@ data class FavoritesViewState(
     val favoriteId: Int? = null,
     val isDisplay: Boolean = false,
     val isAllDeleteFavorites: Boolean = false,
+    val isVisibleDelete : Boolean = false,
     val isLoading: Boolean = false,
 ) : IViewState

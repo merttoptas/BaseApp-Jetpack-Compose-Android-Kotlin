@@ -9,12 +9,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.merttoptas.composebase.R
 
 /**
  * Created by merttoptas on 9.04.2022
@@ -28,10 +25,8 @@ fun RickAndMortySelectableText(
     onClick: () -> Unit = {},
 ) {
     val bgColor =
-        if (isSelected == true) colorResource(id = R.color.light_blue) else colorResource(
-            id = R.color.pale_grey
-        )
-    val textColor = if (isSelected == true) Color.White else MaterialTheme.colorScheme.primary
+        if (isSelected == true) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.background
+    val textColor = if (isSelected == true) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
 
     RickAndMortyText(
         text = text,

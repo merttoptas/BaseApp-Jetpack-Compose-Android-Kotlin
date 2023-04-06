@@ -59,6 +59,7 @@ fun FavoritesScreen(
                             snackbarHostState.showSnackbar(it.message.orEmpty())
                         }
                     }
+
                     else -> {}
                 }
             }
@@ -72,15 +73,17 @@ fun FavoritesScreen(
             RickAndMortyTopBar(
                 text = stringResource(R.string.favorite_screen_title),
                 actions = {
-                    IconButton(onClick = {
-                        viewModel.onTriggerEvent(FavoritesViewEvent.OnIsDeleteAllFavoritesChange)
-                    }) {
-                        Icon(
-                            modifier = Modifier.size(24.dp),
-                            painter = rememberVectorPainter(Icons.Default.Delete),
-                            contentDescription = null,
-                            tint = Color.Gray
-                        )
+                    if (viewState.isVisibleDelete) {
+                        IconButton(onClick = {
+                            viewModel.onTriggerEvent(FavoritesViewEvent.OnIsDeleteAllFavoritesChange)
+                        }) {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = rememberVectorPainter(Icons.Default.Delete),
+                                contentDescription = null,
+                                tint = Color.Gray
+                            )
+                        }
                     }
                 },
             )

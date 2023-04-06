@@ -30,9 +30,6 @@ class SearchViewModel @Inject constructor(
     override fun onTriggerEvent(event: SearchViewEvent) {
         viewModelScope.launch {
             when (event) {
-                is SearchViewEvent.NewSearchEvent -> {
-                    onSearch(currentState)
-                }
                 is SearchViewEvent.UpdateFavorite -> {
                     updateFavorite(event.dto)
                 }
@@ -40,14 +37,18 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun onSearch(viewState: SearchViewState) {
+    fun onSearch() {
         viewModelScope.launch {
             setState { currentState.copy(isLoading = true) }
 
             val queryData = HashMap<String, String>()
-            viewState.searchText?.let { queryData[Constants.PARAM_NAME] = it }
-            viewState.status.find { c -> c.selected }?.name?.let { queryData[Constants.PARAM_STATUS] = it }
-            viewState.gender.find { c -> c.selected }?.name?.let { queryData[Constants.PARAM_GENDER] = it }
+            currentState.searchText?.let { queryData[Constants.PARAM_NAME] = it }
+            currentState.status.find { c -> c.selected }?.name?.let {
+                queryData[Constants.PARAM_STATUS] = it
+            }
+            currentState.gender.find { c -> c.selected }?.name?.let {
+                queryData[Constants.PARAM_GENDER] = it
+            }
 
             val params = GetCharactersFilterUseCase.Params(config, queryData)
             delay(1000)
@@ -77,10 +78,13 @@ class SearchViewModel @Inject constructor(
         setState { currentState.copy(active = value) }
     }
 
+    fun onOpenBottomSheet(value: Boolean) {
+        setState { currentState.copy(openBottomSheet = value) }
+    }
+
     override fun createInitialState() = SearchViewState()
 }
 
 sealed interface SearchViewEvent : IViewEvent {
-    object NewSearchEvent : SearchViewEvent
     class UpdateFavorite(val dto: CharacterDto) : SearchViewEvent
 }

@@ -31,7 +31,13 @@ class FavoritesViewModel @Inject constructor(
             setState { currentState.copy(isLoading = true) }
             delay(2000)
             val favoritesList = getFavoritesUseCase.repository.getFavoriteList()
-            setState { currentState.copy(favoritesList = favoritesList, isLoading = false) }
+            setState {
+                currentState.copy(
+                    favoritesList = favoritesList,
+                    isLoading = false,
+                    isVisibleDelete = favoritesList.isNotEmpty()
+                )
+            }
         }
     }
 

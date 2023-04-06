@@ -1,14 +1,16 @@
 package com.merttoptas.composebase.features.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -20,7 +22,6 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.navOptions
 import androidx.tracing.trace
-import com.merttoptas.composebase.R
 import com.merttoptas.composebase.features.navigation.BottomNav
 import com.merttoptas.composebase.features.screen.characters.navigation.navigateCharacter
 import com.merttoptas.composebase.features.screen.episodes.navigation.navigateToEpisodes
@@ -37,9 +38,10 @@ fun RickAndMortyBottomAppBar(
     navController: NavController,
     currentDestination: NavDestination?,
 ) {
-    NavigationBar( // BottomAppBar
+    NavigationBar(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)),
         content = {
             BottomNav.values().forEach { bottomNav ->
                 NavigationBarItem(
