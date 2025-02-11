@@ -1,41 +1,39 @@
 [versions]
 accompanist = "0.28.0"
 accompanistNavigationAnimation = "0.24.3-alpha"
-androidActivityKtx = "1.7.0"
-androidAppCompat = "1.6.1"
-androidConstraintLayoutCompose = "1.0.1"
-androidGradlePlugin = "7.4.0"
-androidxCore = "1.9.0"
-androidxCoreSplashscreen = "1.0.0"
-androidxEspresso = "3.5.1"
+androidActivityKtx = "1.10.0"
+androidAppCompat = "1.7.0"
+androidConstraintLayoutCompose = "1.1.0"
+androidGradlePlugin = "8.6.0"
+androidxCore = "1.15.0"
+androidxCoreSplashscreen = "1.0.1"
+androidxEspresso = "3.6.1"
 androidxComposeBom = "2023.03.00"
 androidxComposeCompiler = "1.4.14"
-androidxComposeMaterial3 = "1.1.0-beta01"
-androidxComposeNavigation = "2.5.3"
-androidxDataStore = "1.0.0"
-androidxLifecycle = "2.6.1"
-androidxPaging = "1.0.0-alpha18"
-androidxTestExt = "1.1.5"
-androidxTracing = "1.2.0-beta02"
-chucker = "3.5.2"
+androidxComposeMaterial3 = "1.3.1"
+androidxDataStore = "1.1.2"
+androidxLifecycle = "2.8.7"
+androidxPaging = "3.3.5"
+androidxTestExt = "1.2.1"
+androidxTracing = "1.2.0"
+chucker = "4.0.0"
 coil = "2.2.2"
-googleServices = "4.3.10"
-hilt = "2.45"
-hiltNavigationCompose = "1.0.0"
-hiltPlugin = "2.44.2"
+googleServices = "4.4.2"
+hilt = "2.54"
+hiltNavigationCompose = "1.2.0"
+hiltPlugin = "2.54"
 junit4 = "4.13.2"
-kotlin = "1.8.10"
-kotlinxSerializationJson = "1.4.1"
-lottie = "4.2.2"
-navigationCompose = "2.5.3"
+kotlin = "1.9.23"
+kotlinxSerializationJson = "1.6.3"
+lottie = "6.6.2"
+navigationCompose = "2.8.6"
 okhttp = "4.10.0"
-retrofit = "2.9.0"
-room = "2.5.1"
+retrofit = "2.11.0"
+room = "2.6.1"
 shimmer = "1.0.0"
 
 [libraries]
 accompanist-insets = { group = "com.google.accompanist", name = "accompanist-insets", version.ref = "accompanist" }
-accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "accompanistNavigationAnimation" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist" }
 accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanist" }
@@ -46,7 +44,6 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-material = { group = "androidx.compose.material", name = "material" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "androidxComposeMaterial3" }
 androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "androidConstraintLayoutCompose" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
