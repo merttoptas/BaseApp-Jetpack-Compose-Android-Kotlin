@@ -35,12 +35,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.Status
 import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.domain.viewstate.search.SearchViewState
 import com.merttoptas.composebase.features.component.*
+import com.merttoptas.composebase.features.screen.characters.CharactersViewEvent
 import com.merttoptas.composebase.utils.Utility
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -66,7 +68,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 )
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel,
+    viewModel: SearchViewModel = hiltViewModel(),
     navigateToDetail: (CharacterDto?) -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -230,17 +232,24 @@ private fun ShowSearchList(
                 RickAndMortyCharacterShimmer()
             }
         } else if (pagedData != null && pagingItems != null) {
-            items(items = pagingItems) { item ->
-                RickAndMortyCharactersCard(
-                    status = item?.status ?: Status.Unknown,
-                    detailClick = {
-                        clickDetail.invoke(item)
-                    },
-                    dto = item,
-                    onTriggerEvent = {
-                        onTriggerEvent.invoke(SearchViewEvent.UpdateFavorite(it))
-                    }
-                )
+            pagingItems?.let { safePagingItems ->
+                items(
+                    count = safePagingItems.itemCount,
+                    key = safePagingItems.itemKey { item -> item.id ?: 0 },
+                    contentType = safePagingItems.itemContentType { "ProductGridListItem" },
+                ) {
+                    val item = safePagingItems[it]
+                    RickAndMortyCharactersCard(
+                        status = item?.status ?: Status.Unknown,
+                        detailClick = {
+                            clickDetail.invoke(item)
+                        },
+                        dto = item,
+                        onTriggerEvent = {
+                            onTriggerEvent.invoke(SearchViewEvent.UpdateFavorite(it))
+                        }
+                    )
+                }
             }
         }
     }
