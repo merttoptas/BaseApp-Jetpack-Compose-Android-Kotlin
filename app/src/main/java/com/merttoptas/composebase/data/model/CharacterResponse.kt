@@ -1,14 +1,13 @@
 package com.merttoptas.composebase.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
  * Created by merttoptas on 10.03.2022
  */
 
-@Parcelize
+@Serializable
 data class CharacterResponse(
     val info: InfoResponse,
     val results: List<Result>
-) : Parcelable
+)

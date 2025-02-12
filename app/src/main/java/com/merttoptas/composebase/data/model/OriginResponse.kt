@@ -1,14 +1,13 @@
 package com.merttoptas.composebase.data.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 /**
  * Created by merttoptas on 11.03.2022
  */
 
-@Parcelize
+@Serializable
 data class OriginResponse(
     val name: String?,
     val url: String?,
-) : Parcelable
+)

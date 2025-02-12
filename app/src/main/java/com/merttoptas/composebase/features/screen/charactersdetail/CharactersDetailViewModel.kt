@@ -5,6 +5,7 @@ import com.merttoptas.composebase.data.model.Result
 import com.merttoptas.composebase.domain.viewstate.IViewEvent
 import com.merttoptas.composebase.domain.viewstate.charactersdetail.CharactersDetailViewState
 import com.merttoptas.composebase.features.base.BaseViewModel
+import com.merttoptas.composebase.features.screen.charactersdetail.navigation.CharactersDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,11 +18,7 @@ class CharactersDetailViewModel @Inject constructor(
 ) : BaseViewModel<CharactersDetailViewState, CharactersDetailViewEvent>() {
 
     init {
-        savedStateHandle.get<String>("characterDetail")?.let {
-            setState { currentState.copy(isLoading = false, data = Result.create(it)) }
-        } ?: kotlin.run {
-           setEvent(CharactersDetailViewEvent.SnackBarMessage("Something went wrong"))
-        }
+
     }
 
     override fun createInitialState() = CharactersDetailViewState()

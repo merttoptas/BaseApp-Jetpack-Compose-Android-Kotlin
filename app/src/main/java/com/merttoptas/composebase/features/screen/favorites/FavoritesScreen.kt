@@ -3,8 +3,15 @@
 package com.merttoptas.composebase.features.screen.favorites
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -12,7 +19,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -30,11 +36,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.airbnb.lottie.compose.*
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.merttoptas.composebase.R
 import com.merttoptas.composebase.data.model.FavoriteEntity
-import com.merttoptas.composebase.features.component.*
-import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailViewEvent
+import com.merttoptas.composebase.features.component.RickAndMortyAlertDialog
+import com.merttoptas.composebase.features.component.RickAndMortyCharacterShimmer
+import com.merttoptas.composebase.features.component.RickAndMortyFavoriteRowCard
+import com.merttoptas.composebase.features.component.RickAndMortyScaffold
+import com.merttoptas.composebase.features.component.RickAndMortyText
+import com.merttoptas.composebase.features.component.RickAndMortyTopBar
 import kotlinx.coroutines.launch
 
 /**
