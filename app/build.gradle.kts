@@ -4,9 +4,8 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
-    //Serializable
+    kotlin("plugin.serialization") version "1.9.23"
 }
-
 android {
     compileSdk = 35
 
@@ -78,6 +77,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout.compose)
 
     implementation(libs.androidx.compose.material3)
+
 
     //ViewModels
     implementation(libs.androidx.lifecycle.viewmodel.compose)

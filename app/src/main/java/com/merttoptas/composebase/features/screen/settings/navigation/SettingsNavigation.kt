@@ -7,25 +7,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
+import com.merttoptas.composebase.common.Route
 import com.merttoptas.composebase.features.screen.settings.SettingsScreen
+import kotlinx.serialization.Serializable
 
 /**
  * Created by mertcantoptas on 23.01.2023
  */
 
-const val settingsNavigationRoute = "settings_route"
+@Serializable
+data object Settings : Route()
 
 fun NavController.navigateToSettings(
     navOptions: NavOptions? = null
 ) {
-    this.navigate(settingsNavigationRoute, navOptions)
+    this.navigate(Settings, navOptions)
 }
 
 fun NavGraphBuilder.settingsScreen() {
-    composable(settingsNavigationRoute) {
-        SettingsScreen(
-            hiltViewModel()
-        )
+    composable<Settings> {
+        SettingsScreen()
     }
 }

@@ -1,21 +1,22 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package com.merttoptas.composebase.features.screen.characters.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
+import com.merttoptas.composebase.common.Route
 import com.merttoptas.composebase.data.model.dto.CharacterDto
 import com.merttoptas.composebase.features.screen.characters.CharactersScreen
+import kotlinx.serialization.Serializable
 
 /**
  * Created by mertcantoptas on 23.01.2023
  */
 
 const val charactersNavigationRoute = "characters_route"
+
+@Serializable
+data object Characters : Route()
 
 fun NavController.navigateCharacter(
     navOptions: NavOptions? = null
@@ -24,12 +25,7 @@ fun NavController.navigateCharacter(
 }
 
 fun NavGraphBuilder.charactersScreen(navigateToDetail: (CharacterDto?) -> Unit) {
-    composable(charactersNavigationRoute) {
-        CharactersScreen(
-            hiltViewModel(),
-            navigateToDetail = {
-                navigateToDetail.invoke(it)
-            }
-        )
+    composable<Characters> {
+        CharactersScreen(navigateToDetail = navigateToDetail)
     }
 }

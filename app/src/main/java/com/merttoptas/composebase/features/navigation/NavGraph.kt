@@ -1,13 +1,15 @@
 package com.merttoptas.composebase.features.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.merttoptas.composebase.features.component.RickAndMortyBottomAppBar
 import com.merttoptas.composebase.features.component.RickAndMortyFloatingActionBar
 import com.merttoptas.composebase.features.component.RickAndMortyScaffold
@@ -25,10 +27,9 @@ import com.merttoptas.composebase.utils.Utility.toJson
  * Created by merttoptas on 9.03.2022
  */
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavGraph() {
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val currentDestination = navController
@@ -36,7 +37,7 @@ fun NavGraph() {
 
     RickAndMortyScaffold(
         bottomBar = {
-            BottomNav.values().forEach { navItem ->
+            BottomNav.entries.forEach { navItem ->
                 if (navItem.route == currentRoute) {
                     RickAndMortyBottomAppBar(
                         navController = navController,
@@ -46,7 +47,7 @@ fun NavGraph() {
             }
         },
         floatingActionButton = {
-            BottomNav.values().forEach { navItem ->
+            BottomNav.entries.forEach { navItem ->
                 if (navItem.route == currentRoute) {
                     RickAndMortyFloatingActionBar(
                         navController = navController,
@@ -54,13 +55,14 @@ fun NavGraph() {
                 }
             }
         },
-        containerColor = MaterialTheme.colorScheme.surface,
-        ) {
-        AnimatedNavHost(
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { innerPadding ->
+        NavHost(
             navController = navController,
             startDestination = charactersNavigationRoute,
+            Modifier.padding(innerPadding)
         ) {
-            charactersScreen { navController.navigateCharactersDetail(it.toJson()) }
+            charactersScreen { navController.navigateCharactersDetail(it) }
             charactersDetailScreen { navController.navigateUp() }
             episodesScreen()
             searchScreen { navController.navigateCharactersDetail(it.toJson()) }
@@ -69,3 +71,8 @@ fun NavGraph() {
         }
     }
 }
+
+private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: BottomNav) =
+    this?.hierarchy?.any { it.route?.contains(destination.route.toString(), true) ?: false }
+        ?: false
+

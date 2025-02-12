@@ -1,49 +1,33 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package com.merttoptas.composebase.features.screen.charactersdetail.navigation
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
+import com.merttoptas.composebase.common.Route
+import com.merttoptas.composebase.data.model.Result
 import com.merttoptas.composebase.features.screen.charactersdetail.CharactersDetailScreen
+import kotlinx.serialization.Serializable
 
 /**
  * Created by mertcantoptas on 23.01.2023
  */
 
-const val charactersDetailNavigationRoute = "characters_detail_route"
+@Serializable
+data class CharactersDetail(val charactersDetail: Result) : Route()
 
 fun NavController.navigateCharactersDetail(
-    characterDetail: String,
+    characterDetail: Result,
     navOptions: NavOptions? = null
 ) {
-    this.navigate(charactersDetailNavigationRoute.plus("?characterDetail=${characterDetail}"), navOptions)
+    this.navigate(CharactersDetail(characterDetail), navOptions)
 }
 
 fun NavGraphBuilder.charactersDetailScreen(navigateToBack: () -> Unit) {
-    composable(
-        charactersDetailNavigationRoute.plus("?characterDetail={characterDetail}"),
+    composable<CharactersDetail>(
         content = {
             CharactersDetailScreen(
-                viewModel = hiltViewModel(),
                 navigateToBack = navigateToBack
-            )
-        },
-        enterTransition = {
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Left,
-                animationSpec = tween(700)
-            )
-        },
-        popExitTransition = {
-            slideOutOfContainer(
-                AnimatedContentScope.SlideDirection.Right,
-                animationSpec = tween(700)
             )
         }
     )
