@@ -1,154 +1,70 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("kotlin-kapt")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-parcelize")
-    kotlin("plugin.serialization") version "1.9.23"
+    alias(libs.plugins.rickandmorty.android.application)
+    alias(libs.plugins.rickandmorty.android.application.compose)
+    alias(libs.plugins.rickandmorty.android.hilt)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.serialization)
 }
 android {
-    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.merttoptas.composebase"
-        minSdk = 26
         versionCode = 1
-        versionName = "1.0"
-        multiDexEnabled = true
+        versionName = "2.0"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-            }
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
 
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
-    }
     namespace = "com.merttoptas.composebase"
 }
 
 dependencies {
-    val composeBom = platform(libs.androidx.compose.bom)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
-    implementation(libs.androidx.compose.foundation)
+   // implementation(projects.core.monitor)
 
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.material)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout.compose)
-
-    implementation(libs.androidx.compose.material3)
-
-
-    //ViewModels
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.compose)
-
-    //Hilt
-    // to libs
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.androidx.hilt.navigation.compose)
-
-    // Retrofit
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.gson)
-    implementation(libs.okhttp.logging)
-    implementation(libs.okhttp)
-
-    //DataStore
-    implementation(libs.androidx.dataStore.core)
-    implementation(libs.androidx.dataStore.preferences)
-
-    //Accompanist
-    implementation(libs.accompanist.insets)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
-    implementation(libs.accompanist.placeholder)
-    implementation(libs.accompanist.swiperefresh)
-
-    //Room
-    implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
-
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation(libs.room.ktx)
-    implementation(libs.room.runtime)
-
-    //Coil
-    implementation(libs.coil.kt.compose)
-
-    //Paging 3.0
-    implementation(libs.androidx.paging.compose)
-
-    //Json
-    implementation(libs.kotlinx.serialization.json)
-
-    //Chucker chucker_version
-    debugImplementation(libs.chucker)
-    releaseImplementation(libs.chucker.no.op)
-
-    //Splash
-    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.android.material)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.kotlinx.collections.immutable)
 
     implementation(libs.lottie.compose)
-    implementation(libs.shimmer.compose)
-
-    implementation(libs.androidx.tracing.tracing)
-    implementation(libs.androidx.tracing.ktx)
-
-    // UI Tests
-    androidTestImplementation(libs.androidx.compose.ui.test)
-    debugImplementation(libs.androidx.compose.ui.testManifest)
 
     testImplementation(libs.junit4)
-    androidTestImplementation(libs.androidx.test.ext)
-    androidTestImplementation(libs.androidx.test.espresso.core)
-}
 
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.junit)
+    androidTestImplementation(libs.hilt.android.testing)
+
+    debugImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.square.leakcanary)
+
+    ksp(libs.moshi.kotlin.codegen)
 }

@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ComposeBase"
 include(":app")
+include(":core:monitor")
